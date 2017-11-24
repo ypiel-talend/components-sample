@@ -1,0 +1,5 @@
+ = Components Sample
+
+Temporary repository to put some testing components.
+
+
