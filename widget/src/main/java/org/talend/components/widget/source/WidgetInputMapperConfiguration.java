@@ -44,7 +44,7 @@ public class WidgetInputMapperConfiguration implements Serializable {
     
     @Option
     @Proposable("list") // TODO add corresponding @DynamicValues
-    private String dropDownList;
+    private Item dropDownList;
     
     @Option
     @Credential
@@ -114,11 +114,11 @@ public class WidgetInputMapperConfiguration implements Serializable {
     /**
      * @return the dropDownList
      */
-    public String getDropDownList() {
+    public Item getDropDownList() {
         return dropDownList;
     }
 
-    public WidgetInputMapperConfiguration setDropDownList(String dropDownList) {
+    public WidgetInputMapperConfiguration setDropDownList(Item dropDownList) {
         this.dropDownList = dropDownList;
         return this;
     }
@@ -142,6 +142,12 @@ public class WidgetInputMapperConfiguration implements Serializable {
     public WidgetInputMapperConfiguration setConnection(ConnectionConfiguration Connection) {
         this.connection = connection;
         return this;
+    }
+    
+    public static enum Item {
+        ITEM1,
+        ITEM2,
+        ITEM3
     }
 
 }
