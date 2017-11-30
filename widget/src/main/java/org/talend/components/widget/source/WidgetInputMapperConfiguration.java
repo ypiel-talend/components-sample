@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
-import org.talend.sdk.component.api.configuration.action.Proposable;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Code;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
@@ -43,7 +42,6 @@ public class WidgetInputMapperConfiguration implements Serializable {
     private boolean checkBox;
     
     @Option
-    @Proposable("list") // TODO add corresponding @DynamicValues
     private Item dropDownList;
     
     @Option
