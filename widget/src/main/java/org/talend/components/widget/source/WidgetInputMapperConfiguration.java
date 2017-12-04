@@ -28,21 +28,21 @@ public class WidgetInputMapperConfiguration implements Serializable {
     private File file;
 
     @Option
-    private String text;
+    private String text = "Initial value";
     
     @Option
     @TextArea
-    private String textArea;
+    private String textArea = "This is a big text area.\n It has several lines";
     
     @Option
     @Code("Java")
-    private String code;
+    private String code = "String foo = \"bar\";";
     
     @Option
-    private boolean checkBox;
+    private boolean checkBox = true;
     
     @Option
-    private Item dropDownList;
+    private Item dropDownList = Item.ITEM2;
     
     @Option
     @Credential
