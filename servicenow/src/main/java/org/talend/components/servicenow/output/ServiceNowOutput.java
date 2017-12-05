@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.talend.components.servicenow.service.ServiceNowTableService;
 import org.talend.sdk.component.api.component.Icon;
 import org.talend.sdk.component.api.component.Version;
 import org.talend.sdk.component.api.configuration.Option;
@@ -13,17 +14,20 @@ import org.talend.sdk.component.api.processor.ElementListener;
 import org.talend.sdk.component.api.processor.Processor;
 import org.talend.sdk.component.api.processor.Input;
 
-import org.talend.components.servicenow.service.ServiceNowClient;
+import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
 
 @Version(1) // default version is 1, if some configuration changes happen between 2 versions you can add a migrationHandler
-@Icon(Icon.IconType.STAR) // you can use a custom one using @Icon(value=CUSTOM, custom="filename") and adding icons/filename_icon32.png in resources
+@Icon(Icon.IconType.STAR)
+// you can use a custom one using @Icon(value=CUSTOM, custom="filename") and adding icons/filename_icon32.png in resources
 @Processor(name = "ServiceNow")
 public class ServiceNowOutput implements Serializable {
+
     private final ServiceNowOutputConfiguration configuration;
-    private final ServiceNowClient service;
+
+    private final ServiceNowTableService service;
 
     public ServiceNowOutput(@Option("configuration") final ServiceNowOutputConfiguration configuration,
-                         final ServiceNowClient service) {
+            final ServiceNowTableService service) {
         this.configuration = configuration;
         this.service = service;
     }
@@ -44,7 +48,7 @@ public class ServiceNowOutput implements Serializable {
 
     @ElementListener
     public void onNext(
-        @Input final ServiceNowDefaultInput defaultInput) {
+            @Input final ServiceNowDefaultInput defaultInput) {
         // this is the method allowing you to handle the input(s) and emit the output(s)
         // after some custom logic you put here, to send a value to next element you can use an
         // output parameter and call emit(value).
