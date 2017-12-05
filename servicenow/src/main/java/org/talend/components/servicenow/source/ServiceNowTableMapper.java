@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.LongStream;
 
-import org.talend.components.servicenow.configuration.ServiceNowTableDataSet;
+import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.service.ServiceNowRestClient;
 import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
 import org.talend.components.servicenow.service.ServiceNowTableService;
@@ -19,21 +19,21 @@ import org.talend.sdk.component.api.input.PartitionSize;
 import org.talend.sdk.component.api.input.Split;
 
 import static java.util.stream.Collectors.toList;
-import static org.talend.components.servicenow.configuration.ServiceNowTableDataSet.READ_ALL_RECORD_FROM_SERVER;
+import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 
 //
 // this class role is to enable the work to be distributed in environments supporting it.
 // default version is 1, if some tableDataSet changes happen between 2 versions you can add a migrationHandler
-@Version
-@Icon(Icon.IconType.STAR)
+@Version(1)
+@Icon(value = Icon.IconType.CUSTOM, custom = "ServiceNowInput")
 @PartitionMapper(name = "ServiceNowInput")
 public class ServiceNowTableMapper implements Serializable {
 
-    private final ServiceNowTableDataSet tableDataSet;
+    private final TableDataSet tableDataSet;
 
     private final ServiceNowTableService service;
 
-    public ServiceNowTableMapper(@Option("tableDataSet") final ServiceNowTableDataSet tableDataSet,
+    public ServiceNowTableMapper(@Option("tableDataSet") final TableDataSet tableDataSet,
             ServiceNowTableService service) {
         this.tableDataSet = tableDataSet;
         this.service = service;
@@ -53,7 +53,8 @@ public class ServiceNowTableMapper implements Serializable {
     public List<ServiceNowTableMapper> split(@PartitionSize final long bundles) {
         try (ServiceNowRestClient sNRestClient = new ServiceNowRestClientBuilder(
                 tableDataSet.getDataStore()).clientV2()) {
-            long recordSize = sNRestClient.table().estimateRecordBytesSize(tableDataSet.getTableName());
+            long recordSize =
+                    sNRestClient.table().estimateRecordBytesSize(tableDataSet.getTableAPIConfig().getTableName());
             long nbBundle = Math.max(1, estimateSize() / bundles);
             final long bundleCount = bundles / recordSize;
             final int totalData = sNRestClient.table().count(tableDataSet);//total data in the server
@@ -64,7 +65,7 @@ public class ServiceNowTableMapper implements Serializable {
             return LongStream.range(0, nbBundle).mapToObj(i -> {
                 final int from = (int) (bundleCount * i);
                 final int to = (i == nbBundle - 1) ? requestedSize : (int) (from + bundleCount);
-                final ServiceNowTableDataSet dataSetChunk = new ServiceNowTableDataSet(tableDataSet);
+                final TableDataSet dataSetChunk = new TableDataSet(tableDataSet);
                 dataSetChunk.setOffset(from);
                 dataSetChunk.setMaxRecords(to);
                 return new ServiceNowTableMapper(dataSetChunk, service);
@@ -77,9 +78,6 @@ public class ServiceNowTableMapper implements Serializable {
 
     @Emitter
     public ServiceNowTableSource createWorker() {
-        // here we create an actual worker,
-        // you are free to rework the tableDataSet etc but our default generated implementation
-        // propagates the partition mapper entries.
         return new ServiceNowTableSource(tableDataSet);
     }
 }

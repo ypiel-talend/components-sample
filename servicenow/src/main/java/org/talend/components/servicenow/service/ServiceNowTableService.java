@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import org.talend.components.servicenow.configuration.ServiceNowBasicAuth;
+import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.service.Service;
 import org.talend.sdk.component.api.service.completion.DynamicValues;
@@ -28,8 +28,8 @@ import org.talend.sdk.component.api.service.completion.Values;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheck;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheckStatus;
 
-import static org.talend.components.servicenow.configuration.ServiceNowBasicAuth.NAME;
-import static org.talend.components.servicenow.configuration.ServiceNowTableDataSet.Proposable_GetTableFields;
+import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
+import static org.talend.components.servicenow.configuration.TableAPIConfig.Proposable_GetTableFields;
 
 @Service
 public class ServiceNowTableService {
@@ -37,7 +37,7 @@ public class ServiceNowTableService {
     private volatile Map<String, Values> cachedTableFields;
 
     @HealthCheck(value = NAME)
-    public HealthCheckStatus healthCheck(@Option(ServiceNowBasicAuth.NAME) ServiceNowBasicAuth dataStore) {
+    public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dataStore) {
 
         try (ServiceNowRestClient client = new ServiceNowRestClientBuilder(dataStore).clientV2()) {
 

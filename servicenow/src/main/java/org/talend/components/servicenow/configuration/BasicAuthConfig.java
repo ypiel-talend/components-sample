@@ -11,7 +11,7 @@ import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
 import org.talend.sdk.component.api.meta.Documentation;
 
-import static org.talend.components.servicenow.configuration.ServiceNowBasicAuth.NAME;
+import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
 
 @Data
 @Checkable(NAME)
@@ -21,7 +21,7 @@ import static org.talend.components.servicenow.configuration.ServiceNowBasicAuth
         @GridLayout.Row({ "username", "password" }),
 })
 @Documentation("Basic auth data store for Service Now")
-public class ServiceNowBasicAuth implements Serializable {
+public class BasicAuthConfig implements Serializable {
 
     public static final String NAME = "basicAuth";
 

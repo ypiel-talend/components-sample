@@ -6,26 +6,25 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.talend.components.servicenow.configuration.ServiceNowTableDataSet;
-import org.talend.components.servicenow.configuration.ServiceNowRecord;
+import org.talend.components.servicenow.configuration.TableDataSet;
+import org.talend.components.servicenow.configuration.TableRecord;
 import org.talend.components.servicenow.service.ServiceNowRestClient;
 import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
-import org.talend.components.servicenow.service.ServiceNowTableService;
 import org.talend.sdk.component.api.base.BufferizedProducerSupport;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.input.Producer;
 
-import static org.talend.components.servicenow.configuration.ServiceNowTableDataSet.READ_ALL_RECORD_FROM_SERVER;
+import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 
 public class ServiceNowTableSource implements Serializable {
 
-    private final ServiceNowTableDataSet tableDataSet;
+    private final TableDataSet tableDataSet;
 
     private ServiceNowRestClient restClient;
 
-    private BufferizedProducerSupport<ServiceNowRecord> bufferedReader;
+    private BufferizedProducerSupport<TableRecord> bufferedReader;
 
-    public ServiceNowTableSource(@Option("tableDataSet") final ServiceNowTableDataSet tableDataSet) {
+    public ServiceNowTableSource(@Option("tableDataSet") final TableDataSet tableDataSet) {
         this.tableDataSet = tableDataSet;
 
     }
@@ -41,7 +40,7 @@ public class ServiceNowTableSource implements Serializable {
             }
 
             //Read next page from data set
-            final List<ServiceNowRecord> result = restClient.table().get(tableDataSet);
+            final List<TableRecord> result = restClient.table().get(tableDataSet);
 
             //advance the data set offset
             if (tableDataSet.getOffset() < tableDataSet.getMaxRecords()) {
@@ -53,7 +52,7 @@ public class ServiceNowTableSource implements Serializable {
     }
 
     @Producer
-    public ServiceNowRecord next() {
+    public TableRecord next() {
         return bufferedReader.next();
     }
 

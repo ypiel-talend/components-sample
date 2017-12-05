@@ -7,9 +7,10 @@ import java.util.List;
 
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.talend.components.servicenow.configuration.ServiceNowTableDataSet;
-import org.talend.components.servicenow.configuration.ServiceNowBasicAuth;
-import org.talend.components.servicenow.configuration.ServiceNowRecord;
+import org.talend.components.servicenow.configuration.TableAPIConfig;
+import org.talend.components.servicenow.configuration.TableDataSet;
+import org.talend.components.servicenow.configuration.BasicAuthConfig;
+import org.talend.components.servicenow.configuration.TableRecord;
 import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.runtime.input.Mapper;
 
@@ -19,13 +20,14 @@ import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.talend.components.servicenow.configuration.ServiceNowTableDataSet.READ_ALL_RECORD_FROM_SERVER;
+import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 import static org.talend.sdk.component.junit.SimpleFactory.configurationByExample;
 
 public class ServiceNowMapperTest {
 
     @ClassRule
-    public static final SimpleComponentRule COMPONENT_FACTORY = new SimpleComponentRule("org.talend.components.servicenow");
+    public static final SimpleComponentRule COMPONENT_FACTORY =
+            new SimpleComponentRule("org.talend.components.servicenow");
 
     //    @ClassRule
     //    public static HoverflyRule hoverflyRule = HoverflyRule
@@ -37,20 +39,24 @@ public class ServiceNowMapperTest {
             hoverfly.start();
             hoverfly.simulate(defaultPath("incidents_1000.json"));
 
-            ServiceNowBasicAuth dataStore = new ServiceNowBasicAuth();
+            BasicAuthConfig dataStore = new BasicAuthConfig();
             dataStore.setUsername("fakeUserName");
             dataStore.setPassword("fakePassword");
             dataStore.setUrl("https://dev44668.service-now.com");
-            final ServiceNowTableDataSet configuration = new ServiceNowTableDataSet();
+            final TableDataSet configuration = new TableDataSet();
             configuration.setDataStore(dataStore);
-            configuration.setTableName("incident");
+            final TableAPIConfig apiConfig = new TableAPIConfig();
+            apiConfig.setTableName("incident");
+            configuration.setTableAPIConfig(apiConfig);
             configuration.setMaxRecords(1000);
 
             // We create the component mapper instance using the configuration filled above
-            final Mapper mapper = COMPONENT_FACTORY.asManager().findMapper("ServiceNow", "ServiceNowInput", 1,
-                    configurationByExample(configuration, "tableDataSet")).orElseThrow(() -> new RuntimeException("fail"));
-            final List<ServiceNowRecord> serviceNowRecords = COMPONENT_FACTORY.collect(ServiceNowRecord.class, mapper, 2000, 24)
-                                                                              .collect(toList());
+            final Mapper mapper = COMPONENT_FACTORY.asManager()
+                    .findMapper("ServiceNow", "ServiceNowInput", 1,
+                            configurationByExample(configuration, "tableDataSet"))
+                    .orElseThrow(() -> new RuntimeException("fail"));
+            final List<TableRecord> serviceNowRecords = COMPONENT_FACTORY.collect(TableRecord.class, mapper, 2000, 24)
+                    .collect(toList());
             assertEquals(1000, serviceNowRecords.size());
             assertNotNull(serviceNowRecords.get(0).getData().get("number"));
         }
@@ -63,23 +69,25 @@ public class ServiceNowMapperTest {
             hoverfly.start();
             hoverfly.simulate(defaultPath("incidents_withQuery.json"));
 
-            ServiceNowBasicAuth dataStore = new ServiceNowBasicAuth();
+            BasicAuthConfig dataStore = new BasicAuthConfig();
             dataStore.setUsername("fakeUserName");
             dataStore.setPassword("fakePassword");
             dataStore.setUrl("https://dev44668.service-now.com");
-            final ServiceNowTableDataSet configuration = new ServiceNowTableDataSet();
+            final TableDataSet configuration = new TableDataSet();
             configuration.setDataStore(dataStore);
-            configuration.setTableName("incident");
+            final TableAPIConfig apiConfig = new TableAPIConfig();
+            apiConfig.setTableName("incident");
+            configuration.setTableAPIConfig(apiConfig);
             configuration.setQuery("active=true^ORDERBYnumber^ORDERBYDESCcategory");
             configuration.setMaxRecords(100);
 
             // We create the component mapper instance using the configuration filled above
             final Mapper mapper = COMPONENT_FACTORY.asManager().findMapper("ServiceNow", "ServiceNowInput", 1,
                     configurationByExample(configuration, "tableDataSet"))
-                                                   .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
+                    .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
 
-            final List<ServiceNowRecord> serviceNowRecords = COMPONENT_FACTORY.collect(ServiceNowRecord.class, mapper, 1000, 2)
-                                                                              .collect(toList());
+            final List<TableRecord> serviceNowRecords = COMPONENT_FACTORY.collect(TableRecord.class, mapper, 1000, 2)
+                    .collect(toList());
             assertEquals(100, serviceNowRecords.size());
             assertNotNull(serviceNowRecords.get(0).getData().get("number"));
         }
@@ -93,23 +101,25 @@ public class ServiceNowMapperTest {
             hoverfly.simulate(defaultPath("incidents_WithReadFullDataSet.json"));
 
             //test
-            ServiceNowBasicAuth dataStore = new ServiceNowBasicAuth();
+            BasicAuthConfig dataStore = new BasicAuthConfig();
             dataStore.setUsername("fakeUserName");
             dataStore.setPassword("fakePassword");
             dataStore.setUrl("https://dev44668.service-now.com");
-            final ServiceNowTableDataSet configuration = new ServiceNowTableDataSet();
+            final TableAPIConfig apiConfig = new TableAPIConfig();
+            apiConfig.setTableName("incident");
+            final TableDataSet configuration = new TableDataSet();
             configuration.setDataStore(dataStore);
-            configuration.setTableName("incident");
+            configuration.setTableAPIConfig(apiConfig);
             configuration.setQuery("active=true^priority=1^ORDERBYnumber^ORDERBYDESCcategory");
             configuration.setMaxRecords(READ_ALL_RECORD_FROM_SERVER);
 
             // We create the component mapper instance using the configuration filled above
             final Mapper mapper = COMPONENT_FACTORY.asManager().findMapper("ServiceNow", "ServiceNowInput", 1,
                     configurationByExample(configuration, "tableDataSet"))
-                                                   .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
+                    .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
 
-            final List<ServiceNowRecord> serviceNowRecords = COMPONENT_FACTORY.collect(ServiceNowRecord.class, mapper, 1000, 2)
-                                                                              .collect(toList());
+            final List<TableRecord> serviceNowRecords = COMPONENT_FACTORY.collect(TableRecord.class, mapper, 1000, 2)
+                    .collect(toList());
             assertEquals(1000, serviceNowRecords.size());
             assertNotNull(serviceNowRecords.get(0).getData().get("number"));
         }

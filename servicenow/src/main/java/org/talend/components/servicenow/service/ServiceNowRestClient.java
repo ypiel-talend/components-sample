@@ -19,8 +19,9 @@ package org.talend.components.servicenow.service;
 import java.io.Closeable;
 import java.util.List;
 
-import org.talend.components.servicenow.configuration.ServiceNowTableDataSet;
-import org.talend.components.servicenow.configuration.ServiceNowRecord;
+import org.talend.components.servicenow.configuration.TableDataSet;
+import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.components.servicenow.output.OutputConfig;
 
 public interface ServiceNowRestClient extends Closeable {
 
@@ -40,6 +41,8 @@ public interface ServiceNowRestClient extends Closeable {
 
     String HEADER_X_Total_Count = "X-Total-Count";
 
+    String HEADER_X_no_response_body = "X-no-response-body";
+
     TableRestClient table();
 
     /**
@@ -51,13 +54,13 @@ public interface ServiceNowRestClient extends Closeable {
          * @param dataSet definition of the datat set table name, size, fields...
          * @return record from the table according to the data set definition
          */
-        List<ServiceNowRecord> get(final ServiceNowTableDataSet dataSet);
+        List<TableRecord> get(final TableDataSet dataSet);
 
         /**
          * @param dataSet
          * @return number of record for the given dataSet
          */
-        int count(final ServiceNowTableDataSet dataSet);
+        int count(final TableDataSet dataSet);
 
         /**
          * Calculate one record size in bytes, this is an estimation and not an exact record size
@@ -73,12 +76,21 @@ public interface ServiceNowRestClient extends Closeable {
          * @param dataSet
          * @return an estimation of the hole data set size in bytes
          */
-        long estimateDataSetBytesSize(final ServiceNowTableDataSet dataSet);
+        long estimateDataSetBytesSize(final TableDataSet dataSet);
 
         /**
          * Check the health of the service now api
          */
         void healthCheck() throws Exception;
+
+        /**
+         * Create a Record to the table defined in the outputConfig
+         * set {@link OutputConfig#noResponseBody} to false to log the new record
+         *
+         * @param outputConfig
+         * @param record
+         */
+        void createRecord(OutputConfig outputConfig, TableRecord record);
 
     }
 }

@@ -5,7 +5,6 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -25,7 +24,7 @@ public class ServiceNowOutputTest {
 
         // Output configuration
         // Setup your component configuration for the test here
-        final ServiceNowOutputConfiguration configuration =  new ServiceNowOutputConfiguration()
+        final OutputConfig configuration =  new OutputConfig()
                                                                                 /* .setAction()
                                                                                    .setTable() */;
 

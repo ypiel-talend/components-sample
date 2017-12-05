@@ -17,18 +17,22 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.talend.components.servicenow.configuration.ServiceNowTableDataSet;
-import org.talend.components.servicenow.configuration.ServiceNowBasicAuth;
-import org.talend.components.servicenow.configuration.ServiceNowRecord;
+import org.talend.components.servicenow.configuration.BasicAuthConfig;
+import org.talend.components.servicenow.configuration.TableDataSet;
+import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.components.servicenow.output.OutputConfig;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
@@ -36,9 +40,9 @@ import static java.util.stream.Collectors.toList;
 
 public class ServiceNowRestClientBuilder {
 
-    private ServiceNowBasicAuth dataStore;
+    private BasicAuthConfig dataStore;
 
-    public ServiceNowRestClientBuilder(ServiceNowBasicAuth dataStore) {
+    public ServiceNowRestClientBuilder(BasicAuthConfig dataStore) {
         this.dataStore = dataStore;
     }
 
@@ -79,7 +83,7 @@ public class ServiceNowRestClientBuilder {
 
         private static void validateHttpResponse(final CloseableHttpResponse response) throws HttpException {
             int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != 200) {
+            if (statusCode != 200 && statusCode != 201) {
                 String errorDetails = null;
                 if (response.getEntity() != null) {
                     try {
@@ -145,12 +149,13 @@ public class ServiceNowRestClientBuilder {
             }
 
             @Override
-            public long estimateDataSetBytesSize(final ServiceNowTableDataSet dataSet) {
+            public long estimateDataSetBytesSize(final TableDataSet dataSet) {
                 URI uri;
                 try {
                     uri = new URIBuilder().setScheme(client.host.getSchemeName())
                             .setHost(client.host.getHostName())
-                            .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/" + dataSet.getTableName())
+                            .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/" + dataSet.getTableAPIConfig()
+                                    .getTableName())
                             .setParameter(sysparm_exclude_reference_link, "true")
                             .setParameter(sysparm_limit, String.valueOf(1))
                             .build();
@@ -200,10 +205,42 @@ public class ServiceNowRestClientBuilder {
             }
 
             @Override
-            public int count(final ServiceNowTableDataSet dataSet) {
+            public void createRecord(final OutputConfig outputConfig, final TableRecord record) {
                 URI uri;
                 try {
-                    ServiceNowTableDataSet countDataSet = new ServiceNowTableDataSet(dataSet);
+                    uri = new URIBuilder().setScheme(client.host.getSchemeName())
+                            .setHost(client.host.getHostName())
+                            .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/"
+                                    + outputConfig.getTableAPIConfig().getTableName())
+                            .setParameter(sysparm_exclude_reference_link,
+                                    String.valueOf(outputConfig.getTableAPIConfig().isExcludeReferenceLink()))
+                            .setParameter(sysparm_limit, String.valueOf(1))
+                            .build();
+
+                    HttpPost httpPost = new HttpPost(uri);
+                    httpPost.setHeader("Accept", "application/json");
+                    httpPost.setHeader(HEADER_X_no_response_body, String.valueOf(outputConfig.isNoResponseBody()));
+                    httpPost.setEntity(new StringEntity(client.mapper.writeValueAsString(record.getData())));
+                    try (CloseableHttpResponse response = client.httpClient.execute(httpPost, client.context)) {
+                        validateHttpResponse(response);
+                        if (!outputConfig.isNoResponseBody()) {
+                            JsonNode newRecord =
+                                    client.mapper.readValue(EntityUtils.toString(response.getEntity()), JsonNode.class);
+                            if (newRecord != null && newRecord.has("result")) {
+                                log.info(newRecord.get("result").asText());
+                            }
+                        }
+                    }
+                } catch (URISyntaxException | IOException | HttpException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public int count(final TableDataSet dataSet) {
+                URI uri;
+                try {
+                    TableDataSet countDataSet = new TableDataSet(dataSet);
                     countDataSet.setOffset(0);
                     countDataSet.setMaxRecords(1);
                     countDataSet.setLimit(1);
@@ -221,10 +258,11 @@ public class ServiceNowRestClientBuilder {
                 }
             }
 
-            private URI buildGetUri(final ServiceNowTableDataSet dataSet) throws URISyntaxException {
+            private URI buildGetUri(final TableDataSet dataSet) throws URISyntaxException {
                 final URIBuilder uriBuilder = new URIBuilder().setScheme(client.host.getSchemeName())
                         .setHost(client.host.getHostName())
-                        .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/" + dataSet.getTableName())
+                        .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/" + dataSet.getTableAPIConfig()
+                                .getTableName())
                         .setParameter(sysparm_suppress_pagination_header, "true")
                         //.setParameter(glide_invalid_query_returns_no_rows, String.valueOf(dataSet.isNoRowsWithInvalidQuery()))
                         .setParameter(sysparm_offset, String.valueOf(dataSet.getOffset()))
@@ -232,7 +270,7 @@ public class ServiceNowRestClientBuilder {
                                 dataSet.getOffset() + dataSet.getPageSize() <= dataSet.getMaxRecords() ?
                                         dataSet.getPageSize() :
                                         dataSet.getMaxRecords()));
-                if (dataSet.isExcludeReferenceLink()) {
+                if (dataSet.getTableAPIConfig().isExcludeReferenceLink()) {
                     uriBuilder.setParameter(sysparm_exclude_reference_link, "true");
                 }
 
@@ -240,21 +278,18 @@ public class ServiceNowRestClientBuilder {
                     uriBuilder.setParameter(sysparm_query, dataSet.getQuery());
                 }
 
-                if (dataSet.getFields() != null && !dataSet.getFields().isEmpty()) {
+                if (dataSet.getTableAPIConfig().getFields() != null && !dataSet.getTableAPIConfig()
+                        .getFields()
+                        .isEmpty()) {
                     uriBuilder.setParameter(sysparm_fields, dataSet.getFieldsCommaSeparated());
                 }
 
                 return uriBuilder.build();
             }
 
-            /**
-             * Read from table tableName with limit
-             *
-             * @param dataSet
-             * @return return {@link Stream} of record from table
-             */
+
             @Override
-            public List<ServiceNowRecord> get(final ServiceNowTableDataSet dataSet) {
+            public List<TableRecord> get(final TableDataSet dataSet) {
                 URI uri;
                 try {
                     uri = buildGetUri(dataSet);
@@ -272,7 +307,7 @@ public class ServiceNowRestClientBuilder {
 
                     if (record != null && record.containsKey("result")) {
                         return ((List<Map<String, Object>>) record.get("result")).stream()
-                                .map(result -> new ServiceNowRecord(result))
+                                .map(result -> new TableRecord(result))
                                 .collect(toList());
                     }
                 } catch (IOException | HttpException e) {

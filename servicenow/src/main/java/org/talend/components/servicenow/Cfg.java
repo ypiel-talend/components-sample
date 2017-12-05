@@ -19,5 +19,5 @@ package org.talend.components.servicenow;
 public interface Cfg {
 
     String FAMILY = "ServiceNow";
-    String CATEGORIES = "Business/Service Now";
+    String CATEGORIES = "Business";
 }
