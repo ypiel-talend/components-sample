@@ -2,6 +2,7 @@ package org.talend.components.widget.source;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
@@ -47,7 +48,9 @@ public class WidgetInputMapperConfiguration implements Serializable {
     @Option
     @Credential
     private String credential;
-
+    
+    @Option
+    private List<Filter> table;
     
     /**
      * @return the file
