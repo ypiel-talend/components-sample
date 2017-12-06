@@ -1,154 +1,62 @@
 package org.talend.components.widget.source;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Code;
-import org.talend.sdk.component.api.configuration.ui.widget.Credential;
 import org.talend.sdk.component.api.configuration.ui.widget.TextArea;
 
+import lombok.Data;
+
 @GridLayout({
-    @GridLayout.Row({ "connection" }),
-    @GridLayout.Row({ "file" }),
-    @GridLayout.Row({ "text" }),
-    @GridLayout.Row({ "textArea" }),
-    @GridLayout.Row({ "code" }),
-    @GridLayout.Row({ "checkBox" }),
-    @GridLayout.Row({ "dropDownList" }),
-    @GridLayout.Row({ "credential" })
+    @GridLayout.Row({ "dataset" }),
+    @GridLayout.Row({ "action" }),
+    @GridLayout.Row({ "showQuery", "showTable", "showCode" }),
+    @GridLayout.Row({ "query" }),
+    @GridLayout.Row({ "table" }),
+    @GridLayout.Row({ "code" })
 })
+@Data
 public class WidgetInputMapperConfiguration implements Serializable {
 
     @Option
-    private ConnectionConfiguration connection;
+    private DatasetConfiguration dataset;
+    
+    /**
+     * This is dropdown list
+     */
+    @Option
+    private Action action = Action.CREATE;
+    
+    /**
+     * This is checkbox
+     */
+    @Option
+    private boolean showQuery = false;
     
     @Option
-    private File file;
-
+    private boolean showTable = false;
+    
     @Option
-    private String text = "Initial value";
+    private boolean showCode = true;
     
     @Option
     @TextArea
-    private String textArea = "This is a big text area.\n It has several lines";
+    private String query = "SELECT * FROM table";
+    
+    @Option
+    private List<Filter> table;
     
     @Option
     @Code("Java")
     private String code = "String foo = \"bar\";";
     
-    @Option
-    private boolean checkBox = true;
-    
-    @Option
-    private Item dropDownList = Item.ITEM2;
-    
-    @Option
-    @Credential
-    private String credential;
-    
-    @Option
-    private List<Filter> table;
-    
-    /**
-     * @return the file
-     */
-    public File getFile() {
-        return file;
-    }
-
-    public WidgetInputMapperConfiguration setFile(File file) {
-        this.file = file;
-        return this;
-    }
-    
-    /**
-     * @return the text
-     */
-    public String getText() {
-        return text;
-    }
-
-    public WidgetInputMapperConfiguration setText(String text) {
-        this.text = text;
-        return this;
-    }
-    
-    /**
-     * @return the textArea
-     */
-    public String getTextArea() {
-        return textArea;
-    }
-
-    public WidgetInputMapperConfiguration setTextArea(String textArea) {
-        this.textArea = textArea;
-        return this;
-    }
-    
-    /**
-     * @return the code
-     */
-    public String getCode() {
-        return code;
-    }
-
-    public WidgetInputMapperConfiguration setCode(String code) {
-        this.code = code;
-        return this;
-    }
-    
-    /**
-     * @return the checkBox
-     */
-    public boolean isCheckBox() {
-        return checkBox;
-    }
-
-    public WidgetInputMapperConfiguration setCheckBox(boolean checkBox) {
-        this.checkBox = checkBox;
-        return this;
-    }
-    
-    /**
-     * @return the dropDownList
-     */
-    public Item getDropDownList() {
-        return dropDownList;
-    }
-
-    public WidgetInputMapperConfiguration setDropDownList(Item dropDownList) {
-        this.dropDownList = dropDownList;
-        return this;
-    }
-    
-    /**
-     * @return the credential
-     */
-    public String getCredential() {
-        return credential;
-    }
-    
-    public WidgetInputMapperConfiguration setCredential(String credential) {
-        this.credential = credential;
-        return this;
-    }
-
-    public ConnectionConfiguration getConnection() {
-        return connection;
-    }
-
-    public WidgetInputMapperConfiguration setConnection(ConnectionConfiguration Connection) {
-        this.connection = connection;
-        return this;
-    }
-    
-    public static enum Item {
-        ITEM1,
-        ITEM2,
-        ITEM3
+    public static enum Action {
+        CREATE,
+        UPDATE,
+        DELETE
     }
 
 }

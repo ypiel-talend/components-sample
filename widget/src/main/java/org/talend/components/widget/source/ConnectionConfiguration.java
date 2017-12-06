@@ -3,48 +3,51 @@ package org.talend.components.widget.source;
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
+import org.talend.sdk.component.api.configuration.ui.widget.Credential;
 
 @GridLayout({
-    @GridLayout.Row({ "URL" }),
-    @GridLayout.Row({ "User" }),
-    @GridLayout.Row({ "Password" })
+    @GridLayout.Row({ "url" }),
+    @GridLayout.Row({ "user", "password" }),
 })
+@DataStore("Connection")
 public class ConnectionConfiguration implements Serializable {
 
     @Option
-    private String URL;
+    private String url;
 
     @Option
-    private String User;
+    private String user;
 
     @Option
-    private String Password;
+    @Credential
+    private String password;
 
     public String getURL() {
-        return URL;
+        return url;
     }
 
     public ConnectionConfiguration setURL(String URL) {
-        this.URL = URL;
+        this.url = URL;
         return this;
     }
 
     public String getUser() {
-        return User;
+        return user;
     }
 
     public ConnectionConfiguration setUser(String User) {
-        this.User = User;
+        this.user = User;
         return this;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public ConnectionConfiguration setPassword(String Password) {
-        this.Password = Password;
+        this.password = Password;
         return this;
     }
 }

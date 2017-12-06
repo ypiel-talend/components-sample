@@ -18,7 +18,7 @@ import org.talend.components.widget.service.WidgetService;
 
 @Version(1)
 @Icon(value = Icon.IconType.CUSTOM, custom = "Widget")
-@PartitionMapper(name = "WidgetInput")
+@PartitionMapper(name = "Input")
 public class WidgetInputMapper implements Serializable {
 
     private final WidgetInputMapperConfiguration configuration;
