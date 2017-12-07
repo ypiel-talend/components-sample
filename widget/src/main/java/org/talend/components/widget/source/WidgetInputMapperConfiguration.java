@@ -5,19 +5,25 @@ import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
+import org.talend.sdk.component.api.configuration.ui.layout.GridLayout.FormType;
 import org.talend.sdk.component.api.configuration.ui.widget.Code;
 import org.talend.sdk.component.api.configuration.ui.widget.TextArea;
 
 import lombok.Data;
 
-@GridLayout({
+@GridLayout(value = {
     @GridLayout.Row({ "dataset" }),
     @GridLayout.Row({ "action" }),
-    @GridLayout.Row({ "showQuery", "showTable", "showCode" }),
+    @GridLayout.Row({ "showQuery", "showTable" }),
     @GridLayout.Row({ "query" }),
-    @GridLayout.Row({ "table" }),
-    @GridLayout.Row({ "code" })
-})
+    @GridLayout.Row({ "table" })},
+    names = FormType.MAIN
+)
+@GridLayout(value = {
+    @GridLayout.Row({ "showCode" }),
+    @GridLayout.Row({ "code" })},
+    names = FormType.ADVANCED
+)
 @Data
 public class WidgetInputMapperConfiguration implements Serializable {
 
