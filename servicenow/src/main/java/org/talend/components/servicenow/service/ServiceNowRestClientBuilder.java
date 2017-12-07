@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -30,6 +29,7 @@ import org.apache.http.util.EntityUtils;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.output.OutputConfig;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -42,8 +42,11 @@ public class ServiceNowRestClientBuilder {
 
     private BasicAuthConfig dataStore;
 
-    public ServiceNowRestClientBuilder(BasicAuthConfig dataStore) {
+    private Messages i18n;
+
+    public ServiceNowRestClientBuilder(final BasicAuthConfig dataStore, final Messages i18n) {
         this.dataStore = dataStore;
+        this.i18n = i18n;
     }
 
     public ServiceNowRestClient clientV2() {
@@ -63,6 +66,8 @@ public class ServiceNowRestClientBuilder {
 
         private final HttpHost host;
 
+        private Messages i18n;
+
         private ClientV2(ServiceNowRestClientBuilder config) {
             host = HttpHost.create(config.dataStore.getUrl());
             final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
@@ -79,24 +84,9 @@ public class ServiceNowRestClientBuilder {
             context = HttpClientContext.create();
             context.setCredentialsProvider(credentialsProvider);
             context.setAuthCache(authCache);
-        }
 
-        private static void validateHttpResponse(final CloseableHttpResponse response) throws HttpException {
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != 200 && statusCode != 201) {
-                String errorDetails = null;
-                if (response.getEntity() != null) {
-                    try {
-                        errorDetails = EntityUtils.toString(response.getEntity());
-                    } catch (IOException e) {
-                        //no-op, we ignore the details at this step, the code and reason may be sufficient
-                    }
-                }
-
-                throw new HttpException(
-                        "API ERROR: CODE: " + statusCode + ", REASON: " + response.getStatusLine().getReasonPhrase()
-                                + "\n" + ofNullable(errorDetails).orElse(""));
-            }
+            //
+            this.i18n = config.i18n;
         }
 
         public TableRestClient table() {
@@ -287,7 +277,6 @@ public class ServiceNowRestClientBuilder {
                 return uriBuilder.build();
             }
 
-
             @Override
             public List<TableRecord> get(final TableDataSet dataSet) {
                 URI uri;
@@ -315,6 +304,24 @@ public class ServiceNowRestClientBuilder {
                 }
 
                 return emptyList();
+            }
+
+            private void validateHttpResponse(final CloseableHttpResponse response) throws HttpException {
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode != 200 && statusCode != 201) {
+                    String errorDetails = null;
+                    if (response.getEntity() != null) {
+                        try {
+                            errorDetails = EntityUtils.toString(response.getEntity());
+                        } catch (IOException e) {
+                            //no-op, we ignore the details at this step, the code and reason may be sufficient
+                        }
+                    }
+
+                    throw new HttpException(
+                            client.i18n.httpError(statusCode, response.getStatusLine().getReasonPhrase(),
+                                    ofNullable(errorDetails).orElse("")));
+                }
             }
         }
     }

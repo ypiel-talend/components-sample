@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
+import org.talend.components.servicenow.messages.Messages;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.service.Service;
 import org.talend.sdk.component.api.service.completion.DynamicValues;
@@ -37,9 +38,9 @@ public class ServiceNowTableService {
     private volatile Map<String, Values> cachedTableFields;
 
     @HealthCheck(value = NAME)
-    public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dataStore) {
+    public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dataStore, final Messages i18n) {
 
-        try (ServiceNowRestClient client = new ServiceNowRestClientBuilder(dataStore).clientV2()) {
+        try (ServiceNowRestClient client = new ServiceNowRestClientBuilder(dataStore, i18n).clientV2()) {
 
             client.table().healthCheck();
 

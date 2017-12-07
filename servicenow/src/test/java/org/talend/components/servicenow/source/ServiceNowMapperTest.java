@@ -124,5 +124,4 @@ public class ServiceNowMapperTest {
             assertNotNull(serviceNowRecords.get(0).getData().get("number"));
         }
     }
-
 }

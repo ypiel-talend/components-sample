@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.LongStream;
 
 import org.talend.components.servicenow.configuration.TableDataSet;
+import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.ServiceNowRestClient;
 import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
 import org.talend.components.servicenow.service.ServiceNowTableService;
@@ -33,16 +34,19 @@ public class ServiceNowTableMapper implements Serializable {
 
     private final ServiceNowTableService service;
 
+    private final Messages i18n;
+
     public ServiceNowTableMapper(@Option("tableDataSet") final TableDataSet tableDataSet,
-            ServiceNowTableService service) {
+            final ServiceNowTableService service, final Messages i18n) {
         this.tableDataSet = tableDataSet;
         this.service = service;
+        this.i18n = i18n;
     }
 
     @Assessor
     public long estimateSize() {
         try (ServiceNowRestClient sNRestClient = new ServiceNowRestClientBuilder(
-                tableDataSet.getDataStore()).clientV2()) {
+                tableDataSet.getDataStore(), i18n).clientV2()) {
             return sNRestClient.table().estimateDataSetBytesSize(tableDataSet);
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -52,7 +56,7 @@ public class ServiceNowTableMapper implements Serializable {
     @Split
     public List<ServiceNowTableMapper> split(@PartitionSize final long bundles) {
         try (ServiceNowRestClient sNRestClient = new ServiceNowRestClientBuilder(
-                tableDataSet.getDataStore()).clientV2()) {
+                tableDataSet.getDataStore(), i18n).clientV2()) {
             long recordSize =
                     sNRestClient.table().estimateRecordBytesSize(tableDataSet.getTableAPIConfig().getTableName());
             long nbBundle = Math.max(1, estimateSize() / bundles);
@@ -68,7 +72,7 @@ public class ServiceNowTableMapper implements Serializable {
                 final TableDataSet dataSetChunk = new TableDataSet(tableDataSet);
                 dataSetChunk.setOffset(from);
                 dataSetChunk.setMaxRecords(to);
-                return new ServiceNowTableMapper(dataSetChunk, service);
+                return new ServiceNowTableMapper(dataSetChunk, service, i18n);
             }).collect(toList());
 
         } catch (IOException e) {
@@ -78,6 +82,6 @@ public class ServiceNowTableMapper implements Serializable {
 
     @Emitter
     public ServiceNowTableSource createWorker() {
-        return new ServiceNowTableSource(tableDataSet);
+        return new ServiceNowTableSource(tableDataSet, i18n);
     }
 }

@@ -13,7 +13,7 @@ import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 @GridLayout({
         @GridLayout.Row({ "dataStore" }),
         @GridLayout.Row({ "tableAPIConfig" }),
-        @GridLayout.Row({ "actions" })
+        @GridLayout.Row({ "actionOnTable" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
         @GridLayout.Row({ "noResponseBody" })
@@ -27,7 +27,7 @@ public class OutputConfig implements Serializable {
     private TableAPIConfig tableAPIConfig;
 
     @Option
-    private ActionOnTable actions;
+    private ActionOnTable actionOnTable = ActionOnTable.Insert;
 
     @Option
     private boolean noResponseBody = true;

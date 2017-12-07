@@ -8,6 +8,7 @@ import javax.annotation.PreDestroy;
 
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.ServiceNowRestClient;
 import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
 import org.talend.sdk.component.api.base.BufferizedProducerSupport;
@@ -20,18 +21,21 @@ public class ServiceNowTableSource implements Serializable {
 
     private final TableDataSet tableDataSet;
 
+    private final Messages i18n;
+
     private ServiceNowRestClient restClient;
 
     private BufferizedProducerSupport<TableRecord> bufferedReader;
 
-    public ServiceNowTableSource(@Option("tableDataSet") final TableDataSet tableDataSet) {
+    public ServiceNowTableSource(@Option("tableDataSet") final TableDataSet tableDataSet,
+            final Messages i18n) {
         this.tableDataSet = tableDataSet;
-
+        this.i18n = i18n;
     }
 
     @PostConstruct
     public void init() {
-        restClient = new ServiceNowRestClientBuilder(tableDataSet.getDataStore()).clientV2();
+        restClient = new ServiceNowRestClientBuilder(tableDataSet.getDataStore(), i18n).clientV2();
 
         bufferedReader = new BufferizedProducerSupport<>(() -> {
             if (tableDataSet.getMaxRecords() != READ_ALL_RECORD_FROM_SERVER && tableDataSet.getOffset() >= tableDataSet

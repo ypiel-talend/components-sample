@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.ServiceNowRestClient;
 import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
 import org.talend.sdk.component.api.component.Icon;
@@ -24,20 +25,32 @@ public class ServiceNowOutput implements Serializable {
 
     private final OutputConfig outputConfig;
 
+    private final Messages i18n;
+
     private ServiceNowRestClient client;
 
-    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig) {
+    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig,
+            final Messages i18n) {
         this.outputConfig = outputConfig;
+        this.i18n = i18n;
     }
 
     @PostConstruct
     public void init() {
-        client = new ServiceNowRestClientBuilder(outputConfig.getDataStore()).clientV2();
+        client = new ServiceNowRestClientBuilder(outputConfig.getDataStore(), i18n).clientV2();
     }
 
     @ElementListener
     public void onNext(@Input final TableRecord record) {
-        client.table().createRecord(outputConfig, record);
+
+        switch (outputConfig.getActionOnTable()) {
+        case Insert:
+            client.table().createRecord(outputConfig, record);
+            break;
+        default:
+            throw new UnsupportedOperationException(outputConfig.getActionOnTable() + " is not supported yet");
+        }
+
     }
 
     @PreDestroy
