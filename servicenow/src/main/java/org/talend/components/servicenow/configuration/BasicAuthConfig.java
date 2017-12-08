@@ -26,13 +26,16 @@ public class BasicAuthConfig implements Serializable {
     public static final String NAME = "basicAuth";
 
     @Option
+    @Documentation("Service Now API instance URL")
     private String url;
 
     @Option
+    @Documentation("Service Now Instance username")
     private String username;
 
     @Option
     @Credential
+    @Documentation("Service Now Instance password")
     private String password;
 
 }

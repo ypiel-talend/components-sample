@@ -12,15 +12,15 @@ import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
 import org.talend.sdk.component.api.component.Icon;
 import org.talend.sdk.component.api.component.Version;
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.meta.Documentation;
 import org.talend.sdk.component.api.processor.ElementListener;
 import org.talend.sdk.component.api.processor.Input;
 import org.talend.sdk.component.api.processor.Processor;
 
-// default version is 1, if some configuration changes happen between 2 versions you can add a migrationHandler
-@Version(2)
+@Version
 @Icon(value = Icon.IconType.CUSTOM, custom = "ServiceNowOutput")
-// you can use a custom one using @Icon(value=CUSTOM, custom="filename") and adding icons/filename_icon32.png in resources
 @Processor(name = "ServiceNowOutput")
+@Documentation("ServiceNowOutput is a configurable connector able to write records to Service Now Table")
 public class ServiceNowOutput implements Serializable {
 
     private final OutputConfig outputConfig;

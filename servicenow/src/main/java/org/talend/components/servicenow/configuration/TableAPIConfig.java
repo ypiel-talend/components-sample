@@ -17,6 +17,7 @@ import org.talend.sdk.component.api.meta.Documentation;
         @GridLayout.Row({ "fields" }),
         @GridLayout.Row({ "excludeReferenceLink" })
 })
+@Documentation("Table Configuration")
 public class TableAPIConfig {
 
     public static final String Proposable_GetTableFields = "GetTableFields";

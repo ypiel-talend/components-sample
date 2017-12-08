@@ -95,6 +95,7 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.talend.sdk.component</groupId>
         <artifactId>talend-component-maven-plugin</artifactId>
@@ -113,6 +114,12 @@
             <goals>
               <goal>asciidoc</goal>
             </goals>
+            <configuration>
+              <formats>
+                <html>${project.build.directory}/doc.html</html>
+                <pdf>${project.build.directory}/doc.pdf</pdf>
+              </formats>
+            </configuration>
           </execution>
         </executions>
         <configuration>

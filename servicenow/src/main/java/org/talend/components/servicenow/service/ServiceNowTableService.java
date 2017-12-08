@@ -39,15 +39,11 @@ public class ServiceNowTableService {
 
     @HealthCheck(value = NAME)
     public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dataStore, final Messages i18n) {
-
         try (ServiceNowRestClient client = new ServiceNowRestClientBuilder(dataStore, i18n).clientV2()) {
-
             client.table().healthCheck();
-
         } catch (Exception e) {
             return new HealthCheckStatus(HealthCheckStatus.Status.KO, e.getLocalizedMessage());
         }
-
         return new HealthCheckStatus(HealthCheckStatus.Status.OK, "the data store is valid");
     }
 

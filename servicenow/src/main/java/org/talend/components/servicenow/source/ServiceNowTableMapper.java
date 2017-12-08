@@ -18,16 +18,15 @@ import org.talend.sdk.component.api.input.Emitter;
 import org.talend.sdk.component.api.input.PartitionMapper;
 import org.talend.sdk.component.api.input.PartitionSize;
 import org.talend.sdk.component.api.input.Split;
+import org.talend.sdk.component.api.meta.Documentation;
 
 import static java.util.stream.Collectors.toList;
 import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 
-//
-// this class role is to enable the work to be distributed in environments supporting it.
-// default version is 1, if some tableDataSet changes happen between 2 versions you can add a migrationHandler
-@Version(1)
+@Version
 @Icon(value = Icon.IconType.CUSTOM, custom = "ServiceNowInput")
 @PartitionMapper(name = "ServiceNowInput")
+@Documentation("ServiceNowInput is a configurable connector that is responsible of reading from Service Now Table using a query to filter the records.")
 public class ServiceNowTableMapper implements Serializable {
 
     private final TableDataSet tableDataSet;
