@@ -15,6 +15,8 @@
  */
 package org.talend.components.widget.source;
 
+import java.io.Serializable;
+
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.type.DataSet;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
@@ -27,7 +29,7 @@ import lombok.Data;
     @GridLayout.Row({ "dataSetName" }),
 })
 @Data
-public class DatasetConfiguration {
+public class DatasetConfiguration implements Serializable {
 
     @Option
     private ConnectionConfiguration connection;

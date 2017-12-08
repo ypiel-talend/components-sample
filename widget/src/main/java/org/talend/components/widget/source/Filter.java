@@ -15,12 +15,14 @@
  */
 package org.talend.components.widget.source;
 
+import java.io.Serializable;
+
 import org.talend.sdk.component.api.configuration.Option;
 
 /**
  * Represents a row in a table property
  */
-public class Filter {
+public class Filter implements Serializable {
     
     @Option
     private String prefix;
