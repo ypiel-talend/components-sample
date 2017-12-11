@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.condition.ActiveIf;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout.FormType;
 import org.talend.sdk.component.api.configuration.ui.widget.Code;
@@ -49,10 +50,12 @@ public class WidgetInputMapperConfiguration implements Serializable {
     private boolean showCode = true;
     
     @Option
+    @ActiveIf(target = "showQuery", value = "true")
     @TextArea
     private String query = "SELECT * FROM table";
     
     @Option
+    @ActiveIf(target = "showTable", value = "true")
     private List<Filter> table;
     
     @Option
