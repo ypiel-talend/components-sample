@@ -16,21 +16,20 @@
 
 package org.talend.components.servicenow.service;
 
-import java.util.Collection;
-import java.util.Collections;
+import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
+import static org.talend.components.servicenow.configuration.TableAPIConfig.Proposable_GetTableFields;
+
 import java.util.Map;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.messages.Messages;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.service.Service;
+import org.talend.sdk.component.api.service.cache.Cached;
 import org.talend.sdk.component.api.service.completion.DynamicValues;
 import org.talend.sdk.component.api.service.completion.Values;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheck;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheckStatus;
-
-import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
-import static org.talend.components.servicenow.configuration.TableAPIConfig.Proposable_GetTableFields;
 
 @Service
 public class ServiceNowTableService {
@@ -47,16 +46,10 @@ public class ServiceNowTableService {
         return new HealthCheckStatus(HealthCheckStatus.Status.OK, "the data store is valid");
     }
 
+    @Cached
     @DynamicValues(Proposable_GetTableFields)
     public Values getTableFields() {
-        if (cachedTableFields == null) {
-            synchronized (this) {
-                if (cachedTableFields == null) {
-                    final Collection<Values.Item> fields = Collections.emptyList();
-
-                }
-            }
-        }
+        //todo when dynamic values can have params
         return null;
     }
 

@@ -1,6 +1,6 @@
 package org.talend.components.servicenow.configuration;
 
-import lombok.Data;
+import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
 import org.talend.sdk.component.api.meta.Documentation;
 
-import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
+import lombok.Data;
 
 @Data
 @Checkable(NAME)

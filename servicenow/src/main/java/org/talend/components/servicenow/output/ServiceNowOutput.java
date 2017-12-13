@@ -2,6 +2,7 @@ package org.talend.components.servicenow.output;
 
 import java.io.IOException;
 import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 

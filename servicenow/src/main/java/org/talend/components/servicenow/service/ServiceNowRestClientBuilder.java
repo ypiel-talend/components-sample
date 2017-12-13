@@ -1,6 +1,8 @@
 package org.talend.components.servicenow.service;
 
-import lombok.extern.slf4j.Slf4j;
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,6 +10,9 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -19,12 +24,19 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultClientConnectionReuseStrategy;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.TableDataSet;
@@ -32,11 +44,7 @@ import org.talend.components.servicenow.configuration.TableRecord;
 import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.output.OutputConfig;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import static java.util.Collections.emptyList;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
+import lombok.extern.slf4j.Slf4j;
 
 public class ServiceNowRestClientBuilder {
 
@@ -69,14 +77,25 @@ public class ServiceNowRestClientBuilder {
         private Messages i18n;
 
         private ClientV2(ServiceNowRestClientBuilder config) {
+            this.i18n = config.i18n;
             host = HttpHost.create(config.dataStore.getUrl());
             final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
             credentialsProvider.setCredentials(new AuthScope(host),
                     new UsernamePasswordCredentials(config.dataStore.getUsername(), config.dataStore.getPassword()));
 
+            final PoolingHttpClientConnectionManager cm =
+                    new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory>create()
+                            .register("http", new PlainConnectionSocketFactory())
+                            .register("https", new SSLConnectionSocketFactory(SSLContexts.createSystemDefault()))
+                            .build());
+            cm.setMaxTotal(100);
+            cm.setDefaultMaxPerRoute(100);
+
             httpClient = HttpClients.custom()
-                    .setDefaultCredentialsProvider(credentialsProvider)
                     .useSystemProperties()
+                    .setConnectionReuseStrategy(new DefaultClientConnectionReuseStrategy())
+                    .setDefaultCredentialsProvider(credentialsProvider)
+                    .setConnectionManager(cm)
                     .build();
 
             AuthCache authCache = new BasicAuthCache();
@@ -84,9 +103,6 @@ public class ServiceNowRestClientBuilder {
             context = HttpClientContext.create();
             context.setCredentialsProvider(credentialsProvider);
             context.setAuthCache(authCache);
-
-            //
-            this.i18n = config.i18n;
         }
 
         public TableRestClient table() {
@@ -94,7 +110,7 @@ public class ServiceNowRestClientBuilder {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() {
             if (httpClient != null) {
                 try {
                     httpClient.close();

@@ -1,5 +1,8 @@
 package org.talend.components.servicenow.source;
 
+import static java.util.stream.Collectors.toList;
+import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -19,9 +22,6 @@ import org.talend.sdk.component.api.input.PartitionMapper;
 import org.talend.sdk.component.api.input.PartitionSize;
 import org.talend.sdk.component.api.input.Split;
 import org.talend.sdk.component.api.meta.Documentation;
-
-import static java.util.stream.Collectors.toList;
-import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 
 @Version
 @Icon(value = Icon.IconType.CUSTOM, custom = "ServiceNowInput")

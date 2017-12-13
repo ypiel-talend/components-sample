@@ -1,7 +1,5 @@
 package org.talend.components.servicenow.output;
 
-import lombok.Data;
-
 import java.io.Serializable;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
@@ -9,6 +7,8 @@ import org.talend.components.servicenow.configuration.TableAPIConfig;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
+
+import lombok.Data;
 
 @Data
 @GridLayout({

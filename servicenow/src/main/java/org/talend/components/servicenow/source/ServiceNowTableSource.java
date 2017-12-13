@@ -1,8 +1,11 @@
 package org.talend.components.servicenow.source;
 
+import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -14,8 +17,6 @@ import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
 import org.talend.sdk.component.api.base.BufferizedProducerSupport;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.input.Producer;
-
-import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 
 public class ServiceNowTableSource implements Serializable {
 

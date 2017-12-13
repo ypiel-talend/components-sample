@@ -1,12 +1,12 @@
 package org.talend.components.servicenow.configuration;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Map;
 
 import org.talend.sdk.component.api.processor.data.ObjectMap;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Data
 @AllArgsConstructor
