@@ -30,4 +30,13 @@ public class Filter implements Serializable {
     @Option
     private boolean include;
     
+    @Option
+    private Operation operation;
+    
+    private static enum Operation {
+        GREATER_THAN,
+        LESS_THAN,
+        EQUALS
+    }
+    
 }
