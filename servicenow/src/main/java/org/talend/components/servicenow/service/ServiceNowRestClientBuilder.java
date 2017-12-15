@@ -2,6 +2,7 @@ package org.talend.components.servicenow.service;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
+import org.talend.components.servicenow.configuration.OrderBuilder;
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.configuration.TableRecord;
 import org.talend.components.servicenow.messages.Messages;
@@ -161,7 +163,7 @@ public class ServiceNowRestClientBuilder {
                     uri = new URIBuilder().setScheme(client.host.getSchemeName())
                             .setHost(client.host.getHostName())
                             .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/" + dataSet.getTableAPIConfig()
-                                    .getTableName())
+                                    .getTableName().name())
                             .setParameter(sysparm_exclude_reference_link, "true")
                             .setParameter(sysparm_limit, String.valueOf(1))
                             .build();
@@ -217,7 +219,7 @@ public class ServiceNowRestClientBuilder {
                     uri = new URIBuilder().setScheme(client.host.getSchemeName())
                             .setHost(client.host.getHostName())
                             .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/"
-                                    + outputConfig.getTableAPIConfig().getTableName())
+                                    + outputConfig.getTableAPIConfig().getTableName().name())
                             .setParameter(sysparm_exclude_reference_link,
                                     String.valueOf(outputConfig.getTableAPIConfig().isExcludeReferenceLink()))
                             .setParameter(sysparm_limit, String.valueOf(1))
@@ -268,9 +270,8 @@ public class ServiceNowRestClientBuilder {
                 final URIBuilder uriBuilder = new URIBuilder().setScheme(client.host.getSchemeName())
                         .setHost(client.host.getHostName())
                         .setPath(API_BASE + "/" + API_VERSION + "/" + API_TABLE + "/" + dataSet.getTableAPIConfig()
-                                .getTableName())
+                                .getTableName().name())
                         .setParameter(sysparm_suppress_pagination_header, "true")
-                        //.setParameter(glide_invalid_query_returns_no_rows, String.valueOf(dataSet.isNoRowsWithInvalidQuery()))
                         .setParameter(sysparm_offset, String.valueOf(dataSet.getOffset()))
                         .setParameter(sysparm_limit, String.valueOf(
                                 dataSet.getOffset() + dataSet.getPageSize() <= dataSet.getMaxRecords() ?
@@ -280,8 +281,8 @@ public class ServiceNowRestClientBuilder {
                     uriBuilder.setParameter(sysparm_exclude_reference_link, "true");
                 }
 
-                if (dataSet.getQuery() != null && !dataSet.getQuery().isEmpty()) {
-                    uriBuilder.setParameter(sysparm_query, dataSet.getQuery());
+                if (dataSet.getQueryBuilder() != null && !dataSet.getQueryBuilder().isEmpty()) {
+                    uriBuilder.setParameter(sysparm_query, buildQuery(dataSet));
                 }
 
                 if (dataSet.getTableAPIConfig().getFields() != null && !dataSet.getTableAPIConfig()
@@ -291,6 +292,23 @@ public class ServiceNowRestClientBuilder {
                 }
 
                 return uriBuilder.build();
+            }
+
+            private String buildQuery(final TableDataSet dataSet) {
+                String query = dataSet.getQueryBuilder().stream().map(f -> f.getField().name()
+                        + f.getOperation().operation()
+                        + f.getValue()).collect(joining("^"));
+
+                if (dataSet.isOrdered() && dataSet.getOrder() != null && !dataSet.getOrder().isEmpty()) {
+                    String order = dataSet.getOrder().stream()
+                            .map(o -> "ORDERBY" + (OrderBuilder.Order.ASC.equals(o.getOrder()) ?
+                                    "" :
+                                    OrderBuilder.Order.DESC) + o.getField().name())
+                            .collect(joining("^"));
+
+                    query += "^" + order;
+                }
+                return query;
             }
 
             @Override

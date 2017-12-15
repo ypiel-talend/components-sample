@@ -1,5 +1,6 @@
 package org.talend.components.servicenow.configuration;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
@@ -18,13 +19,13 @@ import lombok.Data;
         @GridLayout.Row({ "excludeReferenceLink" })
 })
 @Documentation("Table Configuration")
-public class TableAPIConfig {
+public class TableAPIConfig implements Serializable {
 
     public static final String Proposable_GetTableFields = "GetTableFields";
 
     @Option
     @Documentation("The name of the table to be read")
-    private String tableName;
+    private Tables tableName;
 
     @Option
     @Documentation("List of field names to return in the response.")
@@ -34,5 +35,13 @@ public class TableAPIConfig {
     @Option
     @Documentation("Additional information provided for reference fields, such as the URI to the reference resource, is suppressed.")
     private boolean excludeReferenceLink = true;
+
+    public enum Tables {
+        incident,
+        problem,
+        change_request,
+        sc_request,
+        sc_cat_item,
+    }
 
 }

@@ -44,8 +44,8 @@ public class ServiceNowTableMapper implements Serializable {
 
     @Assessor
     public long estimateSize() {
-        try (ServiceNowRestClient sNRestClient = new ServiceNowRestClientBuilder(
-                tableDataSet.getDataStore(), i18n).clientV2()) {
+        try (ServiceNowRestClient sNRestClient = new ServiceNowRestClientBuilder(tableDataSet.getDataStore(),
+                i18n).clientV2()) {
             return sNRestClient.table().estimateDataSetBytesSize(tableDataSet);
         } catch (IOException e) {
             throw new IllegalStateException(e);
@@ -57,7 +57,8 @@ public class ServiceNowTableMapper implements Serializable {
         try (ServiceNowRestClient sNRestClient = new ServiceNowRestClientBuilder(
                 tableDataSet.getDataStore(), i18n).clientV2()) {
             long recordSize =
-                    sNRestClient.table().estimateRecordBytesSize(tableDataSet.getTableAPIConfig().getTableName());
+                    sNRestClient.table()
+                            .estimateRecordBytesSize(tableDataSet.getTableAPIConfig().getTableName().name());
             long nbBundle = Math.max(1, estimateSize() / bundles);
             final long bundleCount = bundles / recordSize;
             final int totalData = sNRestClient.table().count(tableDataSet);//total data in the server

@@ -5,8 +5,10 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.condition.ActiveIf;
 import org.talend.sdk.component.api.configuration.type.DataSet;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
@@ -22,7 +24,7 @@ import lombok.NoArgsConstructor;
 @GridLayout({
         @GridLayout.Row({ "dataStore" }),
         @GridLayout.Row({ "tableAPIConfig" }),
-        @GridLayout.Row({ "query" })
+        @GridLayout.Row({ "queryBuilder" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
         @GridLayout.Row({ "limit" }),
@@ -43,8 +45,17 @@ public class TableDataSet implements Serializable {
     private TableAPIConfig tableAPIConfig;
 
     @Option
-    @Documentation("Encoded query used to filter the result set. For more details see `sysparm_query` https://developer.servicenow.com/app.do#!/rest_api_doc?v=jakarta&id=r_TableAPI-GET ")
-    private String query;
+    @Documentation("Query builder")
+    private List<QueryBuilder> queryBuilder;
+
+    @Option
+    @Documentation("Order of the data set.")
+    private boolean ordered = false;
+
+    @Option
+    @ActiveIf(target = "ordered", value = { "true" })
+    @Documentation("the data set fields order")
+    private List<OrderBuilder> order;
 
     /**
      * data source start
@@ -62,8 +73,9 @@ public class TableDataSet implements Serializable {
     public TableDataSet(TableDataSet mDataSet) {
         this.dataStore = mDataSet.getDataStore();
         this.tableAPIConfig = mDataSet.getTableAPIConfig();
-        this.query = mDataSet.getQuery();
-
+        this.ordered = mDataSet.isOrdered();
+        this.order = mDataSet.getOrder();
+        this.queryBuilder = mDataSet.getQueryBuilder();
         this.offset = mDataSet.getOffset();
         this.maxRecords = mDataSet.getMaxRecords();
         this.limit = mDataSet.getLimit();

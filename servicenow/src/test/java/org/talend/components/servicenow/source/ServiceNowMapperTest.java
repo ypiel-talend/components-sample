@@ -1,19 +1,5 @@
 package org.talend.components.servicenow.source;
 
-import io.specto.hoverfly.junit.core.Hoverfly;
-
-import java.io.IOException;
-import java.util.List;
-
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.talend.components.servicenow.configuration.TableAPIConfig;
-import org.talend.components.servicenow.configuration.TableDataSet;
-import org.talend.components.servicenow.configuration.BasicAuthConfig;
-import org.talend.components.servicenow.configuration.TableRecord;
-import org.talend.sdk.component.junit.SimpleComponentRule;
-import org.talend.sdk.component.runtime.input.Mapper;
-
 import static io.specto.hoverfly.junit.core.HoverflyConfig.configs;
 import static io.specto.hoverfly.junit.core.HoverflyMode.SIMULATE;
 import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
@@ -22,6 +8,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 import static org.talend.sdk.component.junit.SimpleFactory.configurationByExample;
+
+import io.specto.hoverfly.junit.core.Hoverfly;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.ClassRule;
+import org.junit.Test;
+import org.talend.components.servicenow.configuration.BasicAuthConfig;
+import org.talend.components.servicenow.configuration.OrderBuilder;
+import org.talend.components.servicenow.configuration.QueryBuilder;
+import org.talend.components.servicenow.configuration.TableAPIConfig;
+import org.talend.components.servicenow.configuration.TableDataSet;
+import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.sdk.component.junit.SimpleComponentRule;
+import org.talend.sdk.component.runtime.input.Mapper;
 
 public class ServiceNowMapperTest {
 
@@ -46,7 +49,7 @@ public class ServiceNowMapperTest {
             final TableDataSet configuration = new TableDataSet();
             configuration.setDataStore(dataStore);
             final TableAPIConfig apiConfig = new TableAPIConfig();
-            apiConfig.setTableName("incident");
+            apiConfig.setTableName(TableAPIConfig.Tables.incident);
             configuration.setTableAPIConfig(apiConfig);
             configuration.setMaxRecords(1000);
 
@@ -76,9 +79,16 @@ public class ServiceNowMapperTest {
             final TableDataSet configuration = new TableDataSet();
             configuration.setDataStore(dataStore);
             final TableAPIConfig apiConfig = new TableAPIConfig();
-            apiConfig.setTableName("incident");
+            apiConfig.setTableName(TableAPIConfig.Tables.incident);
             configuration.setTableAPIConfig(apiConfig);
-            configuration.setQuery("active=true^ORDERBYnumber^ORDERBYDESCcategory");
+            configuration.setQueryBuilder(new ArrayList<QueryBuilder>() {{
+                add(new QueryBuilder(QueryBuilder.Fields.active, QueryBuilder.Operation.Equals, "true"));
+            }});
+            configuration.setOrdered(true);
+            configuration.setOrder(new ArrayList<OrderBuilder>() {{
+                add(new OrderBuilder(QueryBuilder.Fields.number, OrderBuilder.Order.ASC));
+                add(new OrderBuilder(QueryBuilder.Fields.category, OrderBuilder.Order.DESC));
+            }});
             configuration.setMaxRecords(100);
 
             // We create the component mapper instance using the configuration filled above
@@ -106,11 +116,19 @@ public class ServiceNowMapperTest {
             dataStore.setPassword("fakePassword");
             dataStore.setUrl("https://dev44668.service-now.com");
             final TableAPIConfig apiConfig = new TableAPIConfig();
-            apiConfig.setTableName("incident");
+            apiConfig.setTableName(TableAPIConfig.Tables.incident);
             final TableDataSet configuration = new TableDataSet();
             configuration.setDataStore(dataStore);
             configuration.setTableAPIConfig(apiConfig);
-            configuration.setQuery("active=true^priority=1^ORDERBYnumber^ORDERBYDESCcategory");
+            configuration.setQueryBuilder(new ArrayList<QueryBuilder>() {{
+                add(new QueryBuilder(QueryBuilder.Fields.active, QueryBuilder.Operation.Equals, "true"));
+                add(new QueryBuilder(QueryBuilder.Fields.priority, QueryBuilder.Operation.Equals, "1"));
+            }});
+            configuration.setOrdered(true);
+            configuration.setOrder(new ArrayList<OrderBuilder>() {{
+                add(new OrderBuilder(QueryBuilder.Fields.number, OrderBuilder.Order.ASC));
+                add(new OrderBuilder(QueryBuilder.Fields.category, OrderBuilder.Order.DESC));
+            }});
             configuration.setMaxRecords(READ_ALL_RECORD_FROM_SERVER);
 
             // We create the component mapper instance using the configuration filled above
