@@ -1,15 +1,10 @@
 package org.talend.components.servicenow.output;
 
-import java.io.IOException;
 import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.talend.components.servicenow.configuration.TableRecord;
 import org.talend.components.servicenow.messages.Messages;
-import org.talend.components.servicenow.service.ServiceNowRestClient;
-import org.talend.components.servicenow.service.ServiceNowRestClientBuilder;
+import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.component.Icon;
 import org.talend.sdk.component.api.component.Version;
 import org.talend.sdk.component.api.configuration.Option;
@@ -28,17 +23,13 @@ public class ServiceNowOutput implements Serializable {
 
     private final Messages i18n;
 
-    private ServiceNowRestClient client;
+    private TableApiClient client;
 
     public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig,
-            final Messages i18n) {
+            final Messages i18n, TableApiClient client) {
         this.outputConfig = outputConfig;
         this.i18n = i18n;
-    }
-
-    @PostConstruct
-    public void init() {
-        client = new ServiceNowRestClientBuilder(outputConfig.getDataStore(), i18n).clientV2();
+        this.client = client;
     }
 
     @ElementListener
@@ -46,22 +37,13 @@ public class ServiceNowOutput implements Serializable {
 
         switch (outputConfig.getActionOnTable()) {
         case Insert:
-            client.table().createRecord(outputConfig, record);
+            client.create(outputConfig.getTableAPIConfig().getTableName().name(),
+                    outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(), true,
+                    record);
             break;
         default:
             throw new UnsupportedOperationException(outputConfig.getActionOnTable() + " is not supported yet");
         }
 
-    }
-
-    @PreDestroy
-    public void release() {
-        if (client != null) {
-            try {
-                client.close();
-            } catch (IOException e) {
-                //no-op
-            }
-        }
     }
 }

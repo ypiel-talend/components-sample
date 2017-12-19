@@ -3,7 +3,7 @@ package org.talend.components.servicenow.output;
 import java.io.Serializable;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
-import org.talend.components.servicenow.configuration.TableAPIConfig;
+import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 @GridLayout({
         @GridLayout.Row({ "dataStore" }),
-        @GridLayout.Row({ "tableAPIConfig" }),
+        @GridLayout.Row({ "commonConfig" }),
         @GridLayout.Row({ "actionOnTable" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
@@ -25,7 +25,7 @@ public class OutputConfig implements Serializable {
     private BasicAuthConfig dataStore;
 
     @Option
-    private TableAPIConfig tableAPIConfig;
+    private CommonConfig tableAPIConfig;
 
     @Option
     @Documentation("Action to execute on a table, Insert, Update, Delete")

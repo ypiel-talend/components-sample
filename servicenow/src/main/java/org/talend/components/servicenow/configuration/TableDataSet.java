@@ -1,7 +1,5 @@
 package org.talend.components.servicenow.configuration;
 
-import static java.util.Collections.emptyList;
-import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
 
 import java.io.Serializable;
@@ -23,7 +21,7 @@ import lombok.NoArgsConstructor;
 @DataSet("table")
 @GridLayout({
         @GridLayout.Row({ "dataStore" }),
-        @GridLayout.Row({ "tableAPIConfig" }),
+        @GridLayout.Row({ "commonConfig" }),
         @GridLayout.Row({ "queryBuilder" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
@@ -42,7 +40,7 @@ public class TableDataSet implements Serializable {
     private BasicAuthConfig dataStore;
 
     @Option
-    private TableAPIConfig tableAPIConfig;
+    private CommonConfig commonConfig;
 
     @Option
     @Documentation("Query builder")
@@ -72,7 +70,7 @@ public class TableDataSet implements Serializable {
 
     public TableDataSet(TableDataSet mDataSet) {
         this.dataStore = mDataSet.getDataStore();
-        this.tableAPIConfig = mDataSet.getTableAPIConfig();
+        this.commonConfig = mDataSet.getCommonConfig();
         this.ordered = mDataSet.isOrdered();
         this.order = mDataSet.getOrder();
         this.queryBuilder = mDataSet.getQueryBuilder();
@@ -81,15 +79,30 @@ public class TableDataSet implements Serializable {
         this.limit = mDataSet.getLimit();
     }
 
+    public String buildQuery() {
+        String query = "";
+        if (getQueryBuilder() != null && !getQueryBuilder().isEmpty()) {
+            query = getQueryBuilder().stream().map(f -> f.getField().name()
+                    + f.getOperation().operation()
+                    + f.getValue()).collect(joining("^"));
+        }
+
+        if (isOrdered() && getOrder() != null && !getOrder().isEmpty()) {
+            String order = getOrder().stream()
+                    .map(o -> "ORDERBY" + o.getField().name())
+                    .collect(joining("^"));
+
+            query += "^" + order;
+        }
+
+        return query.isEmpty() ? null : query;
+    }
+
     /**
      * @return the total record that can be read from this data set
      */
     public int getPageSize() {
         return maxRecords == READ_ALL_RECORD_FROM_SERVER ? limit : Math.min(limit, maxRecords - offset);
-    }
-
-    public String getFieldsCommaSeparated() {
-        return ofNullable(tableAPIConfig.getFields()).orElse(emptyList()).stream().collect(joining(","));
     }
 
 }
