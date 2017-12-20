@@ -15,6 +15,8 @@
  */
 package org.talend.components.widget.source;
 
+import static org.talend.components.widget.source.Filter.Operation.GREATER_THAN;
+
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
@@ -31,9 +33,9 @@ public class Filter implements Serializable {
     private boolean include;
     
     @Option
-    private Operation operation;
+    private Operation operation = GREATER_THAN;
     
-    private static enum Operation {
+    static enum Operation {
         GREATER_THAN,
         LESS_THAN,
         EQUALS
