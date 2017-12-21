@@ -14,7 +14,7 @@ import lombok.Data;
 
 @GridLayout(value = {
     @GridLayout.Row({ "dataset" }),
-    @GridLayout.Row({ "action" }),
+    @GridLayout.Row({ "action", "tableComplex" }),
     @GridLayout.Row({ "showQuery", "showTable" }),
     @GridLayout.Row({ "query" }),
     @GridLayout.Row({ "table" })},
@@ -36,6 +36,9 @@ public class WidgetInputMapperConfiguration implements Serializable {
      */
     @Option
     private Action action = Action.CREATE;
+    
+    @Option
+    private TableComplexConfiguration tableComplex;
     
     /**
      * This is checkbox
