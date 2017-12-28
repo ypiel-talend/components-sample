@@ -1,14 +1,21 @@
 package org.talend.components.servicenow.output;
 
+import static io.specto.hoverfly.junit.core.HoverflyMode.SIMULATE;
+import static java.util.Collections.singletonList;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
+import io.specto.hoverfly.junit.core.HoverflyConfig;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.ClassRule;
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
+import org.talend.components.servicenow.ApiSimulationRule;
+import org.talend.components.servicenow.configuration.BasicAuthConfig;
+import org.talend.components.servicenow.configuration.CommonConfig;
+import org.talend.sdk.component.api.processor.data.FlatObjectMap;
 import org.talend.sdk.component.junit.JoinInputFactory;
 import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.runtime.output.Processor;
@@ -16,34 +23,28 @@ import org.talend.sdk.component.runtime.output.Processor;
 public class ServiceNowOutputTest {
 
     @ClassRule
-    public static final SimpleComponentRule COMPONENT_FACTORY = new SimpleComponentRule("org.talend.components.servicenow");
+    public static final SimpleComponentRule COMPONENT_FACTORY =
+            new SimpleComponentRule("org.talend.components.servicenow");
+
+    @Rule
+    public ApiSimulationRule apiSimulationRule = new ApiSimulationRule(SIMULATE, HoverflyConfig.configs());
 
     @Test
-    @Ignore("You need to complete this test")
-    public void map() throws IOException {
-
-        // Output configuration
-        // Setup your component configuration for the test here
-        final OutputConfig configuration =  new OutputConfig()
-                                                                                /* .setAction()
-                                                                                   .setTable() */;
-
-        // We create the component processor instance using the configuration filled above
+    public void insertRecord() throws IOException {
+        final OutputConfig configuration = new OutputConfig();
+        configuration.setDataStore(new BasicAuthConfig("https://dev44668.service-now.com/", "user", "password"));
+        configuration.setActionOnTable(OutputConfig.ActionOnTable.Insert);
+        configuration.setNoResponseBody(false);
+        final CommonConfig apiConfig = new CommonConfig();
+        apiConfig.setTableName(CommonConfig.Tables.incident);
+        configuration.setCommonConfig(apiConfig);
         final Processor processor = COMPONENT_FACTORY.createProcessor(ServiceNowOutput.class, configuration);
-
-        // The join input factory construct inputs test data for every input branch you have defined for this component
-        // Make sure to fil in some test data for the branches you want to test
-        // You can also remove the branches that you don't need from the factory below
-        final JoinInputFactory joinInputFactory =  new JoinInputFactory()
-                                                            .withInput("__default__", asList(/* TODO - list of your input data for this branch. Instances of ServiceNowDefaultInput.class */));
-
-
-        // Run the flow and get the outputs
+        Map<String, Object> record = new HashMap<String, Object>() {{
+            put("number", "ABCDEF123");
+        }};
+        final JoinInputFactory joinInputFactory = new JoinInputFactory()
+                .withInput("__default__", singletonList(new FlatObjectMap(record)));
         final SimpleComponentRule.Outputs outputs = COMPONENT_FACTORY.collect(processor, joinInputFactory);
-
-        // TODO - Test Asserts
-        assertEquals(0, outputs.size()); // test of the output branches count of the component
-
     }
 
 }

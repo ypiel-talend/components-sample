@@ -1,8 +1,13 @@
 package org.talend.components.servicenow.output;
 
+import static java.util.stream.Collectors.joining;
+import static org.talend.components.servicenow.service.http.TableApiClient.API_BASE;
+import static org.talend.components.servicenow.service.http.TableApiClient.API_VERSION;
+
 import java.io.Serializable;
 
-import org.talend.components.servicenow.configuration.TableRecord;
+import javax.annotation.PostConstruct;
+
 import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.component.Icon;
@@ -12,7 +17,11 @@ import org.talend.sdk.component.api.meta.Documentation;
 import org.talend.sdk.component.api.processor.ElementListener;
 import org.talend.sdk.component.api.processor.Input;
 import org.talend.sdk.component.api.processor.Processor;
+import org.talend.sdk.component.api.processor.data.ObjectMap;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Version
 @Icon(value = Icon.IconType.CUSTOM, custom = "ServiceNowOutput")
 @Processor(name = "ServiceNowOutput")
@@ -32,14 +41,27 @@ public class ServiceNowOutput implements Serializable {
         this.client = client;
     }
 
+    @PostConstruct
+    public void init() {
+        client.base(outputConfig.getDataStore().getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
+    }
+
     @ElementListener
-    public void onNext(@Input final TableRecord record) {
+    public void onNext(@Input final ObjectMap record) {
 
         switch (outputConfig.getActionOnTable()) {
         case Insert:
-            client.create(outputConfig.getTableAPIConfig().getTableName().name(),
-                    outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(), true,
-                    record);
+            final ObjectMap newRec =
+                    client.create(outputConfig.getCommonConfig().getTableName().name(),
+                            outputConfig.getDataStore().getAuthorizationHeader(),
+                            outputConfig.isNoResponseBody(),
+                            record);
+
+            if (!outputConfig.isNoResponseBody() && newRec != null) {
+                log.info(newRec.keys().stream()
+                        .map(k -> k + ":" + newRec.get(k))
+                        .collect(joining(";")));
+            }
             break;
         default:
             throw new UnsupportedOperationException(outputConfig.getActionOnTable() + " is not supported yet");

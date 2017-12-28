@@ -3,11 +3,11 @@ package org.talend.components.servicenow.service.http;
 import java.util.List;
 
 import org.talend.components.servicenow.configuration.CommonConfig;
-import org.talend.components.servicenow.configuration.TableRecord;
-import org.talend.components.servicenow.service.http.codec.JsonToTableRecordDecoder;
 import org.talend.components.servicenow.service.http.codec.RecordSizeDecoder;
-import org.talend.components.servicenow.service.http.codec.TableRecordToJsonEncoder;
+import org.talend.components.servicenow.service.http.codec.json.ObjectMapDecoder;
+import org.talend.components.servicenow.service.http.codec.json.ObjectMapEncoder;
 import org.talend.sdk.component.api.meta.Documentation;
+import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.http.Codec;
 import org.talend.sdk.component.api.service.http.Header;
 import org.talend.sdk.component.api.service.http.HttpClient;
@@ -34,11 +34,12 @@ public interface TableApiClient extends HttpClient {
     String HEADER_X_Total_Count = "X-Total-Count";
     String HEADER_X_no_response_body = "X-no-response-body";
     String HEADER_Authorization = "Authorization";
+    String HEADER_Content_Type = "Content-Type";
 
     @Request(path = "table/{tableName}")
-    @Codec(decoder = JsonToTableRecordDecoder.class)
+    @Codec(decoder = ObjectMapDecoder.class)
     @Documentation("read record from the table according to the data set definition")
-    Response<List<TableRecord>> get(@Path("tableName") String tableName,
+    Response<List<ObjectMap>> get(@Path("tableName") String tableName,
             @Header(HEADER_Authorization) String auth,
             @Header(HEADER_X_no_response_body) boolean noResponseBody,
             @Query(sysparm_query) String query,
@@ -64,15 +65,20 @@ public interface TableApiClient extends HttpClient {
     );
 
     @Request(path = "table/{tableName}", method = "POST")
-    @Codec(encoder = TableRecordToJsonEncoder.class, decoder = JsonToTableRecordDecoder.class)
+    @Codec(encoder = ObjectMapEncoder.class, decoder = ObjectMapDecoder.class)
     @Documentation("Create a record to table")
-    List<TableRecord> create(@Path("tableName") String tableName,
+    ObjectMap create(@Path("tableName") String tableName,
             @Header(HEADER_Authorization) String auth,
             @Header(HEADER_X_no_response_body) boolean noResponseBody,
+            @Header(HEADER_Content_Type) String contentType,
             @Query(sysparm_exclude_reference_link) boolean excludeReferenceLink,
-            TableRecord record);
+            ObjectMap record);
 
-    default List<TableRecord> getRecords(String tableName, String auth, String query, String fields, int offset,
+    default ObjectMap create(String tableName, String auth, boolean noResponseBody, ObjectMap record) {
+        return create(tableName, auth, noResponseBody, "application/json", true, record);
+    }
+
+    default List<ObjectMap> getRecords(String tableName, String auth, String query, String fields, int offset,
             int limit, boolean excludeReferenceLink) {
         return get(tableName, auth, false, query, fields, offset, limit, excludeReferenceLink, true).body();
     }
@@ -90,7 +96,7 @@ public interface TableApiClient extends HttpClient {
     }
 
     default void healthCheck(String auth) {
-        final Response<List<TableRecord>> resp =
+        final Response<List<ObjectMap>> resp =
                 get(CommonConfig.Tables.incident.name(), auth, true, null, null, 0, 1, true, true);
         if (resp.status() != 200) {
             throw new HttpException(resp);

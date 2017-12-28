@@ -25,7 +25,7 @@ public class OutputConfig implements Serializable {
     private BasicAuthConfig dataStore;
 
     @Option
-    private CommonConfig tableAPIConfig;
+    private CommonConfig commonConfig;
 
     @Option
     @Documentation("Action to execute on a table, Insert, Update, Delete")

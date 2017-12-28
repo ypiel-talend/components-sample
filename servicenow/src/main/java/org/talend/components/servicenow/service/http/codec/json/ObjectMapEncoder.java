@@ -1,12 +1,15 @@
-package org.talend.components.servicenow.service.http.codec;
+package org.talend.components.servicenow.service.http.codec.json;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.http.Encoder;
 
-public class TableRecordToJsonEncoder implements Encoder {
+public class ObjectMapEncoder implements Encoder {
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -16,14 +19,14 @@ public class TableRecordToJsonEncoder implements Encoder {
             return null;
         }
 
-        if (TableRecord.class.isInstance(value)) {
+        if (!ObjectMap.class.isInstance(value)) {
             throw new RuntimeException("Unsupported type " + value.getClass().getCanonicalName()
-                    + ". Expected " + TableRecord.class.getCanonicalName());
+                    + ". Expected " + ObjectMap.class.getCanonicalName());
         }
 
-        final TableRecord record = TableRecord.class.cast(value);
+        final ObjectMap record = ObjectMap.class.cast(value);
         try {
-            return mapper.writeValueAsBytes(record.getData());
+            return mapper.writeValueAsBytes(record.keys().stream().collect(toMap(identity(), record::get)));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

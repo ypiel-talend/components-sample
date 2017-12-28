@@ -23,7 +23,7 @@ import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.components.servicenow.configuration.OrderBuilder;
 import org.talend.components.servicenow.configuration.QueryBuilder;
 import org.talend.components.servicenow.configuration.TableDataSet;
-import org.talend.components.servicenow.configuration.TableRecord;
+import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.runtime.input.Mapper;
 
@@ -58,10 +58,10 @@ public class ServiceNowMapperTest {
                         configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail"));
 
-        final List<TableRecord> serviceNowRecords = COMPONENT_FACTORY.collect(TableRecord.class, mapper, 2000, 8)
+        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 2000, 8)
                 .collect(toList());
         assertEquals(configuration.getMaxRecords(), serviceNowRecords.size());
-        assertNotNull(serviceNowRecords.get(0).getData().get("number"));
+        assertNotNull(serviceNowRecords.get(0).get("number"));
 
     }
 
@@ -86,10 +86,10 @@ public class ServiceNowMapperTest {
                 configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
 
-        final List<TableRecord> serviceNowRecords = COMPONENT_FACTORY.collect(TableRecord.class, mapper, 1000, 2)
+        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 1000, 2)
                 .collect(toList());
         assertEquals(configuration.getMaxRecords(), serviceNowRecords.size());
-        assertNotNull(serviceNowRecords.get(0).getData().get("number"));
+        assertNotNull(serviceNowRecords.get(0).get("number"));
     }
 
     @Test
@@ -110,12 +110,12 @@ public class ServiceNowMapperTest {
         final Mapper mapper = COMPONENT_FACTORY.asManager().findMapper("ServiceNow", "ServiceNowInput", 1,
                 configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
-        final List<TableRecord> serviceNowRecords = COMPONENT_FACTORY.collect(TableRecord.class, mapper, 2, 1)
+        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 2, 1)
                 .collect(toList());
 
         assertEquals(1, serviceNowRecords.size());
-        assertNotNull(serviceNowRecords.get(0).getData().get("number"));
-        assertEquals("INC0023046", serviceNowRecords.get(0).getData().get("number"));
+        assertNotNull(serviceNowRecords.get(0).get("number"));
+        assertEquals("INC0023046", serviceNowRecords.get(0).get("number"));
     }
 
     @Test
@@ -145,9 +145,9 @@ public class ServiceNowMapperTest {
                 configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
 
-        final List<TableRecord> serviceNowRecords = COMPONENT_FACTORY.collect(TableRecord.class, mapper, 1000, 2)
+        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 1000, 2)
                 .collect(toList());
         assertEquals(1000, serviceNowRecords.size());
-        assertNotNull(serviceNowRecords.get(0).getData().get("number"));
+        assertNotNull(serviceNowRecords.get(0).get("number"));
     }
 }
