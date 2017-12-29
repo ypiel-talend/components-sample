@@ -1,0 +1,88 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/now/v2/table/incident"
+        },
+        "method" : {
+          "exactMatch" : "POST"
+        },
+        "destination" : {
+          "exactMatch" : "dev44668.service-now.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "sysparm_exclude_reference_link=true"
+        },
+        "body" : {
+          "jsonMatch" : "{\"number\":\"ABCDEFG123\"}"
+        }
+      },
+      "response" : {
+        "status" : 201,
+        "body" : "{\"result\":{\"parent\":\"\",\"made_sla\":\"true\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2017-12-29 16:16:12\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"ABCDEFG123\",\"resolved_by\":\"\",\"sys_updated_by\":\"admin\",\"opened_by\":\"6816f79cc0a8016401c5a33be04be441\",\"user_input\":\"\",\"sys_created_on\":\"2017-12-29 16:16:12\",\"sys_domain\":\"global\",\"state\":\"1\",\"sys_created_by\":\"admin\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"\",\"closed_at\":\"\",\"cmdb_ci\":\"\",\"delivery_plan\":\"\",\"impact\":\"3\",\"active\":\"true\",\"work_notes_list\":\"\",\"business_service\":\"\",\"priority\":\"5\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2017-12-29 16:16:12\",\"business_duration\":\"\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"\",\"resolved_at\":\"\",\"approval_set\":\"\",\"subcategory\":\"\",\"work_notes\":\"\",\"short_description\":\"\",\"close_code\":\"\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"\",\"additional_assignee_list\":\"\",\"business_stc\":\"\",\"description\":\"\",\"calendar_duration\":\"\",\"close_notes\":\"\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"0debccd2dbd343002b54771c8c9619a3\",\"contact_type\":\"\",\"incident_state\":\"1\",\"urgency\":\"3\",\"problem_id\":\"\",\"company\":\"\",\"reassignment_count\":\"0\",\"activity_due\":\"\",\"assigned_to\":\"\",\"severity\":\"3\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"0\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache,no-store,must-revalidate,max-age=-1" ],
+          "Content-Type" : [ "application/json;charset=UTF-8" ],
+          "Date" : [ "Fri, 29 Dec 2017 16:16:12 GMT" ],
+          "Expires" : [ "0" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Location" : [ "https://dev44668.service-now.com/api/now/v2/table/incident/0debccd2dbd343002b54771c8c9619a3" ],
+          "Pragma" : [ "no-store,no-cache" ],
+          "Server" : [ "ServiceNow" ],
+          "Set-Cookie" : [ "JSESSIONID=E18113CE7F4840B445C5BA6E54B06CD1;Secure; Path=/; HttpOnly", "glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_route=glide.34eb85cea5c48b2a7e4622930a0434aa;Secure; Expires=Wed, 16-Jan-2086 19:30:18 GMT; Path=/; HttpOnly", "glide_session_store=05EBC8D6DBD343002B54771C8C961932;Secure; Expires=Fri, 29-Dec-2017 16:46:11 GMT; Path=/; HttpOnly", "BIGipServerpool_dev44668=2424472586.50753.0000; path=/" ],
+          "Strict-Transport-Security" : [ "max-age=63072000; includeSubDomains" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Is-Logged-In" : [ "true" ]
+        }
+      }
+    }, {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/now/v2/table/incident/0debccd2dbd343002b54771c8c9619a3"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "dev44668.service-now.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 204,
+        "encodedBody" : true,
+        "templated" : false,
+        "headers" : {
+          "Content-Encoding" : [ "gzip" ],
+          "Date" : [ "Fri, 29 Dec 2017 16:16:12 GMT" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Server" : [ "ServiceNow" ],
+          "Set-Cookie" : [ "JSESSIONID=F1B65DB79C6F3D52291BC5341DC6D284;Secure; Path=/; HttpOnly", "glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_route=glide.34eb85cea5c48b2a7e4622930a0434aa;Secure; Expires=Wed, 16-Jan-2086 19:30:19 GMT; Path=/; HttpOnly", "glide_session_store=D5EBC8D6DBD343002B54771C8C961943;Secure; Expires=Fri, 29-Dec-2017 16:46:12 GMT; Path=/; HttpOnly", "BIGipServerpool_dev44668=2424472586.50753.0000; path=/" ],
+          "Strict-Transport-Security" : [ "max-age=63072000; includeSubDomains" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Is-Logged-In" : [ "true" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v3"
+  }
+}

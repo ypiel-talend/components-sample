@@ -1,0 +1,51 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/now/v2/table/incident/0babea89db3a03002b54771c8c96196b"
+        },
+        "method" : {
+          "exactMatch" : "PUT"
+        },
+        "destination" : {
+          "exactMatch" : "dev44668.service-now.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : "sysparm_exclude_reference_link=true"
+        },
+        "body" : {
+          "jsonMatch" : "{\"number\":\"AZERTY12345\",\"sys_id\":\"0babea89db3a03002b54771c8c96196b\"}"
+        }
+      },
+      "response" : {
+        "status" : 200,
+        "body" : "{\"result\":{\"parent\":\"\",\"made_sla\":\"false\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2017-12-29 16:13:40\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"AZERTY12345\",\"resolved_by\":\"6816f79cc0a8016401c5a33be04be441\",\"sys_updated_by\":\"admin\",\"opened_by\":\"6816f79cc0a8016401c5a33be04be441\",\"user_input\":\"\",\"sys_created_on\":\"2017-12-01 10:10:28\",\"sys_domain\":\"global\",\"state\":\"7\",\"sys_created_by\":\"admin\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"0\",\"closed_at\":\"2017-12-01 10:10:28\",\"cmdb_ci\":\"\",\"delivery_plan\":\"\",\"impact\":\"1\",\"active\":\"false\",\"work_notes_list\":\"\",\"business_service\":\"\",\"priority\":\"1\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2017-12-01 10:10:28\",\"business_duration\":\"1970-01-01 00:00:00\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"\",\"resolved_at\":\"2017-12-01 10:10:28\",\"approval_set\":\"\",\"subcategory\":\"\",\"work_notes\":\"\",\"short_description\":\"Printer in my office is out of toner\",\"close_code\":\"Closed/Resolved by Caller\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"\",\"additional_assignee_list\":\"\",\"business_stc\":\"0\",\"description\":\"Where do I find toner for the HP 950C I have?\",\"calendar_duration\":\"1970-01-01 00:00:00\",\"close_notes\":\"Closed before close notes were made mandatory\\n\\t\\t\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"6816f79cc0a8016401c5a33be04be441\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"0babea89db3a03002b54771c8c96196b\",\"contact_type\":\"\",\"incident_state\":\"7\",\"urgency\":\"1\",\"problem_id\":\"\",\"company\":\"\",\"reassignment_count\":\"1\",\"activity_due\":\"\",\"assigned_to\":\"\",\"severity\":\"1\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"1\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache,no-store,must-revalidate,max-age=-1" ],
+          "Content-Type" : [ "application/json;charset=UTF-8" ],
+          "Date" : [ "Fri, 29 Dec 2017 16:13:41 GMT" ],
+          "Expires" : [ "0" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Pragma" : [ "no-store,no-cache" ],
+          "Server" : [ "ServiceNow" ],
+          "Set-Cookie" : [ "JSESSIONID=3F0797F660FFCCF8668214140C634C25;Secure; Path=/; HttpOnly", "glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_route=glide.34eb85cea5c48b2a7e4622930a0434aa;Secure; Expires=Wed, 16-Jan-2086 19:27:47 GMT; Path=/; HttpOnly", "glide_session_store=945B44D6DBD343002B54771C8C961935;Secure; Expires=Fri, 29-Dec-2017 16:43:40 GMT; Path=/; HttpOnly", "BIGipServerpool_dev44668=2424472586.50753.0000; path=/" ],
+          "Strict-Transport-Security" : [ "max-age=63072000; includeSubDomains" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Is-Logged-In" : [ "true" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v3"
+  }
+}

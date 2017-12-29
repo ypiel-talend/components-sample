@@ -1,0 +1,51 @@
+{
+  "data" : {
+    "pairs" : [ {
+      "request" : {
+        "path" : {
+          "exactMatch" : "/api/now/v2/table/incident/NoId"
+        },
+        "method" : {
+          "exactMatch" : "DELETE"
+        },
+        "destination" : {
+          "exactMatch" : "dev44668.service-now.com"
+        },
+        "scheme" : {
+          "exactMatch" : "https"
+        },
+        "query" : {
+          "exactMatch" : ""
+        },
+        "body" : {
+          "exactMatch" : ""
+        }
+      },
+      "response" : {
+        "status" : 404,
+        "body" : "{\"error\":{\"detail\":\"Record doesn't exist or ACL restricts the record retrieval\",\"message\":\"No Record found\"},\"status\":\"failure\"}",
+        "encodedBody" : false,
+        "templated" : false,
+        "headers" : {
+          "Cache-Control" : [ "no-cache,no-store,must-revalidate,max-age=-1" ],
+          "Content-Type" : [ "application/json;charset=UTF-8" ],
+          "Date" : [ "Fri, 29 Dec 2017 16:12:47 GMT" ],
+          "Expires" : [ "0" ],
+          "Hoverfly" : [ "Was-Here" ],
+          "Pragma" : [ "no-store,no-cache" ],
+          "Server" : [ "ServiceNow" ],
+          "Set-Cookie" : [ "JSESSIONID=875DA9EB17EE45545A14151F2F5B1A53;Secure; Path=/; HttpOnly", "glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly", "glide_user_route=glide.34eb85cea5c48b2a7e4622930a0434aa;Secure; Expires=Wed, 16-Jan-2086 19:26:55 GMT; Path=/; HttpOnly", "glide_session_store=DB1BC0D6DBD343002B54771C8C9619FF;Secure; Expires=Fri, 29-Dec-2017 16:42:48 GMT; Path=/; HttpOnly", "BIGipServerpool_dev44668=2424472586.50753.0000; path=/" ],
+          "Strict-Transport-Security" : [ "max-age=63072000; includeSubDomains" ],
+          "Transfer-Encoding" : [ "chunked" ],
+          "X-Is-Logged-In" : [ "true" ]
+        }
+      }
+    } ],
+    "globalActions" : {
+      "delays" : [ ]
+    }
+  },
+  "meta" : {
+    "schemaVersion" : "v3"
+  }
+}

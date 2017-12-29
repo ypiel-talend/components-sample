@@ -74,7 +74,7 @@ public class ServiceNowOutput implements Serializable {
                         .map(k -> k + ":" + record.get(k))
                         .collect(joining(";")));
             }
-            client.deleteRecord(outputConfig.getCommonConfig().getTableName().name(), sysId,
+            client.deleteRecordById(outputConfig.getCommonConfig().getTableName().name(), sysId,
                     outputConfig.getDataStore().getAuthorizationHeader());
             break;
         default:

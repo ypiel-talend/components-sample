@@ -1,6 +1,7 @@
 package org.talend.components.servicenow.service.http;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.components.servicenow.service.http.codec.RecordSizeDecoder;
@@ -11,6 +12,7 @@ import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.http.Codec;
 import org.talend.sdk.component.api.service.http.Header;
 import org.talend.sdk.component.api.service.http.HttpClient;
+import org.talend.sdk.component.api.service.http.HttpException;
 import org.talend.sdk.component.api.service.http.Path;
 import org.talend.sdk.component.api.service.http.Query;
 import org.talend.sdk.component.api.service.http.Request;
@@ -54,7 +56,7 @@ public interface TableApiClient extends HttpClient {
         final Response<List<ObjectMap>> resp =
                 get(tableName, auth, false, query, fields, offset, limit, excludeReferenceLink, true);
         if (resp.status() != 200) {
-            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+            throw new HttpException(resp);
         }
         return resp.body();
     }
@@ -62,7 +64,7 @@ public interface TableApiClient extends HttpClient {
     default int count(String tableName, String auth, String query) {
         final Response<List<ObjectMap>> resp = get(tableName, auth, true, query, null, 0, 1, true, true);
         if (resp.status() != 200) {
-            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+            throw new HttpException(resp);
         }
         return Integer.parseInt(resp.headers().get(HEADER_X_Total_Count).iterator().next());
     }
@@ -102,14 +104,14 @@ public interface TableApiClient extends HttpClient {
     default ObjectMap create(String tableName, String auth, boolean noResponseBody, ObjectMap record) {
         final Response<ObjectMap> resp = create(tableName, auth, noResponseBody, "application/json", true, record);
         if (resp.status() != 201) {
-            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+            throw new HttpException(resp);
         }
         return resp.body();
     }
 
     @Request(path = "table/{tableName}/{sysId}", method = "PUT")
     @Codec(encoder = ObjectMapEncoder.class, decoder = ObjectMapDecoder.class)
-    @Documentation("Create a record to table")
+    @Documentation("update a record in table using it sys_id")
     Response<ObjectMap> update(@Path("tableName") String tableName, @Path("sysId") String sysId,
             @Header(HEADER_Authorization) String auth,
             @Header(HEADER_X_no_response_body) boolean noResponseBody,
@@ -121,22 +123,22 @@ public interface TableApiClient extends HttpClient {
         final Response<ObjectMap> resp = update(tableName, sysId, auth, noResponseBody, "application/json",
                 true, record);
         if (resp.status() != 200) {
-            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+            throw new HttpException(resp);
         }
         return resp.body();
     }
 
     @Request(path = "table/{tableName}/{sysId}", method = "DELETE")
     @Codec(decoder = ObjectMapDecoder.class)
-    @Documentation("Create a record to table")
-    Response<Void> delete(@Path("tableName") String tableName,
-            @Path("sysId") String sysId,
+    @Documentation("delete a record from a table by it sys_id")
+    Response<Void> delete(@Path("tableName") String tableName, @Path("sysId") String sysId,
             @Header(HEADER_Authorization) String auth);
 
-    default void deleteRecord(String tableName, String sysId, String auth) {
+    default void deleteRecordById(String tableName, String sysId, String auth) {
+        String correlationId = UUID.randomUUID().toString();
         final Response<?> resp = delete(tableName, sysId, auth);
         if (resp.status() != 204) {
-            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+            throw new HttpException(resp);
         }
     }
 
