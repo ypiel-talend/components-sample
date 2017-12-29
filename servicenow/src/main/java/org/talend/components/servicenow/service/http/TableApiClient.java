@@ -11,7 +11,6 @@ import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.http.Codec;
 import org.talend.sdk.component.api.service.http.Header;
 import org.talend.sdk.component.api.service.http.HttpClient;
-import org.talend.sdk.component.api.service.http.HttpException;
 import org.talend.sdk.component.api.service.http.Path;
 import org.talend.sdk.component.api.service.http.Query;
 import org.talend.sdk.component.api.service.http.Request;
@@ -50,6 +49,28 @@ public interface TableApiClient extends HttpClient {
             @Query(sysparm_suppress_pagination_header) boolean suppressPaginationHeader
     );
 
+    default List<ObjectMap> getRecords(String tableName, String auth, String query, String fields, int offset,
+            int limit, boolean excludeReferenceLink) {
+        final Response<List<ObjectMap>> resp =
+                get(tableName, auth, false, query, fields, offset, limit, excludeReferenceLink, true);
+        if (resp.status() != 200) {
+            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+        }
+        return resp.body();
+    }
+
+    default int count(String tableName, String auth, String query) {
+        final Response<List<ObjectMap>> resp = get(tableName, auth, true, query, null, 0, 1, true, true);
+        if (resp.status() != 200) {
+            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+        }
+        return Integer.parseInt(resp.headers().get(HEADER_X_Total_Count).iterator().next());
+    }
+
+    default void healthCheck(String auth) {
+        getRecords(CommonConfig.Tables.incident.name(), auth, null, null, 0, 1, true);
+    }
+
     @Request(path = "table/{tableName}")
     @Codec(decoder = RecordSizeDecoder.class)
     @Documentation("read record from the table according to the data set definition")
@@ -64,10 +85,14 @@ public interface TableApiClient extends HttpClient {
             @Query(sysparm_suppress_pagination_header) boolean suppressPaginationHeader
     );
 
+    default long estimateRecordSize(String tableName, String auth, String query, String fields) {
+        return estimateRecordSize(tableName, auth, false, query, fields, 0, 1, true, true);
+    }
+
     @Request(path = "table/{tableName}", method = "POST")
     @Codec(encoder = ObjectMapEncoder.class, decoder = ObjectMapDecoder.class)
     @Documentation("Create a record to table")
-    ObjectMap create(@Path("tableName") String tableName,
+    Response<ObjectMap> create(@Path("tableName") String tableName,
             @Header(HEADER_Authorization) String auth,
             @Header(HEADER_X_no_response_body) boolean noResponseBody,
             @Header(HEADER_Content_Type) String contentType,
@@ -75,31 +100,43 @@ public interface TableApiClient extends HttpClient {
             ObjectMap record);
 
     default ObjectMap create(String tableName, String auth, boolean noResponseBody, ObjectMap record) {
-        return create(tableName, auth, noResponseBody, "application/json", true, record);
+        final Response<ObjectMap> resp = create(tableName, auth, noResponseBody, "application/json", true, record);
+        if (resp.status() != 201) {
+            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+        }
+        return resp.body();
     }
 
-    default List<ObjectMap> getRecords(String tableName, String auth, String query, String fields, int offset,
-            int limit, boolean excludeReferenceLink) {
-        return get(tableName, auth, false, query, fields, offset, limit, excludeReferenceLink, true).body();
-    }
+    @Request(path = "table/{tableName}/{sysId}", method = "PUT")
+    @Codec(encoder = ObjectMapEncoder.class, decoder = ObjectMapDecoder.class)
+    @Documentation("Create a record to table")
+    Response<ObjectMap> update(@Path("tableName") String tableName, @Path("sysId") String sysId,
+            @Header(HEADER_Authorization) String auth,
+            @Header(HEADER_X_no_response_body) boolean noResponseBody,
+            @Header(HEADER_Content_Type) String contentType,
+            @Query(sysparm_exclude_reference_link) boolean excludeReferenceLink,
+            ObjectMap record);
 
-    default int count(String tableName, String auth, String query) {
-        return Integer.parseInt(
-                get(tableName, auth, true, query, null, 0, 1, true, true).headers()
-                        .get(HEADER_X_Total_Count)
-                        .iterator()
-                        .next());
-    }
-
-    default long estimateRecordSize(String tableName, String auth, String query, String fields) {
-        return estimateRecordSize(tableName, auth, false, query, fields, 0, 1, true, true);
-    }
-
-    default void healthCheck(String auth) {
-        final Response<List<ObjectMap>> resp =
-                get(CommonConfig.Tables.incident.name(), auth, true, null, null, 0, 1, true, true);
+    default ObjectMap update(String tableName, String sysId, String auth, boolean noResponseBody, ObjectMap record) {
+        final Response<ObjectMap> resp = update(tableName, sysId, auth, noResponseBody, "application/json",
+                true, record);
         if (resp.status() != 200) {
-            throw new HttpException(resp);
+            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
+        }
+        return resp.body();
+    }
+
+    @Request(path = "table/{tableName}/{sysId}", method = "DELETE")
+    @Codec(decoder = ObjectMapDecoder.class)
+    @Documentation("Create a record to table")
+    Response<Void> delete(@Path("tableName") String tableName,
+            @Path("sysId") String sysId,
+            @Header(HEADER_Authorization) String auth);
+
+    default void deleteRecord(String tableName, String sysId, String auth) {
+        final Response<?> resp = delete(tableName, sysId, auth);
+        if (resp.status() != 204) {
+            throw new IllegalStateException(resp.error(TableApiClient.Status.class).toString());
         }
     }
 

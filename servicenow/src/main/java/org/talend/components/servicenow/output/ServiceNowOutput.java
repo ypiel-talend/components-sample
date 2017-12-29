@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 
-import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.component.Icon;
 import org.talend.sdk.component.api.component.Version;
@@ -30,14 +29,10 @@ public class ServiceNowOutput implements Serializable {
 
     private final OutputConfig outputConfig;
 
-    private final Messages i18n;
-
     private TableApiClient client;
 
-    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig,
-            final Messages i18n, TableApiClient client) {
+    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig, TableApiClient client) {
         this.outputConfig = outputConfig;
-        this.i18n = i18n;
         this.client = client;
     }
 
@@ -48,7 +43,6 @@ public class ServiceNowOutput implements Serializable {
 
     @ElementListener
     public void onNext(@Input final ObjectMap record) {
-
         switch (outputConfig.getActionOnTable()) {
         case Insert:
             final ObjectMap newRec =
@@ -62,6 +56,26 @@ public class ServiceNowOutput implements Serializable {
                         .map(k -> k + ":" + newRec.get(k))
                         .collect(joining(";")));
             }
+            break;
+        case Update:
+            final String sysIdUpdate = (String) record.get("sys_id");
+            if (sysIdUpdate == null || sysIdUpdate.isEmpty()) {
+                throw new IllegalArgumentException("sys_id is required to delete the record " + record.keys().stream()
+                        .map(k -> k + ":" + record.get(k))
+                        .collect(joining(";")));
+            }
+            client.update(outputConfig.getCommonConfig().getTableName().name(), sysIdUpdate,
+                    outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(), record);
+            break;
+        case Delete:
+            final String sysId = (String) record.get("sys_id");
+            if (sysId == null || sysId.isEmpty()) {
+                throw new IllegalArgumentException("sys_id is required to delete the record " + record.keys().stream()
+                        .map(k -> k + ":" + record.get(k))
+                        .collect(joining(";")));
+            }
+            client.deleteRecord(outputConfig.getCommonConfig().getTableName().name(), sysId,
+                    outputConfig.getDataStore().getAuthorizationHeader());
             break;
         default:
             throw new UnsupportedOperationException(outputConfig.getActionOnTable() + " is not supported yet");
