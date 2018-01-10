@@ -17,16 +17,17 @@
 package org.talend.components.servicenow.service;
 
 import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
-import static org.talend.components.servicenow.configuration.CommonConfig.Proposable_GetTableFields;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.service.Service;
-import org.talend.sdk.component.api.service.cache.Cached;
-import org.talend.sdk.component.api.service.completion.DynamicValues;
+import org.talend.sdk.component.api.service.asyncvalidation.AsyncValidation;
+import org.talend.sdk.component.api.service.asyncvalidation.ValidationResult;
 import org.talend.sdk.component.api.service.completion.Values;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheck;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheckStatus;
@@ -47,11 +48,23 @@ public class ServiceNowTableService {
         return new HealthCheckStatus(HealthCheckStatus.Status.OK, "the data store is valid");
     }
 
+    @AsyncValidation("urlValidation")
+    public ValidationResult validateUrl(final String url) {
+        try {
+            new URL(url);
+            return new ValidationResult(ValidationResult.Status.OK, null);
+        } catch (MalformedURLException e) {
+            return new ValidationResult(ValidationResult.Status.KO, e.getMessage());
+        }
+    }
+
+    /*
     @Cached
     @DynamicValues(Proposable_GetTableFields)
     public Values getTableFields() {
         //todo when dynamic values can have params
         return null;
     }
+    */
 
 }

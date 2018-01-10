@@ -8,6 +8,7 @@ import java.util.Base64;
 
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.action.Checkable;
+import org.talend.sdk.component.api.configuration.action.Validable;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
@@ -32,6 +33,7 @@ public class BasicAuthConfig implements Serializable {
     public static final String NAME = "basicAuth";
 
     @Option
+    @Validable("urlValidation")
     @Documentation("Service Now API instance URL")
     private String url;
 
