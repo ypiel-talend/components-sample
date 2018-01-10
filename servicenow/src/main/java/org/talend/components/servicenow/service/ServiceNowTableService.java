@@ -1,21 +1,22 @@
 /*
- *  Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+ * Copyright (C) 2006-2017 Talend Inc. - www.talend.com
  *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.talend.components.servicenow.service;
 
+import static java.util.Arrays.asList;
 import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
 
 import java.net.MalformedURLException;
@@ -23,14 +24,21 @@ import java.net.URL;
 import java.util.Map;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
+import org.talend.components.servicenow.configuration.CommonConfig;
+import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.service.Service;
 import org.talend.sdk.component.api.service.asyncvalidation.AsyncValidation;
 import org.talend.sdk.component.api.service.asyncvalidation.ValidationResult;
+import org.talend.sdk.component.api.service.cache.Cached;
+import org.talend.sdk.component.api.service.completion.DynamicValues;
 import org.talend.sdk.component.api.service.completion.Values;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheck;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheckStatus;
+import org.talend.sdk.component.api.service.schema.DiscoverSchema;
+import org.talend.sdk.component.api.service.schema.Schema;
+import org.talend.sdk.component.api.service.schema.Type;
 
 @Service
 public class ServiceNowTableService {
@@ -58,13 +66,18 @@ public class ServiceNowTableService {
         }
     }
 
-    /*
     @Cached
-    @DynamicValues(Proposable_GetTableFields)
+    @DynamicValues(CommonConfig.Proposable_GetTableFields)
     public Values getTableFields() {
-        //todo when dynamic values can have params
-        return null;
+        // todo when dynamic values can have params
+        return new Values(asList(new Values.Item("value-1", "Value 1"), new Values.Item("value-2", "Value 2")));
     }
-    */
 
+    @DiscoverSchema // todo
+    public Schema findSchema(final TableDataSet dataSet) {
+        return new Schema(asList(
+                new Schema.Entry("key1", Type.STRING),
+                new Schema.Entry("key2", Type.BOOLEAN)
+        ));
+    }
 }
