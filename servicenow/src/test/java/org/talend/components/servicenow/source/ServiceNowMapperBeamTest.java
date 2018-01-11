@@ -2,6 +2,7 @@ package org.talend.components.servicenow.source;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.talend.components.servicenow.ServiceNow.API_URL;
 import static org.talend.sdk.component.junit.SimpleFactory.configurationByExample;
 
 import java.io.Serializable;
@@ -36,7 +37,7 @@ public class ServiceNowMapperBeamTest implements Serializable {
 
     @Test
     public void produce() {
-        final BasicAuthConfig dataStore = new BasicAuthConfig("https://dev44668.service-now.com", "",
+        final BasicAuthConfig dataStore = new BasicAuthConfig(API_URL, "",
                 "");
 
         final TableDataSet configuration = new TableDataSet();

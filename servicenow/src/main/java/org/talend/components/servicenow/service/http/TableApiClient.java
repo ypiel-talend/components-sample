@@ -1,7 +1,6 @@
 package org.talend.components.servicenow.service.http;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.components.servicenow.service.http.codec.RecordSizeDecoder;
@@ -66,7 +65,12 @@ public interface TableApiClient extends HttpClient {
         if (resp.status() != 200) {
             throw new HttpException(resp);
         }
-        return Integer.parseInt(resp.headers().get(HEADER_X_Total_Count).iterator().next());
+        final List<String> totalCount = resp.headers().get(HEADER_X_Total_Count);
+        if (totalCount == null) {
+            return 0;
+        }
+
+        return Integer.parseInt(totalCount.iterator().next());
     }
 
     default void healthCheck(String auth) {
@@ -135,7 +139,6 @@ public interface TableApiClient extends HttpClient {
             @Header(HEADER_Authorization) String auth);
 
     default void deleteRecordById(String tableName, String sysId, String auth) {
-        String correlationId = UUID.randomUUID().toString();
         final Response<?> resp = delete(tableName, sysId, auth);
         if (resp.status() != 204) {
             throw new HttpException(resp);

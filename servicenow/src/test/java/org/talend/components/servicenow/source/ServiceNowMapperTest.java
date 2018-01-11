@@ -1,13 +1,13 @@
 package org.talend.components.servicenow.source;
 
-import static io.specto.hoverfly.junit.core.HoverflyMode.SIMULATE;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.talend.components.servicenow.ServiceNow.API_URL;
+import static org.talend.components.servicenow.ServiceNow.PASSWORD;
+import static org.talend.components.servicenow.ServiceNow.USER;
 import static org.talend.components.servicenow.configuration.TableDataSet.READ_ALL_RECORD_FROM_SERVER;
 import static org.talend.sdk.component.junit.SimpleFactory.configurationByExample;
-
-import io.specto.hoverfly.junit.core.HoverflyConfig;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.talend.components.servicenow.ApiSimulationRule;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.components.servicenow.configuration.OrderBuilder;
@@ -25,6 +24,8 @@ import org.talend.components.servicenow.configuration.QueryBuilder;
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.junit.SimpleComponentRule;
+import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApi;
+import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApiPerMethodConfigurator;
 import org.talend.sdk.component.runtime.input.Mapper;
 
 public class ServiceNowMapperTest {
@@ -33,24 +34,31 @@ public class ServiceNowMapperTest {
     public static final SimpleComponentRule COMPONENT_FACTORY =
             new SimpleComponentRule("org.talend.components.servicenow");
 
+    @ClassRule
+    public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
+
+    //    static {
+    //        System.setProperty("talend.junit.http.capture", "true");
+    //    }
+
     @Rule
-    public ApiSimulationRule apiSimulationRule = new ApiSimulationRule(SIMULATE, HoverflyConfig.configs());
+    public final JUnit4HttpApiPerMethodConfigurator configurator = new JUnit4HttpApiPerMethodConfigurator(API);
 
     private BasicAuthConfig dataStore;
 
     @Before
     public void before() {
-        dataStore = new BasicAuthConfig("https://dev44668.service-now.com", "fakeUser", "fakePassword");
+        dataStore = new BasicAuthConfig(API_URL, USER, PASSWORD);
     }
 
     @Test
-    public void produceWithConcurrency() throws IOException {
+    public void produceWithConcurrency() {
         final TableDataSet configuration = new TableDataSet();
         configuration.setDataStore(dataStore);
         final CommonConfig apiConfig = new CommonConfig();
         apiConfig.setTableName(CommonConfig.Tables.incident);
         configuration.setCommonConfig(apiConfig);
-        configuration.setMaxRecords(100);
+        configuration.setMaxRecords(10);
 
         // We create the component mapper instance using the configuration filled above
         final Mapper mapper = COMPONENT_FACTORY.asManager()
@@ -62,11 +70,10 @@ public class ServiceNowMapperTest {
                 .collect(toList());
         assertEquals(configuration.getMaxRecords(), serviceNowRecords.size());
         assertNotNull(serviceNowRecords.get(0).get("number"));
-
     }
 
     @Test
-    public void produceWithOrderedQuery() throws IOException {
+    public void produceWithOrderedQuery() {
         final TableDataSet configuration = new TableDataSet();
         configuration.setDataStore(dataStore);
         final CommonConfig apiConfig = new CommonConfig();
@@ -80,7 +87,7 @@ public class ServiceNowMapperTest {
             add(new OrderBuilder(QueryBuilder.Fields.number, OrderBuilder.Order.ASC));
             add(new OrderBuilder(QueryBuilder.Fields.category, OrderBuilder.Order.DESC));
         }});
-        configuration.setMaxRecords(100);
+        configuration.setMaxRecords(10);
         // We create the component mapper instance using the configuration filled above
         final Mapper mapper = COMPONENT_FACTORY.asManager().findMapper("ServiceNow", "ServiceNowInput", 1,
                 configurationByExample(configuration, "tableDataSet"))
@@ -93,7 +100,7 @@ public class ServiceNowMapperTest {
     }
 
     @Test
-    public void readRecordByNumber() throws IOException {
+    public void readRecordByNumber() {
         final CommonConfig apiConfig = new CommonConfig();
         apiConfig.setTableName(CommonConfig.Tables.incident);
         final TableDataSet configuration = new TableDataSet();
@@ -101,7 +108,7 @@ public class ServiceNowMapperTest {
         configuration.setCommonConfig(apiConfig);
 
         configuration.setQueryBuilder(new ArrayList<QueryBuilder>() {{
-            add(new QueryBuilder(QueryBuilder.Fields.number, QueryBuilder.Operation.Equals, "INC0023046"));
+            add(new QueryBuilder(QueryBuilder.Fields.number, QueryBuilder.Operation.Equals, "INC0000060"));
         }});
         configuration.setMaxRecords(READ_ALL_RECORD_FROM_SERVER);
         configuration.getCommonConfig().getFields().add(QueryBuilder.Fields.number.name());
@@ -115,7 +122,7 @@ public class ServiceNowMapperTest {
 
         assertEquals(1, serviceNowRecords.size());
         assertNotNull(serviceNowRecords.get(0).get("number"));
-        assertEquals("INC0023046", serviceNowRecords.get(0).get("number"));
+        assertEquals("INC0000060", serviceNowRecords.get(0).get("number"));
     }
 
     @Test
@@ -147,7 +154,7 @@ public class ServiceNowMapperTest {
 
         final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 1000, 2)
                 .collect(toList());
-        assertEquals(1000, serviceNowRecords.size());
+        assertEquals(6, serviceNowRecords.size());
         assertNotNull(serviceNowRecords.get(0).get("number"));
     }
 }

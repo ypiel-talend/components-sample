@@ -1,32 +1,39 @@
 package org.talend.components.servicenow.service;
 
-import static io.specto.hoverfly.junit.core.HoverflyConfig.configs;
-import static io.specto.hoverfly.junit.core.HoverflyMode.SIMULATE;
 import static org.junit.Assert.assertEquals;
+import static org.talend.components.servicenow.ServiceNow.API_URL;
+import static org.talend.components.servicenow.ServiceNow.PASSWORD;
+import static org.talend.components.servicenow.ServiceNow.USER;
 import static org.talend.components.servicenow.service.http.TableApiClient.API_BASE;
 import static org.talend.components.servicenow.service.http.TableApiClient.API_VERSION;
 
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
-import org.talend.components.servicenow.ApiSimulationRule;
+import org.talend.components.servicenow.ServiceNow;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.service.http.HttpException;
 import org.talend.sdk.component.junit.ExceptionVerifier;
+import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApi;
+import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApiPerMethodConfigurator;
 import org.talend.sdk.component.runtime.manager.service.HttpClientFactoryImpl;
 
 public class TableApiClientTest {
 
+    @ClassRule
+    public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
+
+    //    static {
+    //        System.setProperty("talend.junit.http.capture", "true");
+    //    }
+
     @Rule
-    public TestName testName = new TestName();
+    public final JUnit4HttpApiPerMethodConfigurator configurator = new JUnit4HttpApiPerMethodConfigurator(API);
 
     @Rule
     public ExceptionVerifier<HttpException> exceptionVerifier = new ExceptionVerifier<>();
-
-    @Rule
-    public ApiSimulationRule apiSimulationRule = new ApiSimulationRule(SIMULATE, configs());
 
     @Test
     public void healthCheckInvalidCredentials() {
@@ -40,7 +47,7 @@ public class TableApiClientTest {
         });
 
         final TableDataSet configuration = new TableDataSet();
-        configuration.setDataStore(new BasicAuthConfig("https://dev44668.service-now.com", "badUser", "badPassword"));
+        configuration.setDataStore(new BasicAuthConfig(ServiceNow.API_URL, "badUser", "badPassword"));
         TableApiClient client = new HttpClientFactoryImpl("test").create(TableApiClient.class, null);
         client.base(configuration.getDataStore().getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         client.healthCheck(configuration.getDataStore().getAuthorizationHeader());
@@ -49,7 +56,7 @@ public class TableApiClientTest {
     @Test
     public void healthCheckOk() {
         final TableDataSet configuration = new TableDataSet();
-        configuration.setDataStore(new BasicAuthConfig("https://dev44668.service-now.com", "goodUser", "goodPasswd"));
+        configuration.setDataStore(new BasicAuthConfig(API_URL, USER, PASSWORD));
         TableApiClient client = new HttpClientFactoryImpl("test").create(TableApiClient.class, null);
         client.base(configuration.getDataStore().getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         client.healthCheck(configuration.getDataStore().getAuthorizationHeader());

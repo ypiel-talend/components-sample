@@ -1,0 +1,61 @@
+[
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"false",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive",
+        "Content-Length":"18",
+        "Content-Type":"application/json"
+      },
+      "method":"POST",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_exclude_reference_link=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"38bb1692db63",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=70BBDE52DB6303004A4576EFBF961953;Secure; Expires=Thu, 11-Jan-2018 13:30:11 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:18 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=2A437617946901B69C7E9754FE0A2338;Secure; Path=/; HttpOnly",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Location":"https://dev37214.service-now.com/api/now/v2/table/incident/b4bbde92db2303004a4576efbf9619f2",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"result\":{\"parent\":\"\",\"made_sla\":\"true\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2018-01-11 13:00:11\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"720B0\",\"resolved_by\":\"\",\"sys_updated_by\":\"admin\",\"opened_by\":\"6816f79cc0a8016401c5a33be04be441\",\"user_input\":\"\",\"sys_created_on\":\"2018-01-11 13:00:11\",\"sys_domain\":\"global\",\"state\":\"1\",\"sys_created_by\":\"admin\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"\",\"closed_at\":\"\",\"cmdb_ci\":\"\",\"delivery_plan\":\"\",\"impact\":\"3\",\"active\":\"true\",\"work_notes_list\":\"\",\"business_service\":\"\",\"priority\":\"5\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2018-01-11 13:00:11\",\"business_duration\":\"\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"\",\"reopened_time\":\"\",\"resolved_at\":\"\",\"approval_set\":\"\",\"subcategory\":\"\",\"work_notes\":\"\",\"short_description\":\"\",\"close_code\":\"\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"\",\"additional_assignee_list\":\"\",\"business_stc\":\"\",\"description\":\"\",\"calendar_duration\":\"\",\"close_notes\":\"\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"b4bbde92db2303004a4576efbf9619f2\",\"contact_type\":\"\",\"reopened_by\":\"\",\"incident_state\":\"1\",\"urgency\":\"3\",\"problem_id\":\"\",\"company\":\"\",\"reassignment_count\":\"0\",\"activity_due\":\"\",\"assigned_to\":\"\",\"severity\":\"3\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"0\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}}",
+      "status":201
+    }
+  },
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"false",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive",
+        "Content-Length":"62",
+        "Content-Type":"application/json"
+      },
+      "method":"PUT",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident/b4bbde92db2303004a4576efbf9619f2?sysparm_exclude_reference_link=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"c9bb9e52db63",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=C1BB9E52DB6303004A4576EFBF9619DF;Secure; Expires=Thu, 11-Jan-2018 13:30:13 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:20 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=A50036087076BE1211820C8E73725E4B;Secure; Path=/; HttpOnly",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"result\":{\"parent\":\"\",\"made_sla\":\"true\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2018-01-11 13:00:13\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"E4B07\",\"resolved_by\":\"\",\"sys_updated_by\":\"admin\",\"opened_by\":\"6816f79cc0a8016401c5a33be04be441\",\"user_input\":\"\",\"sys_created_on\":\"2018-01-11 13:00:11\",\"sys_domain\":\"global\",\"state\":\"1\",\"sys_created_by\":\"admin\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"\",\"closed_at\":\"\",\"cmdb_ci\":\"\",\"delivery_plan\":\"\",\"impact\":\"3\",\"active\":\"true\",\"work_notes_list\":\"\",\"business_service\":\"\",\"priority\":\"5\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2018-01-11 13:00:11\",\"business_duration\":\"\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"\",\"reopened_time\":\"\",\"resolved_at\":\"\",\"approval_set\":\"\",\"subcategory\":\"\",\"work_notes\":\"\",\"short_description\":\"\",\"close_code\":\"\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"\",\"additional_assignee_list\":\"\",\"business_stc\":\"\",\"description\":\"\",\"calendar_duration\":\"\",\"close_notes\":\"\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"b4bbde92db2303004a4576efbf9619f2\",\"contact_type\":\"\",\"reopened_by\":\"\",\"incident_state\":\"1\",\"urgency\":\"3\",\"problem_id\":\"\",\"company\":\"\",\"reassignment_count\":\"0\",\"activity_due\":\"\",\"assigned_to\":\"\",\"severity\":\"3\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"1\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}}",
+      "status":200
+    }
+  }
+]

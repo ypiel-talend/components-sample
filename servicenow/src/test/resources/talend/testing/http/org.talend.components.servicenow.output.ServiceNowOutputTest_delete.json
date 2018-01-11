@@ -1,0 +1,81 @@
+[
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"false",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive",
+        "Content-Length":"23",
+        "Content-Type":"application/json"
+      },
+      "method":"POST",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_exclude_reference_link=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"33ab5292db63",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=3BAB5292DB6303004A4576EFBF9619DD;Secure; Expires=Thu, 11-Jan-2018 13:30:07 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:14 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=2D26ABD11B8026426C2363822E2737CF;Secure; Path=/; HttpOnly",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Location":"https://dev37214.service-now.com/api/now/v2/table/incident/33abde92db2303004a4576efbf961970",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"result\":{\"parent\":\"\",\"made_sla\":\"true\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2018-01-11 13:00:07\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"ABCDEFG123\",\"resolved_by\":\"\",\"sys_updated_by\":\"admin\",\"opened_by\":\"6816f79cc0a8016401c5a33be04be441\",\"user_input\":\"\",\"sys_created_on\":\"2018-01-11 13:00:07\",\"sys_domain\":\"global\",\"state\":\"1\",\"sys_created_by\":\"admin\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"\",\"closed_at\":\"\",\"cmdb_ci\":\"\",\"delivery_plan\":\"\",\"impact\":\"3\",\"active\":\"true\",\"work_notes_list\":\"\",\"business_service\":\"\",\"priority\":\"5\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2018-01-11 13:00:07\",\"business_duration\":\"\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"\",\"reopened_time\":\"\",\"resolved_at\":\"\",\"approval_set\":\"\",\"subcategory\":\"\",\"work_notes\":\"\",\"short_description\":\"\",\"close_code\":\"\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"\",\"additional_assignee_list\":\"\",\"business_stc\":\"\",\"description\":\"\",\"calendar_duration\":\"\",\"close_notes\":\"\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"33abde92db2303004a4576efbf961970\",\"contact_type\":\"\",\"reopened_by\":\"\",\"incident_state\":\"1\",\"urgency\":\"3\",\"problem_id\":\"\",\"company\":\"\",\"reassignment_count\":\"0\",\"activity_due\":\"\",\"assigned_to\":\"\",\"severity\":\"3\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"0\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}}",
+      "status":201
+    }
+  },
+  {
+    "request":{
+      "headers":{
+        "content-length":"0",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive"
+      },
+      "method":"DELETE",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident/33abde92db2303004a4576efbf961970"
+    },
+    "response":{
+      "headers":{
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"84bb5292db63",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=8CBB5292DB6303004A4576EFBF9619ED;Secure; Expires=Thu, 11-Jan-2018 13:30:09 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:16 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=691B23892A2B91D08148CDF30A6465E1;Secure; Path=/; HttpOnly"
+      },
+      "payload":"",
+      "status":204
+    }
+  },
+  {
+    "request":{
+      "headers":{
+        "content-length":"0",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive"
+      },
+      "method":"DELETE",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident/33abde92db2303004a4576efbf961970"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"60bb5292db63",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=68BB5292DB6303004A4576EFBF9619F3;Secure; Expires=Thu, 11-Jan-2018 13:30:10 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:17 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=E662CFC40238DCD55FA588A297180567;Secure; Path=/; HttpOnly",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"error\":{\"detail\":\"Record doesn't exist or ACL restricts the record retrieval\",\"message\":\"No Record found\"},\"status\":\"failure\"}",
+      "status":404
+    }
+  }
+]
