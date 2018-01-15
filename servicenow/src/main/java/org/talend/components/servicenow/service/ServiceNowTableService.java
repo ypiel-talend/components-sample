@@ -79,9 +79,8 @@ public class ServiceNowTableService {
 
     @DiscoverSchema("guessTableSchema")
     public Schema guessTableSchema(final TableDataSet dataSet, final TableApiClient client, final Messages i18n) {
-        final TableDataSet ds = new TableDataSet(dataSet);//copy the config
-        ds.setMaxRecords(1); // limit result to 1 record to infer the schema
-        final ServiceNowTableSource source = new ServiceNowTableSource(ds, i18n, client);
+        dataSet.setMaxRecords(1); // limit result to 1 record to infer the schema
+        final ServiceNowTableSource source = new ServiceNowTableSource(dataSet, i18n, client);
         source.init();
         final ObjectMap record = source.next();
         return new Schema(record.keys()
