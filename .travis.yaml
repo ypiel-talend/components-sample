@@ -1,0 +1,11 @@
+language: java
+jdk:
+- oraclejdk8
+env:
+   global:
+    - MAVEN_OPTS="-Dformatter.skip=true -Dsurefire.useFile=false -Dmaven.artifact.threads=64"
+cache:
+  directories:
+  - "$HOME/.m2"
+
+install: mvn clean install -B -q
