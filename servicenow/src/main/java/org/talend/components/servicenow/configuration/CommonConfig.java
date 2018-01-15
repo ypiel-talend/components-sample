@@ -9,6 +9,7 @@ import java.util.List;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.action.Proposable;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
+import org.talend.sdk.component.api.configuration.ui.widget.Structure;
 import org.talend.sdk.component.api.meta.Documentation;
 
 import lombok.Data;
@@ -33,6 +34,7 @@ public class CommonConfig implements Serializable {
     @Option
     @Documentation("List of field names to return in the response.")
     @Proposable(Proposable_GetTableFields)
+    @Structure
     private List<String> fields = new ArrayList<>();
 
     @Option
