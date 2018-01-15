@@ -17,6 +17,7 @@
 package org.talend.components.servicenow.service;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
 
 import java.net.MalformedURLException;
@@ -26,8 +27,11 @@ import java.util.Map;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.components.servicenow.configuration.TableDataSet;
+import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.http.TableApiClient;
+import org.talend.components.servicenow.source.ServiceNowTableSource;
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.Service;
 import org.talend.sdk.component.api.service.asyncvalidation.AsyncValidation;
 import org.talend.sdk.component.api.service.asyncvalidation.ValidationResult;
@@ -73,11 +77,17 @@ public class ServiceNowTableService {
         return new Values(asList(new Values.Item("value-1", "Value 1"), new Values.Item("value-2", "Value 2")));
     }
 
-    @DiscoverSchema // todo
-    public Schema findSchema(final TableDataSet dataSet) {
-        return new Schema(asList(
-                new Schema.Entry("key1", Type.STRING),
-                new Schema.Entry("key2", Type.BOOLEAN)
-        ));
+    @DiscoverSchema("guessTableSchema")
+    public Schema guessTableSchema(final TableDataSet dataSet, final TableApiClient client, final Messages i18n) {
+        final TableDataSet ds = new TableDataSet(dataSet);//copy the config
+        ds.setMaxRecords(1); // limit result to 1 record to infer the schema
+        final ServiceNowTableSource source = new ServiceNowTableSource(ds, i18n, client);
+        source.init();
+        final ObjectMap record = source.next();
+        return new Schema(record.keys()
+                .stream()
+                .map(k -> new Schema.Entry(k, Type.STRING))
+                .collect(toList()));
     }
+
 }
