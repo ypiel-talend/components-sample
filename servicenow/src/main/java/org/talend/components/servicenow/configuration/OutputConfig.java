@@ -1,4 +1,4 @@
-package org.talend.components.servicenow.output;
+package org.talend.components.servicenow.configuration;
 
 import java.io.Serializable;
 
@@ -17,6 +17,7 @@ import lombok.Data;
         @GridLayout.Row({ "actionOnTable" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
+        @GridLayout.Row({ "commonConfig" }),
         @GridLayout.Row({ "noResponseBody" })
 })
 public class OutputConfig implements Serializable {

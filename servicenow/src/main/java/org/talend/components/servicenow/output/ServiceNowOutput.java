@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 
+import org.talend.components.servicenow.configuration.OutputConfig;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.component.Icon;
 import org.talend.sdk.component.api.component.Version;

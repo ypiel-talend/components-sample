@@ -27,7 +27,8 @@ import lombok.NoArgsConstructor;
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
         @GridLayout.Row({ "limit" }),
         @GridLayout.Row({ "maxRecords" }),
-        @GridLayout.Row({ "fields" })
+        @GridLayout.Row({ "fields" }),
+        @GridLayout.Row({ "commonConfig" })
 })
 @Documentation("This data set represent a Service Now Table, like incident, problem, service...")
 public class TableDataSet implements Serializable {

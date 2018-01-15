@@ -17,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.CommonConfig;
+import org.talend.components.servicenow.configuration.OutputConfig;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.processor.data.FlatObjectMap;
 import org.talend.sdk.component.api.processor.data.ObjectMap;
