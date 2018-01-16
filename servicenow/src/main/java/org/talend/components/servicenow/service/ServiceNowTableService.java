@@ -19,6 +19,8 @@ package org.talend.components.servicenow.service;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
+import static org.talend.components.servicenow.service.http.TableApiClient.API_BASE;
+import static org.talend.components.servicenow.service.http.TableApiClient.API_VERSION;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,6 +53,7 @@ public class ServiceNowTableService {
 
     @HealthCheck(value = NAME)
     public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dt, TableApiClient client) {
+        client.base(dt.getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         try {
             client.healthCheck(dt.getAuthorizationHeader());
         } catch (Exception e) {
