@@ -83,7 +83,7 @@ public class ServiceNowMapperTest {
             add(new QueryBuilder(QueryBuilder.Fields.active, QueryBuilder.Operation.Equals, "true"));
         }});
         configuration.setOrdered(true);
-        configuration.setOrder(new ArrayList<OrderBuilder>() {{
+        configuration.setOrderBuilder(new ArrayList<OrderBuilder>() {{
             add(new OrderBuilder(QueryBuilder.Fields.number, OrderBuilder.Order.ASC));
             add(new OrderBuilder(QueryBuilder.Fields.category, OrderBuilder.Order.DESC));
         }});
@@ -139,7 +139,7 @@ public class ServiceNowMapperTest {
             add(new QueryBuilder(QueryBuilder.Fields.priority, QueryBuilder.Operation.Equals, "3"));
         }});
         configuration.setOrdered(true);
-        configuration.setOrder(new ArrayList<OrderBuilder>() {{
+        configuration.setOrderBuilder(new ArrayList<OrderBuilder>() {{
             add(new OrderBuilder(QueryBuilder.Fields.number, OrderBuilder.Order.ASC));
             add(new OrderBuilder(QueryBuilder.Fields.category, OrderBuilder.Order.DESC));
         }});

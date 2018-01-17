@@ -17,6 +17,7 @@
 package org.talend.components.servicenow.service;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.talend.components.servicenow.configuration.BasicAuthConfig.NAME;
 import static org.talend.components.servicenow.service.http.TableApiClient.API_BASE;
@@ -86,6 +87,10 @@ public class ServiceNowTableService {
         final ServiceNowTableSource source = new ServiceNowTableSource(dataSet, i18n, client);
         source.init();
         final ObjectMap record = source.next();
+        if (record == null || record.keys() == null || record.keys().isEmpty()) {
+            return new Schema(emptyList());
+        }
+
         return new Schema(record.keys()
                 .stream()
                 .map(k -> new Schema.Entry(k, Type.STRING))

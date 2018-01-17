@@ -57,7 +57,7 @@ public class TableDataSet implements Serializable {
     @Option
     @ActiveIf(target = "ordered", value = { "true" })
     @Documentation("the data set fields order")
-    private List<OrderBuilder> order;
+    private List<OrderBuilder> orderBuilder;
 
     /**
      * data source start
@@ -76,7 +76,7 @@ public class TableDataSet implements Serializable {
         this.dataStore = mDataSet.getDataStore();
         this.commonConfig = mDataSet.getCommonConfig();
         this.ordered = mDataSet.isOrdered();
-        this.order = mDataSet.getOrder();
+        this.orderBuilder = mDataSet.getOrderBuilder();
         this.queryBuilder = mDataSet.getQueryBuilder();
         this.offset = mDataSet.getOffset();
         this.maxRecords = mDataSet.getMaxRecords();
@@ -91,8 +91,8 @@ public class TableDataSet implements Serializable {
                     + f.getValue()).collect(joining("^"));
         }
 
-        if (isOrdered() && getOrder() != null && !getOrder().isEmpty()) {
-            String order = getOrder().stream()
+        if (isOrdered() && getOrderBuilder() != null && !getOrderBuilder().isEmpty()) {
+            String order = getOrderBuilder().stream()
                     .map(o -> "ORDERBY" + o.getField().name())
                     .collect(joining("^"));
 
