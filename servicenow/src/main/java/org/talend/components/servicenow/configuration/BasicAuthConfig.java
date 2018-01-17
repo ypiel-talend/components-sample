@@ -8,7 +8,6 @@ import java.util.Base64;
 
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.action.Checkable;
-import org.talend.sdk.component.api.configuration.action.Discoverable;
 import org.talend.sdk.component.api.configuration.action.Validable;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
@@ -23,7 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Checkable(NAME)
-@Discoverable
 @DataStore(NAME)
 @GridLayout({
         @GridLayout.Row({ "url" }),

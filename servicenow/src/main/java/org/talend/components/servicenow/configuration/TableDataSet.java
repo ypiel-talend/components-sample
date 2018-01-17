@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
-import org.talend.sdk.component.api.configuration.action.Discoverable;
 import org.talend.sdk.component.api.configuration.condition.ActiveIf;
 import org.talend.sdk.component.api.configuration.type.DataSet;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
@@ -20,7 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @DataSet("table")
-@Discoverable("guessTableSchema")
 @GridLayout({
         @GridLayout.Row({ "dataStore" }),
         @GridLayout.Row({ "commonConfig" }),
