@@ -32,7 +32,7 @@ public class CommonConfig implements Serializable {
     private Tables tableName;
 
     @Option
-    @Structure
+    @Structure("guessTableSchema")
     @Documentation("List of field names to return in the response.")
     @Proposable(Proposable_GetTableFields)
     private List<String> fields = new ArrayList<>();
