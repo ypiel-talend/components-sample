@@ -62,20 +62,17 @@ public class ServiceNowTableServiceTest {
         client.base(configuration.getDataStore().getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         final Schema schema = new ServiceNowTableService().guessTableSchema(configuration, client, null);
         assertNotNull(schema);
-        assertEquals(3, schema.getEntries().size());
-        schema.getEntries().forEach(e -> assertTrue(fields.contains(e.getName())));
+        assertEquals(83, schema.getEntries().size());
     }
 
     @Test
     public void guessTableSchemaWhenNoRecordTest() {
-        final List<String> fields = asList("number", "short_description", "due_date");
         final TableDataSet configuration = new TableDataSet();
         configuration.setDataStore(dataStore);
         configuration.setQueryBuilder(new ArrayList<QueryBuilder>() {{
             add(new QueryBuilder(QueryBuilder.Fields.number, QueryBuilder.Operation.Equals, "ImpossibleNumber007"));
         }});
         final CommonConfig apiConfig = new CommonConfig();
-        apiConfig.setFields(fields);
         apiConfig.setTableName(CommonConfig.Tables.incident);
         configuration.setCommonConfig(apiConfig);
         configuration.setMaxRecords(10);
