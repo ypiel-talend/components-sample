@@ -29,7 +29,7 @@ public class CommonConfig implements Serializable {
 
     @Option
     @Documentation("The name of the table to be read")
-    private Tables tableName;
+    private Tables tableName = Tables.incident;
 
     @Option
     @Structure(discoverSchema = "guessTableSchema")
