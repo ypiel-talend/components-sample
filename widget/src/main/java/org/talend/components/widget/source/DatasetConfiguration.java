@@ -18,6 +18,9 @@ package org.talend.components.widget.source;
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.constraint.Max;
+import org.talend.sdk.component.api.configuration.constraint.Min;
+import org.talend.sdk.component.api.configuration.constraint.Required;
 import org.talend.sdk.component.api.configuration.type.DataSet;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 
@@ -35,5 +38,8 @@ public class DatasetConfiguration implements Serializable {
     private ConnectionConfiguration connection;
     
     @Option
+    @Required
+    @Min(3)
+    @Max(12)
     private String dataSetName = "my dataset";
 }

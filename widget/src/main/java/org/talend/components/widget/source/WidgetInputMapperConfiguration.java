@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.condition.ActiveIf;
+import org.talend.sdk.component.api.configuration.constraint.Max;
+import org.talend.sdk.component.api.configuration.constraint.Min;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout.FormType;
 import org.talend.sdk.component.api.configuration.ui.widget.Code;
@@ -14,6 +16,7 @@ import lombok.Data;
 
 @GridLayout(value = {
     @GridLayout.Row({ "dataset" }),
+    @GridLayout.Row({ "limit" }),
     @GridLayout.Row({ "action", "tableComplex" }),
     @GridLayout.Row({ "showQuery", "showTable" }),
     @GridLayout.Row({ "query" }),
@@ -30,6 +33,11 @@ public class WidgetInputMapperConfiguration implements Serializable {
 
     @Option
     private DatasetConfiguration dataset;
+    
+    @Option
+    @Min(10)
+    @Max(1000)
+    private int limit = 10;
     
     /**
      * This is dropdown list

@@ -3,6 +3,7 @@ package org.talend.components.widget.source;
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.constraint.Pattern;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
@@ -15,6 +16,7 @@ import org.talend.sdk.component.api.configuration.ui.widget.Credential;
 public class ConnectionConfiguration implements Serializable {
 
     @Option
+    @Pattern("^(http|https|ftp).*")
     private String url;
 
     @Option
