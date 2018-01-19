@@ -49,8 +49,7 @@ public class ServiceNowTableSource implements Serializable {
                     ds.buildQuery(),
                     ds.getCommonConfig().getFieldsCommaSeparated(),
                     ds.getOffset(),
-                    evalLimit(ds),
-                    ds.getCommonConfig().isExcludeReferenceLink()
+                    evalLimit(ds)
             );
 
             //advance the data set offset

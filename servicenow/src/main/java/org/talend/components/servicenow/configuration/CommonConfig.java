@@ -38,10 +38,6 @@ public class CommonConfig implements Serializable {
     @Documentation("List of field names to return in the response.")
     private List<String> fields = new ArrayList<>();
 
-    @Option
-    @Documentation("Additional information provided for reference fields, such as the URI to the reference resource, is suppressed.")
-    private boolean excludeReferenceLink = true;
-
     public String getFieldsCommaSeparated() {
         if (getFields() == null || getFields().isEmpty()) {
             return null;

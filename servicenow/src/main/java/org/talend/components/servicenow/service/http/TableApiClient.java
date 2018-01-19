@@ -51,9 +51,9 @@ public interface TableApiClient extends HttpClient {
     );
 
     default List<ObjectMap> getRecords(String tableName, String auth, String query, String fields, int offset,
-            int limit, boolean excludeReferenceLink) {
+            int limit) {
         final Response<List<ObjectMap>> resp =
-                get(tableName, auth, false, query, fields, offset, limit, excludeReferenceLink, true);
+                get(tableName, auth, false, query, fields, offset, limit, true, true);
         if (resp.status() != 200) {
             throw new HttpException(resp);
         }
@@ -74,7 +74,7 @@ public interface TableApiClient extends HttpClient {
     }
 
     default void healthCheck(String auth) {
-        getRecords(CommonConfig.Tables.incident.name(), auth, null, null, 0, 1, true);
+        getRecords(CommonConfig.Tables.incident.name(), auth, null, null, 0, 1);
     }
 
     @Request(path = "table/{tableName}")
