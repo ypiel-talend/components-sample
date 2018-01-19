@@ -22,7 +22,7 @@ public class ObjectMapDecoder implements Decoder {
 
     @Override
     public Object decode(final byte[] value, final Type expectedType) {
-        if (value == null) {
+        if (value == null || value.length == 0) {
             return null;
         }
 
@@ -46,7 +46,6 @@ public class ObjectMapDecoder implements Decoder {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
         }
 
         if (!ObjectMap.class.isAssignableFrom((Class<?>) expectedType)) {
