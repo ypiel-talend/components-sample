@@ -1,6 +1,7 @@
 package org.talend.components.servicenow.configuration;
 
 import static java.util.stream.Collectors.joining;
+import static org.talend.sdk.component.api.configuration.ui.widget.Structure.Type.OUT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class CommonConfig implements Serializable {
     private Tables tableName = Tables.incident;
 
     @Option
-    @Structure(discoverSchema = "guessTableSchema")
-    @Documentation("List of field names to return in the response.")
+    @Structure(discoverSchema = "guessTableSchema", type = OUT)
     @Proposable(Proposable_GetTableFields)
+    @Documentation("List of field names to return in the response.")
     private List<String> fields = new ArrayList<>();
 
     @Option
