@@ -9,6 +9,7 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_B
 import static org.talend.components.servicenow.service.http.TableApiClient.API_VERSION;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -112,27 +113,38 @@ public class ServiceNowOutputTest {
         String id = (String) newRec.get("sys_id");
         deleteRecordById(id);
 
-//        exceptionVerifier.assertWith(e -> {
-//            assertEquals(404, e.getResponse().status());
-//            final TableApiClient.Status status =
-//                    (TableApiClient.Status) e.getResponse().error(TableApiClient.Status.class);
-//            assertEquals("No Record found", status.getError().getMessage());
-//            assertEquals("Record doesn't exist or ACL restricts the record retrieval", status.getError().getDetail());
-//        });
-//        deleteRecordById(id);
+        //        exceptionVerifier.assertWith(e -> {
+        //            assertEquals(404, e.getResponse().status());
+        //            final TableApiClient.Status status =
+        //                    (TableApiClient.Status) e.getResponse().error(TableApiClient.Status.class);
+        //            assertEquals("No Record found", status.getError().getMessage());
+        //            assertEquals("Record doesn't exist or ACL restricts the record retrieval", status.getError().getDetail());
+        //        });
+        //        deleteRecordById(id);
     }
 
     @Test
     public void deleteNonExistingRecord() {
-        exceptionVerifier.assertWith(e -> {
-            assertEquals(404, e.getResponse().status());
-            final TableApiClient.Status status =
-                    (TableApiClient.Status) e.getResponse().error(TableApiClient.Status.class);
-            assertEquals("No Record found", status.getError().getMessage());
-            assertEquals("Record doesn't exist or ACL restricts the record retrieval", status.getError().getDetail());
-        });
-
-        deleteRecordById("NoId");
+        final OutputConfig configuration = new OutputConfig();
+        configuration.setDataStore(ds);
+        configuration.setActionOnTable(OutputConfig.ActionOnTable.Delete);
+        configuration.setNoResponseBody(false);
+        final CommonConfig apiConfig = new CommonConfig();
+        apiConfig.setTableName(CommonConfig.Tables.incident);
+        configuration.setCommonConfig(apiConfig);
+        final Processor processor = COMPONENT_FACTORY.createProcessor(ServiceNowOutput.class, configuration);
+        Map<String, Object> record = new HashMap<String, Object>() {{
+            put("sys_id", "NoId");
+        }};
+        final JoinInputFactory joinInputFactory = new JoinInputFactory()
+                .withInput("__default__", singletonList(new FlatObjectMap(record)));
+        final SimpleComponentRule.Outputs outputs = COMPONENT_FACTORY.collect(processor, joinInputFactory);
+        assertEquals(1, outputs.size());
+        final List<Reject> rejects = outputs.get(Reject.class, "reject");
+        assertEquals(1, rejects.size());
+        assertEquals(404, rejects.get(0).getCode());
+        assertEquals("No Record found", rejects.get(0).getErrorMessage());
+        assertEquals("Record doesn't exist or ACL restricts the record retrieval", rejects.get(0).getErrorDetail());
     }
 
     private void deleteRecordById(String id) {

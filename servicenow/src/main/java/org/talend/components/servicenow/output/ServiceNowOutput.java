@@ -1,6 +1,5 @@
 package org.talend.components.servicenow.output;
 
-import static java.util.stream.Collectors.joining;
 import static org.talend.components.servicenow.service.http.TableApiClient.API_BASE;
 import static org.talend.components.servicenow.service.http.TableApiClient.API_VERSION;
 
@@ -16,8 +15,11 @@ import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.meta.Documentation;
 import org.talend.sdk.component.api.processor.ElementListener;
 import org.talend.sdk.component.api.processor.Input;
+import org.talend.sdk.component.api.processor.Output;
+import org.talend.sdk.component.api.processor.OutputEmitter;
 import org.talend.sdk.component.api.processor.Processor;
 import org.talend.sdk.component.api.processor.data.ObjectMap;
+import org.talend.sdk.component.api.service.http.HttpException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,43 +45,56 @@ public class ServiceNowOutput implements Serializable {
     }
 
     @ElementListener
-    public void onNext(@Input final ObjectMap record) {
-        switch (outputConfig.getActionOnTable()) {
-        case Insert:
-            final ObjectMap newRec =
-                    client.create(outputConfig.getCommonConfig().getTableName().name(),
-                            outputConfig.getDataStore().getAuthorizationHeader(),
-                            outputConfig.isNoResponseBody(),
+    public void onNext(@Input final ObjectMap record,
+            final @Output OutputEmitter<ObjectMap> success,
+            final @Output("reject") OutputEmitter<Reject> reject) {
+        try {
+            ObjectMap newRec;
+            switch (outputConfig.getActionOnTable()) {
+            case Insert:
+                newRec = client.create(outputConfig.getCommonConfig().getTableName().name(),
+                        outputConfig.getDataStore().getAuthorizationHeader(),
+                        outputConfig.isNoResponseBody(),
+                        record);
+                if (!outputConfig.isNoResponseBody() && newRec != null) {
+                    success.emit(newRec);
+                }
+                break;
+            case Update:
+                final String sysIdUpdate = (String) record.get("sys_id");
+                if (sysIdUpdate == null || sysIdUpdate.isEmpty()) {
+                    reject.emit(new Reject(1, "sys_id is required to update the record", null, record));
+                } else {
+                    newRec = client.update(outputConfig.getCommonConfig().getTableName().name(), sysIdUpdate,
+                            outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(),
                             record);
 
-            if (!outputConfig.isNoResponseBody() && newRec != null) {
-                log.info(newRec.keys().stream()
-                        .map(k -> k + ":" + newRec.get(k))
-                        .collect(joining(";")));
+                    if (!outputConfig.isNoResponseBody() && newRec != null) {
+                        success.emit(newRec);
+                    }
+                }
+                break;
+            case Delete:
+                final String sysId = (String) record.get("sys_id");
+                if (sysId == null || sysId.isEmpty()) {
+                    reject.emit(new Reject(2, "sys_id is required to delete the record", null, record));
+                } else {
+                    client.deleteRecordById(outputConfig.getCommonConfig().getTableName().name(), sysId,
+                            outputConfig.getDataStore().getAuthorizationHeader());
+                    success.emit(record);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException(outputConfig.getActionOnTable() + " is not supported yet");
             }
-            break;
-        case Update:
-            final String sysIdUpdate = (String) record.get("sys_id");
-            if (sysIdUpdate == null || sysIdUpdate.isEmpty()) {
-                throw new IllegalArgumentException("sys_id is required to delete the record " + record.keys().stream()
-                        .map(k -> k + ":" + record.get(k))
-                        .collect(joining(";")));
-            }
-            client.update(outputConfig.getCommonConfig().getTableName().name(), sysIdUpdate,
-                    outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(), record);
-            break;
-        case Delete:
-            final String sysId = (String) record.get("sys_id");
-            if (sysId == null || sysId.isEmpty()) {
-                throw new IllegalArgumentException("sys_id is required to delete the record " + record.keys().stream()
-                        .map(k -> k + ":" + record.get(k))
-                        .collect(joining(";")));
-            }
-            client.deleteRecordById(outputConfig.getCommonConfig().getTableName().name(), sysId,
-                    outputConfig.getDataStore().getAuthorizationHeader());
-            break;
-        default:
-            throw new UnsupportedOperationException(outputConfig.getActionOnTable() + " is not supported yet");
+
+        } catch (HttpException httpError) {
+            final TableApiClient.Status status =
+                    (TableApiClient.Status) httpError.getResponse().error(TableApiClient.Status.class);
+            reject.emit(new Reject(httpError.getResponse().status(),
+                    status.getError().getMessage(),
+                    status.getError().getDetail(),
+                    record));
         }
 
     }
