@@ -26,7 +26,9 @@ public class ObjectMapEncoder implements Encoder {
 
         final ObjectMap record = ObjectMap.class.cast(value);
         try {
-            return mapper.writeValueAsBytes(record.keys().stream().collect(toMap(identity(), record::get)));
+            return mapper.writeValueAsBytes(record.keys().stream()
+                    .filter(k -> record.get(k) != null)
+                    .collect(toMap(identity(), record::get)));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
