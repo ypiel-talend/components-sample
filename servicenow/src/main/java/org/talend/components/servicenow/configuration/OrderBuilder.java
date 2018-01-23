@@ -27,5 +27,4 @@ public class OrderBuilder {
         DESC,
         ASC;
     }
-
 }

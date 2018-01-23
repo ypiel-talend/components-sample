@@ -37,6 +37,8 @@ public class ServiceNowMapperTest {
     @ClassRule
     public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
 
+
+
     //    static {
     //        System.setProperty("talend.junit.http.capture", "true");
     //    }

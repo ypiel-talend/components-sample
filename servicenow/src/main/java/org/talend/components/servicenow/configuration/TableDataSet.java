@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
         @GridLayout.Row({ "commonConfig" }),
         @GridLayout.Row({ "queryBuilder" }),
         @GridLayout.Row({ "ordered" }),
-        @GridLayout.Row({ "order" })
+        @GridLayout.Row({ "orderBuilder" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
         @GridLayout.Row({ "limit" }),

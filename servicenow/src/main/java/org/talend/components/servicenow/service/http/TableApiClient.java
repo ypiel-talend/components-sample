@@ -3,9 +3,10 @@ package org.talend.components.servicenow.service.http;
 import java.util.List;
 
 import org.talend.components.servicenow.configuration.CommonConfig;
+import org.talend.components.servicenow.service.http.codec.InvalidContentDecoder;
+import org.talend.components.servicenow.service.http.codec.JsonDecoder;
+import org.talend.components.servicenow.service.http.codec.JsonEncoder;
 import org.talend.components.servicenow.service.http.codec.RecordSizeDecoder;
-import org.talend.components.servicenow.service.http.codec.json.ObjectMapDecoder;
-import org.talend.components.servicenow.service.http.codec.json.ObjectMapEncoder;
 import org.talend.sdk.component.api.meta.Documentation;
 import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.http.Codec;
@@ -37,7 +38,7 @@ public interface TableApiClient extends HttpClient {
     String HEADER_Content_Type = "Content-Type";
 
     @Request(path = "table/{tableName}")
-    @Codec(decoder = ObjectMapDecoder.class)
+    @Codec(decoder = { JsonDecoder.class, InvalidContentDecoder.class })
     @Documentation("read record from the table according to the data set definition")
     Response<List<ObjectMap>> get(@Path("tableName") String tableName,
             @Header(HEADER_Authorization) String auth,
@@ -78,7 +79,7 @@ public interface TableApiClient extends HttpClient {
     }
 
     @Request(path = "table/{tableName}")
-    @Codec(decoder = RecordSizeDecoder.class)
+    @Codec(decoder = { RecordSizeDecoder.class, InvalidContentDecoder.class })
     @Documentation("read record from the table according to the data set definition")
     long estimateRecordSize(@Path("tableName") String tableName,
             @Header(HEADER_Authorization) String auth,
@@ -96,7 +97,7 @@ public interface TableApiClient extends HttpClient {
     }
 
     @Request(path = "table/{tableName}", method = "POST")
-    @Codec(encoder = ObjectMapEncoder.class, decoder = ObjectMapDecoder.class)
+    @Codec(encoder = JsonEncoder.class, decoder = { JsonDecoder.class, InvalidContentDecoder.class })
     @Documentation("Create a record to table")
     Response<ObjectMap> create(@Path("tableName") String tableName,
             @Header(HEADER_Authorization) String auth,
@@ -114,7 +115,7 @@ public interface TableApiClient extends HttpClient {
     }
 
     @Request(path = "table/{tableName}/{sysId}", method = "PUT")
-    @Codec(encoder = ObjectMapEncoder.class, decoder = ObjectMapDecoder.class)
+    @Codec(encoder = JsonEncoder.class, decoder = { JsonDecoder.class, InvalidContentDecoder.class })
     @Documentation("update a record in table using it sys_id")
     Response<ObjectMap> update(@Path("tableName") String tableName, @Path("sysId") String sysId,
             @Header(HEADER_Authorization) String auth,
@@ -133,7 +134,7 @@ public interface TableApiClient extends HttpClient {
     }
 
     @Request(path = "table/{tableName}/{sysId}", method = "DELETE")
-    @Codec(decoder = ObjectMapDecoder.class)
+    @Codec(decoder = { JsonDecoder.class, InvalidContentDecoder.class })
     @Documentation("delete a record from a table by it sys_id")
     Response<Void> delete(@Path("tableName") String tableName, @Path("sysId") String sysId,
             @Header(HEADER_Authorization) String auth);

@@ -1,6 +1,7 @@
 package org.talend.components.servicenow.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.talend.components.servicenow.ServiceNow.API_URL;
 import static org.talend.components.servicenow.ServiceNow.PASSWORD;
 import static org.talend.components.servicenow.ServiceNow.USER;
@@ -35,6 +36,9 @@ public class TableApiClientTest {
     @Rule
     public ExceptionVerifier<HttpException> exceptionVerifier = new ExceptionVerifier<>();
 
+    @Rule
+    public ExceptionVerifier<RuntimeException> runtimeExceptionVerifier = new ExceptionVerifier<>();
+
     @Test
     public void healthCheckInvalidCredentials() {
 
@@ -60,6 +64,22 @@ public class TableApiClientTest {
         TableApiClient client = new HttpClientFactoryImpl("test").create(TableApiClient.class, null);
         client.base(configuration.getDataStore().getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         client.healthCheck(configuration.getDataStore().getAuthorizationHeader());
+    }
+
+    @Test
+    public void unsupportedResponseType() {
+        runtimeExceptionVerifier.assertWith(e -> {
+            assertTrue(RuntimeException.class.isInstance(e));
+            assertEquals(
+                    "Your ServiceSow instance is down or hibernating. Please check that your instance is up and running !",
+                    e.getMessage());
+        });
+        final TableDataSet configuration = new TableDataSet();
+        configuration.setDataStore(new BasicAuthConfig(API_URL, USER, PASSWORD));
+        TableApiClient client = new HttpClientFactoryImpl("test").create(TableApiClient.class, null);
+        client.base(configuration.getDataStore().getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
+        client.healthCheck(configuration.getDataStore().getAuthorizationHeader());
+
     }
 
 }

@@ -2,8 +2,6 @@ package org.talend.components.servicenow.configuration;
 
 import java.io.Serializable;
 
-import org.talend.components.servicenow.configuration.BasicAuthConfig;
-import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
@@ -13,8 +11,7 @@ import lombok.Data;
 @Data
 @GridLayout({
         @GridLayout.Row({ "dataStore" }),
-        @GridLayout.Row({ "commonConfig" }),
-        @GridLayout.Row({ "actionOnTable" })
+        @GridLayout.Row({ "commonConfig", "actionOnTable" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
         @GridLayout.Row({ "commonConfig" }),

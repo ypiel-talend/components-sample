@@ -1,4 +1,4 @@
-package org.talend.components.servicenow.service.http.codec.json;
+package org.talend.components.servicenow.service.http.codec;
 
 import static java.util.stream.Collectors.toList;
 
@@ -14,9 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.processor.data.FlatObjectMap;
 import org.talend.sdk.component.api.processor.data.ObjectMap;
+import org.talend.sdk.component.api.service.http.ContentType;
 import org.talend.sdk.component.api.service.http.Decoder;
 
-public class ObjectMapDecoder implements Decoder {
+@ContentType("application/json")
+public class JsonDecoder implements Decoder {
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -48,21 +50,19 @@ public class ObjectMapDecoder implements Decoder {
             }
         }
 
-        if (!ObjectMap.class.isAssignableFrom((Class<?>) expectedType)) {
-            throw new RuntimeException("Unsupported type " + expectedType.getTypeName()
-                    + ". Expected " + ObjectMap.class.getCanonicalName());
-        }
-
-        try {
-            Map<String, Object> result = mapper.readValue(value, HashMap.class);
-            if (result != null && result.containsKey("result")) {
-                return new FlatObjectMap((Map<String, Object>) result.get("result"));
+        if (ObjectMap.class.isAssignableFrom((Class<?>) expectedType)) {
+            try {
+                Map<String, Object> result = mapper.readValue(value, HashMap.class);
+                if (result != null && result.containsKey("result")) {
+                    return new FlatObjectMap((Map<String, Object>) result.get("result"));
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-        return null;
 
+        throw new RuntimeException("Unsupported type " + expectedType.getTypeName()
+                + ". Expected " + ObjectMap.class.getCanonicalName());
     }
 
     private boolean isObjectMapList(final Type expectedType) {
