@@ -3,16 +3,20 @@ package org.talend.components.widget.source;
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.action.Checkable;
+import org.talend.sdk.component.api.configuration.action.Validable;
 import org.talend.sdk.component.api.configuration.constraint.Pattern;
+import org.talend.sdk.component.api.configuration.constraint.Required;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
 
 @GridLayout({
     @GridLayout.Row({ "url" }),
-    @GridLayout.Row({ "user", "password" }),
+    @GridLayout.Row({ "user", "password", "passwordConfirmation" }),
 })
 @DataStore("Connection")
+@Checkable("testConnection")
 public class ConnectionConfiguration implements Serializable {
 
     @Option
@@ -24,13 +28,19 @@ public class ConnectionConfiguration implements Serializable {
 
     @Option
     @Credential
+    @Required
+    @Validable(value = "pwdConfirm", parameters = {".", "passwordConfirmation"})
     private String password;
+    
+    @Option
+    @Credential
+    private String passwordConfirmation;
 
     public String getURL() {
         return url;
     }
 
-    public ConnectionConfiguration setURL(String URL) {
+    public ConnectionConfiguration setURL(final String URL) {
         this.url = URL;
         return this;
     }
@@ -39,7 +49,7 @@ public class ConnectionConfiguration implements Serializable {
         return user;
     }
 
-    public ConnectionConfiguration setUser(String User) {
+    public ConnectionConfiguration setUser(final String User) {
         this.user = User;
         return this;
     }
@@ -48,7 +58,7 @@ public class ConnectionConfiguration implements Serializable {
         return password;
     }
 
-    public ConnectionConfiguration setPassword(String Password) {
+    public ConnectionConfiguration setPassword(final String Password) {
         this.password = Password;
         return this;
     }
