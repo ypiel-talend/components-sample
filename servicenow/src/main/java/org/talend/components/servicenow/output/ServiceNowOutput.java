@@ -32,7 +32,7 @@ public class ServiceNowOutput implements Serializable {
 
     private final OutputConfig outputConfig;
 
-    private TableApiClient client;
+    TableApiClient client;
 
     public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig, TableApiClient client) {
         this.outputConfig = outputConfig;

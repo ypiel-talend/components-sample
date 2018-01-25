@@ -1,5 +1,6 @@
 package org.talend.components.servicenow.output;
 
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.talend.components.servicenow.ServiceNow.API_URL;
@@ -28,6 +29,8 @@ import org.talend.sdk.component.junit.JoinInputFactory;
 import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApi;
 import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApiPerMethodConfigurator;
+import org.talend.sdk.component.runtime.manager.reflect.ParameterModelService;
+import org.talend.sdk.component.runtime.manager.reflect.ReflectionService;
 import org.talend.sdk.component.runtime.manager.service.HttpClientFactoryImpl;
 import org.talend.sdk.component.runtime.output.Processor;
 
@@ -72,17 +75,6 @@ public class ServiceNowOutputTest {
 
     @Test
     public void updateRecord() {
-        String randomNumber = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
-        Map<String, Object> record = new HashMap<String, Object>() {{
-            put("number", randomNumber);
-        }};
-        TableApiClient client = new HttpClientFactoryImpl("test").create(TableApiClient.class, null);
-        client.base(ds.getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
-        final ObjectMap newRec =
-                client.create("incident", ds.getAuthorizationHeader(), false, new FlatObjectMap(record));
-        String id = (String) newRec.get("sys_id");
-
-        //
         final OutputConfig configuration = new OutputConfig();
         configuration.setDataStore(ds);
         configuration.setActionOnTable(OutputConfig.ActionOnTable.Update);
@@ -91,6 +83,17 @@ public class ServiceNowOutputTest {
         apiConfig.setTableName(CommonConfig.Tables.incident);
         configuration.setCommonConfig(apiConfig);
         final Processor processor = COMPONENT_FACTORY.createProcessor(ServiceNowOutput.class, configuration);
+
+        String randomNumber = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+        Map<String, Object> record = new HashMap<String, Object>() {{
+            put("number", randomNumber);
+        }};
+        TableApiClient client = COMPONENT_FACTORY.findService(TableApiClient.class);
+        client.base(ds.getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
+        final ObjectMap newRec =
+                client.create("incident", ds.getAuthorizationHeader(), false, new FlatObjectMap(record));
+        String id = (String) newRec.get("sys_id");
+
         String randomNumberUpdate = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
         Map<String, Object> recordUpdate = new HashMap<String, Object>() {{
             put("sys_id", id);
@@ -103,24 +106,16 @@ public class ServiceNowOutputTest {
 
     @Test
     public void delete() {
+
         Map<String, Object> record = new HashMap<String, Object>() {{
             put("number", "ABCDEFG123");
         }};
-        TableApiClient client = new HttpClientFactoryImpl("test").create(TableApiClient.class, null);
+        TableApiClient client = COMPONENT_FACTORY.findService(TableApiClient.class);
         client.base(ds.getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         final ObjectMap newRec =
                 client.create("incident", ds.getAuthorizationHeader(), false, new FlatObjectMap(record));
         String id = (String) newRec.get("sys_id");
         deleteRecordById(id);
-
-        //        exceptionVerifier.assertWith(e -> {
-        //            assertEquals(404, e.getResponse().status());
-        //            final TableApiClient.Status status =
-        //                    (TableApiClient.Status) e.getResponse().error(TableApiClient.Status.class);
-        //            assertEquals("No Record found", status.getError().getMessage());
-        //            assertEquals("Record doesn't exist or ACL restricts the record retrieval", status.getError().getDetail());
-        //        });
-        //        deleteRecordById(id);
     }
 
     @Test

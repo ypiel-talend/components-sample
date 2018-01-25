@@ -23,18 +23,22 @@ import org.talend.components.servicenow.configuration.QueryBuilder;
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.service.schema.Schema;
+import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApi;
 import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApiPerMethodConfigurator;
-import org.talend.sdk.component.runtime.manager.service.HttpClientFactoryImpl;
 
 public class ServiceNowTableServiceTest {
 
     @ClassRule
+    public static final SimpleComponentRule COMPONENT_FACTORY =
+            new SimpleComponentRule("org.talend.components.servicenow");
+
+    @ClassRule
     public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
 
-//    static {
-//        System.setProperty("talend.junit.http.capture", "true");
-//    }
+    //    static {
+    //        System.setProperty("talend.junit.http.capture", "true");
+    //    }
 
     @Rule
     public final JUnit4HttpApiPerMethodConfigurator configurator = new JUnit4HttpApiPerMethodConfigurator(API);
@@ -46,7 +50,7 @@ public class ServiceNowTableServiceTest {
     @Before
     public void before() {
         dataStore = new BasicAuthConfig(API_URL, USER, PASSWORD);
-        client = new HttpClientFactoryImpl("test").create(TableApiClient.class, null);
+        client = COMPONENT_FACTORY.findService(TableApiClient.class);
     }
 
     @Test
