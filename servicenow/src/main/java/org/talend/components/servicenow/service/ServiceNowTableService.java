@@ -25,7 +25,8 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_V
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
+
+import javax.json.JsonObject;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.CommonConfig;
@@ -34,7 +35,6 @@ import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.components.servicenow.source.ServiceNowTableSource;
 import org.talend.sdk.component.api.configuration.Option;
-import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.Service;
 import org.talend.sdk.component.api.service.asyncvalidation.AsyncValidation;
 import org.talend.sdk.component.api.service.asyncvalidation.ValidationResult;
@@ -49,8 +49,6 @@ import org.talend.sdk.component.api.service.schema.Type;
 
 @Service
 public class ServiceNowTableService {
-
-    private volatile Map<String, Values> cachedTableFields;
 
     @HealthCheck(value = NAME)
     public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dt, TableApiClient client) {
@@ -90,12 +88,12 @@ public class ServiceNowTableService {
         }
         final ServiceNowTableSource source = new ServiceNowTableSource(dataSet, i18n, client);
         source.init();
-        final ObjectMap record = source.next();
-        if (record == null || record.keys() == null || record.keys().isEmpty()) {
+        final JsonObject record = source.next();
+        if (record == null || record.keySet().isEmpty()) {
             return new Schema(emptyList());
         }
 
-        return new Schema(record.keys()
+        return new Schema(record.keySet()
                 .stream()
                 .map(k -> new Schema.Entry(k, Type.STRING))
                 .collect(toList()));

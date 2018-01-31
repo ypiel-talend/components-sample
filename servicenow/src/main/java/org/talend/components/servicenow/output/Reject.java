@@ -2,7 +2,7 @@ package org.talend.components.servicenow.output;
 
 import java.io.Serializable;
 
-import org.talend.sdk.component.api.processor.data.ObjectMap;
+import javax.json.JsonObject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +19,6 @@ public class Reject implements Serializable {
 
     private String errorDetail;
 
-    private ObjectMap record;
+    private JsonObject record;
 
 }

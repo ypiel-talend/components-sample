@@ -6,6 +6,7 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_V
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.json.JsonObject;
 
 import org.talend.components.servicenow.configuration.OutputConfig;
 import org.talend.components.servicenow.service.http.TableApiClient;
@@ -18,7 +19,6 @@ import org.talend.sdk.component.api.processor.Input;
 import org.talend.sdk.component.api.processor.Output;
 import org.talend.sdk.component.api.processor.OutputEmitter;
 import org.talend.sdk.component.api.processor.Processor;
-import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.http.HttpException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,11 +45,11 @@ public class ServiceNowOutput implements Serializable {
     }
 
     @ElementListener
-    public void onNext(@Input final ObjectMap record,
-            final @Output OutputEmitter<ObjectMap> success,
+    public void onNext(@Input final JsonObject record,
+            final @Output OutputEmitter<JsonObject> success,
             final @Output("reject") OutputEmitter<Reject> reject) {
         try {
-            ObjectMap newRec;
+            JsonObject newRec;
             switch (outputConfig.getActionOnTable()) {
             case Insert:
                 newRec = client.create(outputConfig.getCommonConfig().getTableName().name(),
@@ -61,7 +61,7 @@ public class ServiceNowOutput implements Serializable {
                 }
                 break;
             case Update:
-                final String sysIdUpdate = (String) record.get("sys_id");
+                final String sysIdUpdate = (String) record.getString("sys_id");
                 if (sysIdUpdate == null || sysIdUpdate.isEmpty()) {
                     reject.emit(new Reject(1, "sys_id is required to update the record", null, record));
                 } else {
@@ -75,7 +75,7 @@ public class ServiceNowOutput implements Serializable {
                 }
                 break;
             case Delete:
-                final String sysId = (String) record.get("sys_id");
+                final String sysId = (String) record.getString("sys_id");
                 if (sysId == null || sysId.isEmpty()) {
                     reject.emit(new Reject(2, "sys_id is required to delete the record", null, record));
                 } else {
@@ -89,11 +89,10 @@ public class ServiceNowOutput implements Serializable {
             }
 
         } catch (HttpException httpError) {
-            final TableApiClient.Status status =
-                    (TableApiClient.Status) httpError.getResponse().error(TableApiClient.Status.class);
+            final JsonObject status = (JsonObject) httpError.getResponse().error(JsonObject.class);
             reject.emit(new Reject(httpError.getResponse().status(),
-                    status.getError().getMessage(),
-                    status.getError().getDetail(),
+                    status.getJsonObject("error").getString("message"),
+                    status.getJsonObject("error").getString("detail"),
                     record));
         }
 

@@ -7,6 +7,8 @@ import static org.talend.sdk.component.junit.SimpleFactory.configurationByExampl
 
 import java.io.Serializable;
 
+import javax.json.JsonObject;
+
 import org.apache.beam.sdk.PipelineResult;
 import org.apache.beam.sdk.testing.PAssert;
 import org.apache.beam.sdk.testing.TestPipeline;
@@ -19,7 +21,6 @@ import org.junit.Test;
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.components.servicenow.configuration.TableDataSet;
-import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.junit.RecordAsserts;
 import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.runtime.beam.TalendIO;
@@ -54,14 +55,14 @@ public class ServiceNowMapperBeamTest implements Serializable {
                 .orElseThrow(() -> new RuntimeException("fail"));
 
         // create a pipeline starting with the mapper
-        final PCollection<ObjectMap> out = pipeline.apply(TalendIO.read(mapper));
+        final PCollection<Serializable> out = pipeline.apply(TalendIO.read(mapper));
         PAssert.that(out)
-                .satisfies(new SimpleFunction<Iterable<ObjectMap>, Void>() {
+                .satisfies(new SimpleFunction<Iterable<Serializable>, Void>() {
 
                     @Override
-                    public Void apply(final Iterable<ObjectMap> input) {
-                        input.forEach((RecordAsserts.SerializableConsumer<ObjectMap>) tableRecord -> {
-                            assertNotNull(tableRecord.get("number"));
+                    public Void apply(final Iterable<Serializable> input) {
+                        input.forEach((RecordAsserts.SerializableConsumer<Serializable>) tableRecord -> {
+                            assertNotNull(JsonObject.class.cast(tableRecord).getString("number"));
                         });
                         return null;
                     }
