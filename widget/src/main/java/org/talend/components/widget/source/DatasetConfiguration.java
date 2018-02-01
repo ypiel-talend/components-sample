@@ -31,6 +31,7 @@ import lombok.Data;
 @GridLayout({
     @GridLayout.Row({ "connection" }),
     @GridLayout.Row({ "dataSetName" }),
+    @GridLayout.Row({ "letter" })
 })
 @Data
 public class DatasetConfiguration implements Serializable {
