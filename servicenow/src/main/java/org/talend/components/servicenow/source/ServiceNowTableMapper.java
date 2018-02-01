@@ -7,6 +7,7 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_V
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.LongStream;
 
 import javax.annotation.PostConstruct;
@@ -88,11 +89,14 @@ public class ServiceNowTableMapper implements Serializable {
         return LongStream.range(0, nbBundle).mapToObj(i -> {
             final int from = (int) (bundleCount * i);
             final int to = (i == nbBundle - 1) ? requestedSize : (int) (from + bundleCount);
+            if (to == 0) {
+                return null;
+            }
             final TableDataSet dataSetChunk = new TableDataSet(ds);
             dataSetChunk.setOffset(from);
             dataSetChunk.setMaxRecords(to);
             return new ServiceNowTableMapper(dataSetChunk, service, i18n, tableAPI);
-        }).collect(toList());
+        }).filter(Objects::nonNull).collect(toList());
     }
 
     @Emitter

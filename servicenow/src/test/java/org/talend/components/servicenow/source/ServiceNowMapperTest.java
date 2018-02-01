@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.json.JsonObject;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -22,7 +24,6 @@ import org.talend.components.servicenow.configuration.CommonConfig;
 import org.talend.components.servicenow.configuration.OrderBuilder;
 import org.talend.components.servicenow.configuration.QueryBuilder;
 import org.talend.components.servicenow.configuration.TableDataSet;
-import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApi;
 import org.talend.sdk.component.junit.http.junit4.JUnit4HttpApiPerMethodConfigurator;
@@ -36,8 +37,6 @@ public class ServiceNowMapperTest {
 
     @ClassRule
     public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
-
-
 
     //    static {
     //        System.setProperty("talend.junit.http.capture", "true");
@@ -68,7 +67,7 @@ public class ServiceNowMapperTest {
                         configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail"));
 
-        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 2000, 8)
+        final List<JsonObject> serviceNowRecords = COMPONENT_FACTORY.collect(JsonObject.class, mapper, 2000, 8)
                 .collect(toList());
         assertEquals(configuration.getMaxRecords(), serviceNowRecords.size());
         assertNotNull(serviceNowRecords.get(0).get("number"));
@@ -95,7 +94,7 @@ public class ServiceNowMapperTest {
                 configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
 
-        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 1000, 2)
+        final List<JsonObject> serviceNowRecords = COMPONENT_FACTORY.collect(JsonObject.class, mapper, 1000, 2)
                 .collect(toList());
         assertEquals(configuration.getMaxRecords(), serviceNowRecords.size());
         assertNotNull(serviceNowRecords.get(0).get("number"));
@@ -119,12 +118,12 @@ public class ServiceNowMapperTest {
         final Mapper mapper = COMPONENT_FACTORY.asManager().findMapper("ServiceNow", "ServiceNowInput", 1,
                 configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
-        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 2, 1)
+        final List<JsonObject> serviceNowRecords = COMPONENT_FACTORY.collect(JsonObject.class, mapper, 2, 1)
                 .collect(toList());
 
         assertEquals(1, serviceNowRecords.size());
         assertNotNull(serviceNowRecords.get(0).get("number"));
-        assertEquals("INC0000060", serviceNowRecords.get(0).get("number"));
+        assertEquals("INC0000060", serviceNowRecords.get(0).getString("number"));
     }
 
     @Test
@@ -154,7 +153,7 @@ public class ServiceNowMapperTest {
                 configurationByExample(configuration, "tableDataSet"))
                 .orElseThrow(() -> new RuntimeException("fail, can't find configuration"));
 
-        final List<ObjectMap> serviceNowRecords = COMPONENT_FACTORY.collect(ObjectMap.class, mapper, 1000, 2)
+        final List<JsonObject> serviceNowRecords = COMPONENT_FACTORY.collect(JsonObject.class, mapper, 1000, 2)
                 .collect(toList());
         assertEquals(6, serviceNowRecords.size());
         assertNotNull(serviceNowRecords.get(0).get("number"));

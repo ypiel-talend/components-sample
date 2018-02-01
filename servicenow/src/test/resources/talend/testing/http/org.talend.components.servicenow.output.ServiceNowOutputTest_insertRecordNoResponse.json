@@ -1,0 +1,28 @@
+[
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"true",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive",
+        "Content-Length":"22",
+        "Content-Type":"application/json"
+      },
+      "method":"POST",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_exclude_reference_link=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"cf1be6c1db80",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=C71BE6C1DB8013004A4576EFBF9619D0;Secure; Expires=Thu, 01-Feb-2018 13:56:30 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 19-Feb-2086 16:40:37 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=D3DF5EF8959DCEE7CA2906B20B2985D9;Secure; Path=/; HttpOnly",
+        "Location":"https://dev37214.service-now.com/api/now/v2/table/incident/c31bae01db4013004a4576efbf961982"
+      },
+      "payload":"",
+      "status":201
+    }
+  }
+]

@@ -6,6 +6,9 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_V
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.json.JsonBuilderFactory;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 import org.talend.components.servicenow.configuration.OutputConfig;
 import org.talend.components.servicenow.service.http.TableApiClient;
@@ -18,7 +21,6 @@ import org.talend.sdk.component.api.processor.Input;
 import org.talend.sdk.component.api.processor.Output;
 import org.talend.sdk.component.api.processor.OutputEmitter;
 import org.talend.sdk.component.api.processor.Processor;
-import org.talend.sdk.component.api.processor.data.ObjectMap;
 import org.talend.sdk.component.api.service.http.HttpException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +34,15 @@ public class ServiceNowOutput implements Serializable {
 
     private final OutputConfig outputConfig;
 
+    private final JsonBuilderFactory factory;
+
     TableApiClient client;
 
-    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig, TableApiClient client) {
+    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig, TableApiClient client,
+            JsonBuilderFactory factory) {
         this.outputConfig = outputConfig;
         this.client = client;
+        this.factory = factory;
     }
 
     @PostConstruct
@@ -45,37 +51,45 @@ public class ServiceNowOutput implements Serializable {
     }
 
     @ElementListener
-    public void onNext(@Input final ObjectMap record,
-            final @Output OutputEmitter<ObjectMap> success,
+    public void onNext(@Input final JsonObject record,
+            final @Output OutputEmitter<JsonObject> success,
             final @Output("reject") OutputEmitter<Reject> reject) {
         try {
-            ObjectMap newRec;
+            JsonObject newRec;
+            String sysId = null;
+            if (record.containsKey("sys_id")) {
+                sysId = record.getString("sys_id");
+            }
             switch (outputConfig.getActionOnTable()) {
             case Insert:
+                final JsonObject copy = sysId != null && sysId.isEmpty() ?
+                        record.entrySet().stream()
+                                .filter(e -> !e.getKey().equals("sys_id"))
+                                .collect(factory::createObjectBuilder,
+                                        (b, a) -> b.add(a.getKey(), a.getValue()),
+                                        JsonObjectBuilder::addAll).build() : record;
                 newRec = client.create(outputConfig.getCommonConfig().getTableName().name(),
                         outputConfig.getDataStore().getAuthorizationHeader(),
                         outputConfig.isNoResponseBody(),
-                        record);
-                if (!outputConfig.isNoResponseBody() && newRec != null) {
+                        copy);
+                if (newRec != null) {
                     success.emit(newRec);
                 }
                 break;
             case Update:
-                final String sysIdUpdate = (String) record.get("sys_id");
-                if (sysIdUpdate == null || sysIdUpdate.isEmpty()) {
+                if (sysId == null || sysId.isEmpty()) {
                     reject.emit(new Reject(1, "sys_id is required to update the record", null, record));
                 } else {
-                    newRec = client.update(outputConfig.getCommonConfig().getTableName().name(), sysIdUpdate,
+                    newRec = client.update(outputConfig.getCommonConfig().getTableName().name(), sysId,
                             outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(),
                             record);
 
-                    if (!outputConfig.isNoResponseBody() && newRec != null) {
+                    if (newRec != null) {
                         success.emit(newRec);
                     }
                 }
                 break;
             case Delete:
-                final String sysId = (String) record.get("sys_id");
                 if (sysId == null || sysId.isEmpty()) {
                     reject.emit(new Reject(2, "sys_id is required to delete the record", null, record));
                 } else {
@@ -89,13 +103,15 @@ public class ServiceNowOutput implements Serializable {
             }
 
         } catch (HttpException httpError) {
-            final TableApiClient.Status status =
-                    (TableApiClient.Status) httpError.getResponse().error(TableApiClient.Status.class);
-            reject.emit(new Reject(httpError.getResponse().status(),
-                    status.getError().getMessage(),
-                    status.getError().getDetail(),
-                    record));
+            final JsonObject error = (JsonObject) httpError.getResponse().error(JsonObject.class);
+            if (error != null && error.containsKey("error")) {
+                reject.emit(new Reject(httpError.getResponse().status(),
+                        error.getJsonObject("error").getString("message"),
+                        error.getJsonObject("error").getString("detail"),
+                        record));
+            } else {
+                reject.emit(new Reject(httpError.getResponse().status(), "unknown", "unknown", record));
+            }
         }
-
     }
 }

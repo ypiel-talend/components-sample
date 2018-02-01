@@ -5,9 +5,11 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_B
 import static org.talend.components.servicenow.service.http.TableApiClient.API_VERSION;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonValue;
 
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.messages.Messages;
@@ -15,7 +17,6 @@ import org.talend.components.servicenow.service.http.TableApiClient;
 import org.talend.sdk.component.api.base.BufferizedProducerSupport;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.input.Producer;
-import org.talend.sdk.component.api.processor.data.ObjectMap;
 
 public class ServiceNowTableSource implements Serializable {
 
@@ -23,7 +24,7 @@ public class ServiceNowTableSource implements Serializable {
 
     private final Messages i18n;
 
-    private BufferizedProducerSupport<ObjectMap> bufferedReader;
+    private BufferizedProducerSupport<JsonValue> bufferedReader;
 
     private TableApiClient tableAPI;
 
@@ -44,7 +45,7 @@ public class ServiceNowTableSource implements Serializable {
             }
 
             //Read next page from data set
-            final List<ObjectMap> result = tableAPI.getRecords(ds.getCommonConfig().getTableName().name(),
+            final JsonArray result = tableAPI.getRecords(ds.getCommonConfig().getTableName().name(),
                     ds.getDataStore().getAuthorizationHeader(),
                     ds.buildQuery(),
                     ds.getCommonConfig().getFieldsCommaSeparated(),
@@ -66,7 +67,8 @@ public class ServiceNowTableSource implements Serializable {
     }
 
     @Producer
-    public ObjectMap next() {
-        return bufferedReader.next();
+    public JsonObject next() {
+        final JsonValue next = bufferedReader.next();
+        return next == null ? null : next.asJsonObject();
     }
 }

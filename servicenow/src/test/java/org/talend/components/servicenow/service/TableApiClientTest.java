@@ -8,6 +8,8 @@ import static org.talend.components.servicenow.ServiceNow.USER;
 import static org.talend.components.servicenow.service.http.TableApiClient.API_BASE;
 import static org.talend.components.servicenow.service.http.TableApiClient.API_VERSION;
 
+import javax.json.JsonObject;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -56,10 +58,9 @@ public class TableApiClientTest {
 
         exceptionVerifier.assertWith(e -> {
             assertEquals(401, e.getResponse().status());
-            final TableApiClient.Status status =
-                    (TableApiClient.Status) e.getResponse().error(TableApiClient.Status.class);
-            assertEquals("User Not Authenticated", status.getError().getMessage());
-            assertEquals("Required to provide Auth information", status.getError().getDetail());
+            final JsonObject status = (JsonObject) e.getResponse().error(JsonObject.class);
+            assertEquals("User Not Authenticated", status.getJsonObject("error").getString("message"));
+            assertEquals("Required to provide Auth information", status.getJsonObject("error").getString("detail"));
         });
 
         final TableDataSet configuration = new TableDataSet();
