@@ -6,7 +6,9 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_V
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 import org.talend.components.servicenow.configuration.OutputConfig;
 import org.talend.components.servicenow.service.http.TableApiClient;
@@ -32,11 +34,15 @@ public class ServiceNowOutput implements Serializable {
 
     private final OutputConfig outputConfig;
 
+    private final JsonBuilderFactory factory;
+
     TableApiClient client;
 
-    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig, TableApiClient client) {
+    public ServiceNowOutput(@Option("configuration") final OutputConfig outputConfig, TableApiClient client,
+            JsonBuilderFactory factory) {
         this.outputConfig = outputConfig;
         this.client = client;
+        this.factory = factory;
     }
 
     @PostConstruct
@@ -56,15 +62,16 @@ public class ServiceNowOutput implements Serializable {
             }
             switch (outputConfig.getActionOnTable()) {
             case Insert:
-                if (sysId != null && sysId.isEmpty()) {
-                    // we remove the sys_id from the query if it's empty
-                    // this is a workaround to get the created record
-                    record.remove("sys_id");
-                }
+                final JsonObject copy = sysId != null && sysId.isEmpty() ?
+                        record.entrySet().stream()
+                                .filter(e -> !e.getKey().equals("sys_id"))
+                                .collect(factory::createObjectBuilder,
+                                        (b, a) -> b.add(a.getKey(), a.getValue()),
+                                        JsonObjectBuilder::addAll).build() : record;
                 newRec = client.create(outputConfig.getCommonConfig().getTableName().name(),
                         outputConfig.getDataStore().getAuthorizationHeader(),
                         outputConfig.isNoResponseBody(),
-                        record);
+                        copy);
                 if (newRec != null) {
                     success.emit(newRec);
                 }

@@ -3,6 +3,8 @@ package org.talend.components.servicenow.source;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.talend.components.servicenow.ServiceNow.API_URL;
+import static org.talend.components.servicenow.ServiceNow.PASSWORD;
+import static org.talend.components.servicenow.ServiceNow.USER;
 import static org.talend.sdk.component.junit.SimpleFactory.configurationByExample;
 
 import java.io.Serializable;
@@ -33,20 +35,29 @@ public class ServiceNowMapperBeamTest implements Serializable {
     public static final SimpleComponentRule COMPONENT_FACTORY = new SimpleComponentRule(
             "org.talend.components.servicenow");
 
+    //    @ClassRule
+    //    public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
+
+    //    static {
+    //        System.setProperty("talend.junit.http.capture", "true");
+    //    }
+
     @Rule
     public transient final TestPipeline pipeline = TestPipeline.create();
+    //
+    //    @Rule
+    //    public final JUnit4HttpApiPerMethodConfigurator configurator = new JUnit4HttpApiPerMethodConfigurator(API);
 
     @Test
-    public void produce() {
-        final BasicAuthConfig dataStore = new BasicAuthConfig(API_URL, "",
-                "");
+    public void getRecords() {
+        final BasicAuthConfig dataStore = new BasicAuthConfig(API_URL, USER, PASSWORD);
 
         final TableDataSet configuration = new TableDataSet();
         configuration.setDataStore(dataStore);
         final CommonConfig apiConfig = new CommonConfig();
         apiConfig.setTableName(CommonConfig.Tables.incident);
         configuration.setCommonConfig(apiConfig);
-        configuration.setMaxRecords(10);
+        configuration.setMaxRecords(1);
 
         // We create the component mapper instance using the configuration filled above
         final Mapper mapper = COMPONENT_FACTORY.asManager()
@@ -69,8 +80,7 @@ public class ServiceNowMapperBeamTest implements Serializable {
                 });
 
         // finally run the pipeline and ensure it was successful - i.e. data were validated
-        assertEquals(PipelineResult.State.DONE, pipeline.run()
-                .getState());
+        assertEquals(PipelineResult.State.DONE, pipeline.run().waitUntilFinish());
     }
 
 }
