@@ -18,6 +18,7 @@ package org.talend.components.widget.source;
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.action.Proposable;
 import org.talend.sdk.component.api.configuration.constraint.Max;
 import org.talend.sdk.component.api.configuration.constraint.Min;
 import org.talend.sdk.component.api.configuration.constraint.Required;
@@ -42,4 +43,8 @@ public class DatasetConfiguration implements Serializable {
     @Min(3)
     @Max(12)
     private String dataSetName = "my dataset";
+
+    @Option
+    @Proposable("sample")
+    private String letter = "a";
 }
