@@ -108,10 +108,16 @@ public interface TableApiClient extends HttpClient {
 
     default JsonObject create(String tableName, String auth, boolean noResponseBody, JsonObject record) {
         final Response<JsonObject> resp = create(tableName, auth, noResponseBody, "application/json", true, record);
-        if (resp.status() != 201) {
-            throw new HttpException(resp);
+
+        if (noResponseBody) {
+            return null; //no content. can be returned when noResponseBody is a true
         }
-        return resp.body().getJsonObject("result");
+
+        if (resp.status() == 201) {
+            return resp.body().getJsonObject("result");
+        }
+
+        throw new HttpException(resp);
     }
 
     @Request(path = "table/{tableName}/{sysId}", method = "PUT")

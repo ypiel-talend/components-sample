@@ -21,6 +21,10 @@ public class InvalidContentDecoder implements Decoder {
 
     @Override
     public Object decode(final byte[] value, final Type expectedType) {
+        if (value == null || value.length == 0) {
+            return null;
+        }
+
         throw new RuntimeException(i18n.invalidContent());
     }
 }

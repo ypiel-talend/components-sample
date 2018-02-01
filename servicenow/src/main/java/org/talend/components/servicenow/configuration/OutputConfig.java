@@ -31,7 +31,7 @@ public class OutputConfig implements Serializable {
 
     @Option
     @Documentation("Activate or deactivate the response body after the action. Default is true")
-    private boolean noResponseBody = true;
+    private boolean noResponseBody = false;
 
     public enum ActionOnTable {
         Insert,

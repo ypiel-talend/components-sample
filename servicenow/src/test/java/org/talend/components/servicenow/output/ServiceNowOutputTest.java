@@ -1,7 +1,10 @@
 package org.talend.components.servicenow.output;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.talend.components.servicenow.ServiceNow.API_URL;
 import static org.talend.components.servicenow.ServiceNow.PASSWORD;
 import static org.talend.components.servicenow.ServiceNow.USER;
@@ -55,18 +58,68 @@ public class ServiceNowOutputTest {
         final OutputConfig configuration = new OutputConfig();
         configuration.setDataStore(ds);
         configuration.setActionOnTable(OutputConfig.ActionOnTable.Insert);
-        configuration.setNoResponseBody(false);
         final CommonConfig apiConfig = new CommonConfig();
         apiConfig.setTableName(CommonConfig.Tables.incident);
         configuration.setCommonConfig(apiConfig);
         final Processor processor = COMPONENT_FACTORY.createProcessor(ServiceNowOutput.class, configuration);
-        JsonObject record = Json.createObjectBuilder()
-                .add("number", "ABCDEF123")
-                .build();
+        JsonObject record = Json.createObjectBuilder().add("number", "ABCDEF123").build();
 
-        final JoinInputFactory joinInputFactory = new JoinInputFactory()
-                .withInput("__default__", singletonList(record));
+        final JoinInputFactory joinInputFactory =
+                new JoinInputFactory().withInput("__default__", singletonList(record));
         final SimpleComponentRule.Outputs outputs = COMPONENT_FACTORY.collect(processor, joinInputFactory);
+        final List<JsonObject> insertedRecords = outputs.get(JsonObject.class, "__default__");
+        assertEquals(1, insertedRecords.size());
+        assertNotNull(insertedRecords.get(0).get("sys_id"));
+        assertEquals("ABCDEF123", insertedRecords.get(0).getString("number"));
+    }
+
+    @Test
+    public void insertRecordNoResponse() {
+        final OutputConfig configuration = new OutputConfig();
+        configuration.setDataStore(ds);
+        configuration.setActionOnTable(OutputConfig.ActionOnTable.Insert);
+        configuration.setNoResponseBody(true);
+        final CommonConfig apiConfig = new CommonConfig();
+        apiConfig.setTableName(CommonConfig.Tables.incident);
+        configuration.setCommonConfig(apiConfig);
+        final Processor processor = COMPONENT_FACTORY.createProcessor(ServiceNowOutput.class, configuration);
+        JsonObject record = Json.createObjectBuilder().add("number", "ABCDEF123").build();
+
+        final JoinInputFactory joinInputFactory =
+                new JoinInputFactory().withInput("__default__", singletonList(record));
+        final SimpleComponentRule.Outputs outputs = COMPONENT_FACTORY.collect(processor, joinInputFactory);
+        final List<JsonObject> insertedRecords = outputs.get(JsonObject.class, "__default__");
+        assertNull(insertedRecords);
+    }
+
+    @Test
+    public void insertRecordError() {
+        final OutputConfig configuration = new OutputConfig();
+        configuration.setDataStore(ds);
+        configuration.setActionOnTable(OutputConfig.ActionOnTable.Insert);
+        final CommonConfig apiConfig = new CommonConfig();
+        apiConfig.setTableName(CommonConfig.Tables.incident);
+        configuration.setCommonConfig(apiConfig);
+        final Processor processor = COMPONENT_FACTORY.createProcessor(ServiceNowOutput.class, configuration);
+        JsonObject record = Json.createObjectBuilder().add("number", "GFHFGHTNBGF").build();
+        JsonObject recordTobeRejected = Json.createObjectBuilder()
+                .add("sys_id", "00aaae01db4013004a4576efbf96197f")
+                .add("number", "2135483521432").build();
+
+        final JoinInputFactory joinInputFactory =
+                new JoinInputFactory().withInput("__default__", asList(record, recordTobeRejected));
+        final SimpleComponentRule.Outputs outputs = COMPONENT_FACTORY.collect(processor, joinInputFactory);
+
+        final List<JsonObject> insertedRecords = outputs.get(JsonObject.class, "__default__");
+        assertEquals(1, insertedRecords.size());
+        assertNotNull(insertedRecords.get(0).get("sys_id"));
+        assertEquals("GFHFGHTNBGF", insertedRecords.get(0).getString("number"));
+
+        final List<Reject> rejectedRecords = outputs.get(Reject.class, "reject");
+        assertEquals(1, rejectedRecords.size());
+        assertEquals("Operation Failed", rejectedRecords.get(0).getErrorMessage());
+        assertEquals("Error during insert of incident (2135483521432)", rejectedRecords.get(0).getErrorDetail());
+        assertEquals("2135483521432", rejectedRecords.get(0).getRecord().getString("number"));
     }
 
     @Test

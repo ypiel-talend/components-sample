@@ -4,6 +4,6 @@ public interface ServiceNow {
 
     String API_URL = "https://dev37214.service-now.com";
     String USER = "admin";
-    String PASSWORD = "xxx";
+    String PASSWORD = "SwaJrGQA7pNZ";
 
 }

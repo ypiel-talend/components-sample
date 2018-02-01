@@ -50,22 +50,30 @@ public class ServiceNowOutput implements Serializable {
             final @Output("reject") OutputEmitter<Reject> reject) {
         try {
             JsonObject newRec;
+            String sysId = null;
+            if (record.containsKey("sys_id")) {
+                sysId = record.getString("sys_id");
+            }
             switch (outputConfig.getActionOnTable()) {
             case Insert:
+                if (sysId != null && sysId.isEmpty()) {
+                    // we remove the sys_id from the query if it's empty
+                    // this is a workaround to get the created record
+                    record.remove("sys_id");
+                }
                 newRec = client.create(outputConfig.getCommonConfig().getTableName().name(),
                         outputConfig.getDataStore().getAuthorizationHeader(),
                         outputConfig.isNoResponseBody(),
                         record);
-                if (!outputConfig.isNoResponseBody() && newRec != null) {
+                if (newRec != null) {
                     success.emit(newRec);
                 }
                 break;
             case Update:
-                final String sysIdUpdate = (String) record.getString("sys_id");
-                if (sysIdUpdate == null || sysIdUpdate.isEmpty()) {
+                if (sysId == null || sysId.isEmpty()) {
                     reject.emit(new Reject(1, "sys_id is required to update the record", null, record));
                 } else {
-                    newRec = client.update(outputConfig.getCommonConfig().getTableName().name(), sysIdUpdate,
+                    newRec = client.update(outputConfig.getCommonConfig().getTableName().name(), sysId,
                             outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(),
                             record);
 
@@ -75,7 +83,6 @@ public class ServiceNowOutput implements Serializable {
                 }
                 break;
             case Delete:
-                final String sysId = (String) record.getString("sys_id");
                 if (sysId == null || sysId.isEmpty()) {
                     reject.emit(new Reject(2, "sys_id is required to delete the record", null, record));
                 } else {
@@ -90,19 +97,14 @@ public class ServiceNowOutput implements Serializable {
 
         } catch (HttpException httpError) {
             final JsonObject error = (JsonObject) httpError.getResponse().error(JsonObject.class);
-            if (error != null) {
+            if (error != null && error.containsKey("error")) {
                 reject.emit(new Reject(httpError.getResponse().status(),
                         error.getJsonObject("error").getString("message"),
                         error.getJsonObject("error").getString("detail"),
                         record));
             } else {
-                reject.emit(new Reject(httpError.getResponse().status(),
-                        "unknown",
-                        "unknown",
-                        record));
+                reject.emit(new Reject(httpError.getResponse().status(), "unknown", "unknown", record));
             }
-
         }
-
     }
 }

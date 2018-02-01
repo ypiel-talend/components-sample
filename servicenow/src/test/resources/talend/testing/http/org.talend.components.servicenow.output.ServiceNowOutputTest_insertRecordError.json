@@ -1,0 +1,61 @@
+[
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"false",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive",
+        "Content-Length":"24",
+        "Content-Type":"application/json"
+      },
+      "method":"POST",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_exclude_reference_link=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"06dce605db80",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=C2DC6205DB8013004A4576EFBF9619B6;Secure; Expires=Thu, 01-Feb-2018 14:04:05 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 19-Feb-2086 16:48:12 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=DEDD82AFDE878F2A50CA57EF6B722978;Secure; Path=/; HttpOnly",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Location":"https://dev37214.service-now.com/api/now/v2/table/incident/82dc6205db4013004a4576efbf961939",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"result\":{\"parent\":\"\",\"made_sla\":\"true\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2018-02-01 13:34:05\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"GFHFGHTNBGF\",\"resolved_by\":\"\",\"sys_updated_by\":\"admin\",\"opened_by\":\"6816f79cc0a8016401c5a33be04be441\",\"user_input\":\"\",\"sys_created_on\":\"2018-02-01 13:34:05\",\"sys_domain\":\"global\",\"state\":\"1\",\"sys_created_by\":\"admin\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"\",\"closed_at\":\"\",\"cmdb_ci\":\"\",\"delivery_plan\":\"\",\"impact\":\"3\",\"active\":\"true\",\"work_notes_list\":\"\",\"business_service\":\"\",\"priority\":\"5\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2018-02-01 13:34:05\",\"business_duration\":\"\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"\",\"reopened_time\":\"\",\"resolved_at\":\"\",\"approval_set\":\"\",\"subcategory\":\"\",\"work_notes\":\"\",\"short_description\":\"\",\"close_code\":\"\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"\",\"additional_assignee_list\":\"\",\"business_stc\":\"\",\"description\":\"\",\"calendar_duration\":\"\",\"close_notes\":\"\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"82dc6205db4013004a4576efbf961939\",\"contact_type\":\"\",\"reopened_by\":\"\",\"incident_state\":\"1\",\"urgency\":\"3\",\"problem_id\":\"\",\"company\":\"\",\"reassignment_count\":\"0\",\"activity_due\":\"\",\"assigned_to\":\"\",\"severity\":\"3\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"0\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}}",
+      "status":201
+    }
+  },
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"false",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive",
+        "Content-Length":"70",
+        "Content-Type":"application/json"
+      },
+      "method":"POST",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_exclude_reference_link=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"12dce205db80",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=1ADCE205DB8013004A4576EFBF96196F;Secure; Expires=Thu, 01-Feb-2018 14:04:06 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 19-Feb-2086 16:48:13 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=6434D07C9BB953B0A548F596CB1AFAC5;Secure; Path=/; HttpOnly",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"error\":{\"detail\":\"Error during insert of incident (2135483521432)\",\"message\":\"Operation Failed\"},\"status\":\"failure\"}",
+      "status":403
+    }
+  }
+]
