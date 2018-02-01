@@ -55,14 +55,14 @@ public class ServiceNowMapperBeamTest implements Serializable {
                 .orElseThrow(() -> new RuntimeException("fail"));
 
         // create a pipeline starting with the mapper
-        final PCollection<Serializable> out = pipeline.apply(TalendIO.read(mapper));
+        final PCollection<JsonObject> out = pipeline.apply(TalendIO.read(mapper));
         PAssert.that(out)
-                .satisfies(new SimpleFunction<Iterable<Serializable>, Void>() {
+                .satisfies(new SimpleFunction<Iterable<JsonObject>, Void>() {
 
                     @Override
-                    public Void apply(final Iterable<Serializable> input) {
-                        input.forEach((RecordAsserts.SerializableConsumer<Serializable>) tableRecord -> {
-                            assertNotNull(JsonObject.class.cast(tableRecord).getString("number"));
+                    public Void apply(final Iterable<JsonObject> input) {
+                        input.forEach((RecordAsserts.SerializableConsumer<JsonObject>) tableRecord -> {
+                            assertNotNull(tableRecord.getString("number"));
                         });
                         return null;
                     }

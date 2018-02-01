@@ -69,7 +69,7 @@ public class ServiceNowOutput implements Serializable {
                             outputConfig.getDataStore().getAuthorizationHeader(), outputConfig.isNoResponseBody(),
                             record);
 
-                    if (!outputConfig.isNoResponseBody() && newRec != null) {
+                    if (newRec != null) {
                         success.emit(newRec);
                     }
                 }
@@ -89,11 +89,19 @@ public class ServiceNowOutput implements Serializable {
             }
 
         } catch (HttpException httpError) {
-            final JsonObject status = (JsonObject) httpError.getResponse().error(JsonObject.class);
-            reject.emit(new Reject(httpError.getResponse().status(),
-                    status.getJsonObject("error").getString("message"),
-                    status.getJsonObject("error").getString("detail"),
-                    record));
+            final JsonObject error = (JsonObject) httpError.getResponse().error(JsonObject.class);
+            if (error != null) {
+                reject.emit(new Reject(httpError.getResponse().status(),
+                        error.getJsonObject("error").getString("message"),
+                        error.getJsonObject("error").getString("detail"),
+                        record));
+            } else {
+                reject.emit(new Reject(httpError.getResponse().status(),
+                        "unknown",
+                        "unknown",
+                        record));
+            }
+
         }
 
     }

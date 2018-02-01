@@ -88,7 +88,7 @@ public class ServiceNowOutputTest {
         client.base(ds.getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         final JsonObject newRec =
                 client.create("incident", ds.getAuthorizationHeader(), false, record);
-        String id = (String) newRec.getString("sys_id");
+        String id = newRec.getString("sys_id");
 
         String randomNumberUpdate = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
         JsonObject recordUpdate = Json.createObjectBuilder()
