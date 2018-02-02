@@ -34,11 +34,11 @@ import org.talend.sdk.component.runtime.input.Mapper;
 public class ServiceNowMapperBeamTest implements Serializable {
 
     @ClassRule
-    public static final SimpleComponentRule COMPONENT_FACTORY = new SimpleComponentRule(
+    public transient static final SimpleComponentRule COMPONENT_FACTORY = new SimpleComponentRule(
             "org.talend.components.servicenow");
 
     @ClassRule
-    public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
+    public transient static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
 
     //    static {
     //        System.setProperty("talend.junit.http.capture", "true");
@@ -48,7 +48,8 @@ public class ServiceNowMapperBeamTest implements Serializable {
     public transient final TestPipeline pipeline = TestPipeline.create();
 
     @Rule
-    public final JUnit4HttpApiPerMethodConfigurator configurator = new JUnit4HttpApiPerMethodConfigurator(API);
+    public transient final JUnit4HttpApiPerMethodConfigurator configurator =
+            new JUnit4HttpApiPerMethodConfigurator(API);
 
     @Test
     public void getRecords() {
