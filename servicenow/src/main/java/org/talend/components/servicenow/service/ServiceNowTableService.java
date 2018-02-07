@@ -43,6 +43,7 @@ import org.talend.sdk.component.api.service.completion.DynamicValues;
 import org.talend.sdk.component.api.service.completion.Values;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheck;
 import org.talend.sdk.component.api.service.healthcheck.HealthCheckStatus;
+import org.talend.sdk.component.api.service.http.HttpException;
 import org.talend.sdk.component.api.service.schema.DiscoverSchema;
 import org.talend.sdk.component.api.service.schema.Schema;
 import org.talend.sdk.component.api.service.schema.Type;
@@ -51,15 +52,30 @@ import org.talend.sdk.component.api.service.schema.Type;
 public class ServiceNowTableService {
 
     @HealthCheck(value = NAME)
-    public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dt, TableApiClient client) {
+    public HealthCheckStatus healthCheck(@Option(BasicAuthConfig.NAME) BasicAuthConfig dt, TableApiClient client,
+            Messages i18n) {
         client.base(dt.getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         try {
             client.healthCheck(dt.getAuthorizationHeader());
         } catch (Exception e) {
-            return new HealthCheckStatus(HealthCheckStatus.Status.KO, e.getLocalizedMessage());
+            if (HttpException.class.isInstance(e)) {
+                final HttpException ex = HttpException.class.cast(e);
+                final JsonObject jError = JsonObject.class.cast(ex.getResponse().error(JsonObject.class));
+                String errorMessage = null;
+                if (jError != null && jError.containsKey("error")) {
+                    final JsonObject error = jError.get("error").asJsonObject();
+                    errorMessage = error.getString("message") + " \n" + error.getString("detail");
+                }
+                return new HealthCheckStatus(HealthCheckStatus.Status.KO,
+                        i18n.connectionFailed(errorMessage != null && errorMessage.trim().isEmpty() ?
+                                e.getLocalizedMessage() :
+                                errorMessage));
+            }
+
+            return new HealthCheckStatus(HealthCheckStatus.Status.KO, i18n.connectionFailed(e.getLocalizedMessage()));
         }
 
-        return new HealthCheckStatus(HealthCheckStatus.Status.OK, "the data store is valid");
+        return new HealthCheckStatus(HealthCheckStatus.Status.OK, i18n.connectionSuccessful());
     }
 
     @AsyncValidation("urlValidation")

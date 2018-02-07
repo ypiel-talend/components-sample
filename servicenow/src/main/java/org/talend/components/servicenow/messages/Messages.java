@@ -7,4 +7,7 @@ public interface Messages {
 
     String invalidContent();
 
+    String connectionSuccessful();
+
+    String connectionFailed(String cause);
 }
