@@ -20,8 +20,7 @@ import lombok.Data;
         @GridLayout.Row({ "tableName" })
 })
 @GridLayout(names = GridLayout.FormType.ADVANCED, value = {
-        @GridLayout.Row({ "fields" }),
-        @GridLayout.Row({ "excludeReferenceLink" })
+        @GridLayout.Row({ "fields" })
 })
 @Documentation("Table Configuration")
 public class CommonConfig implements Serializable {
