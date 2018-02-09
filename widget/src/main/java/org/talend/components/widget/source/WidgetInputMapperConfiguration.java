@@ -17,7 +17,7 @@ import lombok.Data;
 @GridLayout(value = {
     @GridLayout.Row({ "dataset" }),
     @GridLayout.Row({ "limit" }),
-    @GridLayout.Row({ "action", "tableComplex" }),
+    @GridLayout.Row({ "tableComplex", "action" }),
     @GridLayout.Row({ "showQuery", "showTable" }),
     @GridLayout.Row({ "query" }),
     @GridLayout.Row({ "table" })},
