@@ -82,7 +82,7 @@ public class TableApiClientTest {
         runtimeExceptionVerifier.assertWith(e -> {
             assertTrue(RuntimeException.class.isInstance(e));
             assertEquals(
-                    "The ServiceSow instance is down or hibernating. Please check that your instance is up and running !",
+                    "ServiceNow instance is down or hibernating. Please check that your instance is up and running !",
                     e.getMessage());
         });
         final TableDataSet configuration = new TableDataSet();
