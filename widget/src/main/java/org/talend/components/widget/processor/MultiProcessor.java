@@ -21,12 +21,14 @@ public class MultiProcessor implements Serializable {
 
     @ElementListener
     public void onElements(@Input final JsonObject v1, @Input("source2") final JsonObject v2,
+                           @Input("source3") final JsonObject v3, @Input("source4") final JsonObject v4,
                            @Output final OutputEmitter<JsonObject> mainOutput,
                            @Output("secondOutput") final OutputEmitter<JsonObject> secondOutput,
                            @Output("thirdOutput") final OutputEmitter<JsonObject> thirdOutput) {
         if (v2 != null) {
             mainOutput.emit(factory.createObjectBuilder()
                                    .add("v2", v2)
+                                   .add("v3", v3)
                                    .add("date", LocalDateTime.now()
                                                              .toString())
                                    .build());
@@ -34,6 +36,7 @@ public class MultiProcessor implements Serializable {
         if (v1 != null) {
             secondOutput.emit(factory.createObjectBuilder()
                                      .add("v1", v1)
+                                     .add("v4", v4)
                                      .add("datetime", LocalDateTime.now()
                                                                    .toString())
                                      .build());
