@@ -10,4 +10,5 @@ before_cache:
 cache:
   directories:
   - "$HOME/.m2"
+install: true  #Skipping the Installation Step
 script: mvn clean install
