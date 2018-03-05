@@ -27,6 +27,7 @@
   <modules>
     <module>widget</module>
     <module>servicenow</module>
+    <module>zendesk</module>
   </modules>
 
   <build>

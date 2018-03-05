@@ -1,0 +1,39 @@
+[
+  {
+    "request":{
+      "headers":{
+        "content-length":"0",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive",
+        "Content-Type":"application/json"
+      },
+      "method":"GET",
+      "uri":"https://component.zendesk.com/api/v2/search.json?query=type%3Aticket+status%3Aopen&sort_by=relevance&sort_order=asc"
+    },
+    "response":{
+      "headers":{
+        "X-Zendesk-Request-Id":"adde3e95b7081ebd0852",
+        "X-Rate-Limit":"400",
+        "Server":"nginx",
+        "X-Request-Id":"31ae11ab-39e8-41d9-c14d-0213056d79e2",
+        "X-Runtime":"0.375357",
+        "X-Content-Type-Options":"nosniff",
+        "X-Zendesk-Application-Version":"v470.15",
+        "Connection":"keep-alive",
+        "X-Rack-Cache":"miss",
+        "X-Zendesk-Origin-Server":"app47.pod13.usw2.zdsys.com",
+        "X-Frame-Options":"SAMEORIGIN",
+        "X-Zendesk-API-Version":"v2",
+        "X-UA-Compatible":"IE=Edge,chrome=1",
+        "Strict-Transport-Security":"max-age=31536000;",
+        "Cache-Control":"must-revalidate, private, max-age=0",
+        "ETag":"\"06f78193bbad342251040fd4f9f57728\"",
+        "X-Rate-Limit-Remaining":"399",
+        "Content-Length":"3859",
+        "Content-Type":"application/json; charset=UTF-8"
+      },
+      "payload":"{\"results\":[{\"url\":\"https://component.zendesk.com/api/v2/tickets/4.json\",\"id\":4,\"external_id\":null,\"via\":{\"channel\":\"api\",\"source\":{\"from\":{},\"to\":{},\"rel\":null}},\"created_at\":\"2018-03-01T10:53:02Z\",\"updated_at\":\"2018-03-01T10:53:02Z\",\"type\":null,\"subject\":\"Test ticket #0\",\"raw_subject\":\"Test ticket #0\",\"description\":\"This is test ticket #0\",\"priority\":null,\"status\":\"open\",\"recipient\":null,\"requester_id\":361356534311,\"submitter_id\":361356534311,\"assignee_id\":361356534311,\"organization_id\":360027744031,\"group_id\":360000394411,\"collaborator_ids\":[],\"follower_ids\":[],\"forum_topic_id\":null,\"problem_id\":null,\"has_incidents\":false,\"is_public\":true,\"due_at\":null,\"tags\":[],\"custom_fields\":[],\"satisfaction_rating\":null,\"sharing_agreement_ids\":[],\"fields\":[],\"followup_ids\":[],\"brand_id\":360000242291,\"allow_channelback\":false,\"result_type\":\"ticket\"},{\"url\":\"https://component.zendesk.com/api/v2/tickets/3.json\",\"id\":3,\"external_id\":null,\"via\":{\"channel\":\"api\",\"source\":{\"from\":{},\"to\":{},\"rel\":null}},\"created_at\":\"2018-03-01T10:53:02Z\",\"updated_at\":\"2018-03-01T10:53:02Z\",\"type\":null,\"subject\":\"Test ticket #1\",\"raw_subject\":\"Test ticket #1\",\"description\":\"This is test ticket #1\",\"priority\":null,\"status\":\"open\",\"recipient\":null,\"requester_id\":361356534311,\"submitter_id\":361356534311,\"assignee_id\":361356534311,\"organization_id\":360027744031,\"group_id\":360000394411,\"collaborator_ids\":[],\"follower_ids\":[],\"forum_topic_id\":null,\"problem_id\":null,\"has_incidents\":false,\"is_public\":true,\"due_at\":null,\"tags\":[],\"custom_fields\":[],\"satisfaction_rating\":null,\"sharing_agreement_ids\":[],\"fields\":[],\"followup_ids\":[],\"brand_id\":360000242291,\"allow_channelback\":false,\"result_type\":\"ticket\"},{\"url\":\"https://component.zendesk.com/api/v2/tickets/2.json\",\"id\":2,\"external_id\":null,\"via\":{\"channel\":\"api\",\"source\":{\"from\":{},\"to\":{},\"rel\":null}},\"created_at\":\"2018-03-01T10:53:02Z\",\"updated_at\":\"2018-03-01T10:53:02Z\",\"type\":null,\"subject\":\"Test ticket #2\",\"raw_subject\":\"Test ticket #2\",\"description\":\"This is test ticket #2\",\"priority\":null,\"status\":\"open\",\"recipient\":null,\"requester_id\":361356534311,\"submitter_id\":361356534311,\"assignee_id\":361356534311,\"organization_id\":360027744031,\"group_id\":360000394411,\"collaborator_ids\":[],\"follower_ids\":[],\"forum_topic_id\":null,\"problem_id\":null,\"has_incidents\":false,\"is_public\":true,\"due_at\":null,\"tags\":[],\"custom_fields\":[],\"satisfaction_rating\":null,\"sharing_agreement_ids\":[],\"fields\":[],\"followup_ids\":[],\"brand_id\":360000242291,\"allow_channelback\":false,\"result_type\":\"ticket\"},{\"url\":\"https://component.zendesk.com/api/v2/tickets/1.json\",\"id\":1,\"external_id\":null,\"via\":{\"channel\":\"sample_ticket\",\"source\":{\"from\":{},\"to\":{},\"rel\":null}},\"created_at\":\"2018-03-01T10:47:06Z\",\"updated_at\":\"2018-03-01T10:47:06Z\",\"type\":\"incident\",\"subject\":\"Sample ticket: Meet the ticket\",\"raw_subject\":\"Sample ticket: Meet the ticket\",\"description\":\"Hi Anas,\\n\\nEmails, chats, voicemails, and tweets are captured in Zendesk Support as tickets. Start typing above to respond and click Submit to send. To test how an email becomes a ticket, send a message to support@component.zendesk.com.\\n\\nCurious about what your customers will see when you reply? Check out this video:\\nhttps://demos.zendesk.com/hc/en-us/articles/202341799\\n\",\"priority\":\"normal\",\"status\":\"open\",\"recipient\":null,\"requester_id\":361374470092,\"submitter_id\":361356534311,\"assignee_id\":361356534311,\"organization_id\":null,\"group_id\":360000394411,\"collaborator_ids\":[],\"follower_ids\":[],\"forum_topic_id\":null,\"problem_id\":null,\"has_incidents\":false,\"is_public\":true,\"due_at\":null,\"tags\":[\"sample\",\"support\",\"zendesk\"],\"custom_fields\":[],\"satisfaction_rating\":null,\"sharing_agreement_ids\":[],\"fields\":[],\"followup_ids\":[],\"brand_id\":360000242291,\"allow_channelback\":false,\"result_type\":\"ticket\"}],\"facets\":null,\"next_page\":null,\"previous_page\":null,\"count\":4}",
+      "status":200
+    }
+  }
+]
