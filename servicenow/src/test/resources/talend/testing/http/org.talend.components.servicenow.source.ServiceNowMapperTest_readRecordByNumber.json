@@ -8,16 +8,16 @@
         "Connection":"keep-alive"
       },
       "method":"GET",
-      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
     },
     "response":{
       "headers":{
         "Transfer-Encoding":"chunked",
         "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
         "Server":"ServiceNow",
-        "X-Transaction-ID":"f6bbde52db63",
+        "X-Transaction-ID":"a8dcb7dfdb20",
         "X-Is-Logged-In":"true",
-        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=FEBBDE52DB6303004A4576EFBF9619E4;Secure; Expires=Thu, 11-Jan-2018 13:30:20 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:27 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=9A8FDBECE523CE4F58616623218A74BA;Secure; Path=/; HttpOnly",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/; Httponly; Secure,glide_session_store=A0DCB7DFDB2013004A4576EFBF961937; Expires=Mon, 05-Mar-2018 16:11:14 GMT; Path=/; HttpOnly;Secure,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb; Expires=Sat, 23-Mar-2086 18:55:21 GMT; Path=/; HttpOnly;Secure,glide_user_session=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,glide_user=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,JSESSIONID=33F8CBCB412DEC9EC132B3874E90B9FD; Path=/; HttpOnly;Secure",
         "X-Total-Count":"1",
         "Pragma":"no-store,no-cache",
         "Expires":"0",
@@ -44,9 +44,9 @@
         "Transfer-Encoding":"chunked",
         "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
         "Server":"ServiceNow",
-        "X-Transaction-ID":"0fbb9292db63",
+        "X-Transaction-ID":"f8dc77dfdb20",
         "X-Is-Logged-In":"true",
-        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=07BB9292DB6303004A4576EFBF96196A;Secure; Expires=Thu, 11-Jan-2018 13:30:21 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:28 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=B02D9185BA10CC5D874201B4AF263A72;Secure; Path=/; HttpOnly",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/; Httponly; Secure,glide_session_store=F0DC77DFDB2013004A4576EFBF96196C; Expires=Mon, 05-Mar-2018 16:11:15 GMT; Path=/; HttpOnly;Secure,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb; Expires=Sat, 23-Mar-2086 18:55:22 GMT; Path=/; HttpOnly;Secure,glide_user_session=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,glide_user=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,JSESSIONID=23A3B98C22580BB180A351B052CB18E6; Path=/; HttpOnly;Secure",
         "X-Total-Count":"1",
         "Pragma":"no-store,no-cache",
         "Expires":"0",
@@ -73,67 +73,9 @@
         "Transfer-Encoding":"chunked",
         "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
         "Server":"ServiceNow",
-        "X-Transaction-ID":"9fbb9292db63",
+        "X-Transaction-ID":"09dcb7dfdb20",
         "X-Is-Logged-In":"true",
-        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=97BB9292DB6303004A4576EFBF9619D7;Secure; Expires=Thu, 11-Jan-2018 13:30:22 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:29 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=0EA8E7CFCC37057C54C301AEFFA51ED2;Secure; Path=/; HttpOnly",
-        "X-Total-Count":"1",
-        "Pragma":"no-store,no-cache",
-        "Expires":"0",
-        "Content-Type":"application/json;charset=UTF-8",
-        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
-      },
-      "payload":"{\"result\":[{\"number\":\"INC0000060\"}]}",
-      "status":200
-    }
-  },
-  {
-    "request":{
-      "headers":{
-        "X-no-response-body":"true",
-        "content-length":"0",
-        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-        "Connection":"keep-alive"
-      },
-      "method":"GET",
-      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
-    },
-    "response":{
-      "headers":{
-        "Transfer-Encoding":"chunked",
-        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
-        "Server":"ServiceNow",
-        "X-Transaction-ID":"ebbbde52db63",
-        "X-Is-Logged-In":"true",
-        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=E3BBDE52DB6303004A4576EFBF9619F4;Secure; Expires=Thu, 11-Jan-2018 13:30:23 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:30 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=D020DFF8629CA90CB6CF2AB577B39D01;Secure; Path=/; HttpOnly",
-        "X-Total-Count":"1",
-        "Pragma":"no-store,no-cache",
-        "Expires":"0",
-        "Content-Type":"application/json;charset=UTF-8",
-        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
-      },
-      "payload":"{\"result\":[{\"parent\":\"\",\"made_sla\":\"true\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2016-12-14 02:46:44\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"INC0000060\",\"resolved_by\":\"5137153cc611227c000bbd1bd8cd2007\",\"sys_updated_by\":\"employee\",\"opened_by\":\"681ccaf9c0a8016400b98a06818d57c7\",\"user_input\":\"\",\"sys_created_on\":\"2016-12-12 15:19:57\",\"sys_domain\":\"global\",\"state\":\"7\",\"sys_created_by\":\"employee\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"102197\",\"closed_at\":\"2016-12-14 02:46:44\",\"cmdb_ci\":\"109562a3c611227500a7b7ff98cc0dc7\",\"delivery_plan\":\"\",\"impact\":\"2\",\"active\":\"false\",\"work_notes_list\":\"\",\"business_service\":\"27d32778c0a8000b00db970eeaa60f16\",\"priority\":\"3\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2016-12-12 15:19:57\",\"business_duration\":\"1970-01-01 08:00:00\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"681ccaf9c0a8016400b98a06818d57c7\",\"reopened_time\":\"\",\"resolved_at\":\"2016-12-13 21:43:14\",\"approval_set\":\"\",\"subcategory\":\"email\",\"work_notes\":\"\",\"short_description\":\"Unable to connect to email\",\"close_code\":\"Solved (Permanently)\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"287ebd7da9fe198100f92cc8d1d2154e\",\"additional_assignee_list\":\"\",\"business_stc\":\"28800\",\"description\":\"I am unable to connect to the email server. It appears to be down.\",\"calendar_duration\":\"1970-01-02 04:23:17\",\"close_notes\":\"This incident is resolved.\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"681ccaf9c0a8016400b98a06818d57c7\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"1c741bd70b2322007518478d83673af3\",\"contact_type\":\"self-service\",\"reopened_by\":\"\",\"incident_state\":\"7\",\"urgency\":\"2\",\"problem_id\":\"\",\"company\":\"31bea3d53790200044e0bfc8bcbe5dec\",\"reassignment_count\":\"2\",\"activity_due\":\"2016-12-13 01:26:36\",\"assigned_to\":\"5137153cc611227c000bbd1bd8cd2007\",\"severity\":\"3\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"15\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}]}",
-      "status":200
-    }
-  },
-  {
-    "request":{
-      "headers":{
-        "X-no-response-body":"false",
-        "content-length":"0",
-        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-        "Connection":"keep-alive"
-      },
-      "method":"GET",
-      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&sysparm_fields=number&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
-    },
-    "response":{
-      "headers":{
-        "Transfer-Encoding":"chunked",
-        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
-        "Server":"ServiceNow",
-        "X-Transaction-ID":"0ccb9292db63",
-        "X-Is-Logged-In":"true",
-        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=04CB9292DB6303004A4576EFBF96190F;Secure; Expires=Thu, 11-Jan-2018 13:30:24 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:31 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=DC42F395482DC1D12E21460BA0D0690D;Secure; Path=/; HttpOnly",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/; Httponly; Secure,glide_session_store=01DCB7DFDB2013004A4576EFBF961950; Expires=Mon, 05-Mar-2018 16:11:16 GMT; Path=/; HttpOnly;Secure,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb; Expires=Sat, 23-Mar-2086 18:55:23 GMT; Path=/; HttpOnly;Secure,glide_user_session=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,glide_user=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,JSESSIONID=C4FD0CC44D2BE5DDBDB367FA17003057; Path=/; HttpOnly;Secure",
         "X-Total-Count":"1",
         "Pragma":"no-store,no-cache",
         "Expires":"0",
@@ -153,16 +95,16 @@
         "Connection":"keep-alive"
       },
       "method":"GET",
-      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
     },
     "response":{
       "headers":{
         "Transfer-Encoding":"chunked",
         "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
         "Server":"ServiceNow",
-        "X-Transaction-ID":"14cbde52db63",
+        "X-Transaction-ID":"d1dc3bdfdb20",
         "X-Is-Logged-In":"true",
-        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=1CCBDE52DB6303004A4576EFBF9619A6;Secure; Expires=Thu, 11-Jan-2018 13:30:25 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:32 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=8D0016422791D1FA4CE7FAD9E746DD29;Secure; Path=/; HttpOnly",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/; Httponly; Secure,glide_session_store=D9DC3BDFDB2013004A4576EFBF961931; Expires=Mon, 05-Mar-2018 16:11:17 GMT; Path=/; HttpOnly;Secure,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb; Expires=Sat, 23-Mar-2086 18:55:24 GMT; Path=/; HttpOnly;Secure,glide_user_session=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,glide_user=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,JSESSIONID=C4E1BE6D203C84B4DCD010112EB9184B; Path=/; HttpOnly;Secure",
         "X-Total-Count":"1",
         "Pragma":"no-store,no-cache",
         "Expires":"0",
@@ -189,9 +131,67 @@
         "Transfer-Encoding":"chunked",
         "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
         "Server":"ServiceNow",
-        "X-Transaction-ID":"24cb9292db63",
+        "X-Transaction-ID":"e9dc3bdfdb20",
         "X-Is-Logged-In":"true",
-        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/,glide_session_store=2CCB9292DB6303004A4576EFBF9619F8;Secure; Expires=Thu, 11-Jan-2018 13:30:27 GMT; Path=/; HttpOnly,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb;Secure; Expires=Tue, 29-Jan-2086 16:14:34 GMT; Path=/; HttpOnly,glide_user_session=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,glide_user=\"\";Secure; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly,JSESSIONID=6B0317AD9C424EECA7D8670150709013;Secure; Path=/; HttpOnly",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/; Httponly; Secure,glide_session_store=E1DC3BDFDB2013004A4576EFBF96195F; Expires=Mon, 05-Mar-2018 16:11:18 GMT; Path=/; HttpOnly;Secure,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb; Expires=Sat, 23-Mar-2086 18:55:25 GMT; Path=/; HttpOnly;Secure,glide_user_session=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,glide_user=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,JSESSIONID=C9387958B8F620919C5B0AA37E10366C; Path=/; HttpOnly;Secure",
+        "X-Total-Count":"1",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"result\":[{\"number\":\"INC0000060\"}]}",
+      "status":200
+    }
+  },
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"true",
+        "content-length":"0",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive"
+      },
+      "method":"GET",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"fddcb7dfdb20",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/; Httponly; Secure,glide_session_store=F5DCB7DFDB2013004A4576EFBF961969; Expires=Mon, 05-Mar-2018 16:11:19 GMT; Path=/; HttpOnly;Secure,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb; Expires=Sat, 23-Mar-2086 18:55:26 GMT; Path=/; HttpOnly;Secure,glide_user_session=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,glide_user=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,JSESSIONID=D70E1CD9A533CE5F91F4C347C75A87BA; Path=/; HttpOnly;Secure",
+        "X-Total-Count":"1",
+        "Pragma":"no-store,no-cache",
+        "Expires":"0",
+        "Content-Type":"application/json;charset=UTF-8",
+        "Cache-control":"no-cache,no-store,must-revalidate,max-age=-1"
+      },
+      "payload":"{\"result\":[{\"parent\":\"\",\"made_sla\":\"true\",\"caused_by\":\"\",\"watch_list\":\"\",\"upon_reject\":\"cancel\",\"sys_updated_on\":\"2016-12-14 02:46:44\",\"child_incidents\":\"0\",\"hold_reason\":\"\",\"approval_history\":\"\",\"number\":\"INC0000060\",\"resolved_by\":\"5137153cc611227c000bbd1bd8cd2007\",\"sys_updated_by\":\"employee\",\"opened_by\":\"681ccaf9c0a8016400b98a06818d57c7\",\"user_input\":\"\",\"sys_created_on\":\"2016-12-12 15:19:57\",\"sys_domain\":\"global\",\"state\":\"7\",\"sys_created_by\":\"employee\",\"knowledge\":\"false\",\"order\":\"\",\"calendar_stc\":\"102197\",\"closed_at\":\"2016-12-14 02:46:44\",\"cmdb_ci\":\"109562a3c611227500a7b7ff98cc0dc7\",\"delivery_plan\":\"\",\"impact\":\"2\",\"active\":\"false\",\"work_notes_list\":\"\",\"business_service\":\"27d32778c0a8000b00db970eeaa60f16\",\"priority\":\"3\",\"sys_domain_path\":\"/\",\"rfc\":\"\",\"time_worked\":\"\",\"expected_start\":\"\",\"opened_at\":\"2016-12-12 15:19:57\",\"business_duration\":\"1970-01-01 08:00:00\",\"group_list\":\"\",\"work_end\":\"\",\"caller_id\":\"681ccaf9c0a8016400b98a06818d57c7\",\"reopened_time\":\"\",\"resolved_at\":\"2016-12-13 21:43:14\",\"approval_set\":\"\",\"subcategory\":\"email\",\"work_notes\":\"\",\"short_description\":\"Unable to connect to email\",\"close_code\":\"Solved (Permanently)\",\"correlation_display\":\"\",\"delivery_task\":\"\",\"work_start\":\"\",\"assignment_group\":\"287ebd7da9fe198100f92cc8d1d2154e\",\"additional_assignee_list\":\"\",\"business_stc\":\"28800\",\"description\":\"I am unable to connect to the email server. It appears to be down.\",\"calendar_duration\":\"1970-01-02 04:23:17\",\"close_notes\":\"This incident is resolved.\",\"notify\":\"1\",\"sys_class_name\":\"incident\",\"closed_by\":\"681ccaf9c0a8016400b98a06818d57c7\",\"follow_up\":\"\",\"parent_incident\":\"\",\"sys_id\":\"1c741bd70b2322007518478d83673af3\",\"contact_type\":\"self-service\",\"reopened_by\":\"\",\"incident_state\":\"7\",\"urgency\":\"2\",\"problem_id\":\"\",\"company\":\"31bea3d53790200044e0bfc8bcbe5dec\",\"reassignment_count\":\"2\",\"activity_due\":\"2016-12-13 01:26:36\",\"assigned_to\":\"5137153cc611227c000bbd1bd8cd2007\",\"severity\":\"3\",\"comments\":\"\",\"approval\":\"not requested\",\"sla_due\":\"\",\"comments_and_work_notes\":\"\",\"due_date\":\"\",\"sys_mod_count\":\"15\",\"reopen_count\":\"0\",\"sys_tags\":\"\",\"escalation\":\"0\",\"upon_approval\":\"proceed\",\"correlation_id\":\"\",\"location\":\"\",\"category\":\"inquiry\"}]}",
+      "status":200
+    }
+  },
+  {
+    "request":{
+      "headers":{
+        "X-no-response-body":"false",
+        "content-length":"0",
+        "Accept":"text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection":"keep-alive"
+      },
+      "method":"GET",
+      "uri":"https://dev37214.service-now.com/api/now/v2/table/incident?sysparm_query=number%3DINC0000060&sysparm_fields=number&sysparm_offset=0&sysparm_limit=1&sysparm_exclude_reference_link=true&sysparm_suppress_pagination_header=true"
+    },
+    "response":{
+      "headers":{
+        "Transfer-Encoding":"chunked",
+        "Strict-Transport-Security":"max-age=63072000; includeSubDomains",
+        "Server":"ServiceNow",
+        "X-Transaction-ID":"42dc3bdfdb20",
+        "X-Is-Logged-In":"true",
+        "Set-Cookie":"BIGipServerpool_dev37214=209814538.39488.0000; path=/; Httponly; Secure,glide_session_store=4ADC3BDFDB2013004A4576EFBF96194A; Expires=Mon, 05-Mar-2018 16:11:20 GMT; Path=/; HttpOnly;Secure,glide_user_route=glide.74144e62951760f8dc4ae77c49ec0adb; Expires=Sat, 23-Mar-2086 18:55:27 GMT; Path=/; HttpOnly;Secure,glide_user_session=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,glide_user=\"\"; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; HttpOnly;Secure,JSESSIONID=8CDDA1BCDB51B45868B9BE29C2E98968; Path=/; HttpOnly;Secure",
         "X-Total-Count":"1",
         "Pragma":"no-store,no-cache",
         "Expires":"0",

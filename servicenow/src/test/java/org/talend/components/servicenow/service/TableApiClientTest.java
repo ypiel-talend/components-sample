@@ -12,6 +12,7 @@ import javax.json.JsonObject;
 
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.talend.components.servicenow.ServiceNow;
@@ -33,9 +34,9 @@ public class TableApiClientTest {
     @ClassRule
     public static final JUnit4HttpApi API = new JUnit4HttpApi().activeSsl();
 
-    //    static {
-    //        System.setProperty("talend.junit.http.capture", "true");
-    //    }
+    //            static {
+    //                System.setProperty("talend.junit.http.capture", "true");
+    //            }
 
     @Rule
     public final JUnit4HttpApiPerMethodConfigurator configurator = new JUnit4HttpApiPerMethodConfigurator(API);
@@ -78,6 +79,7 @@ public class TableApiClientTest {
     }
 
     @Test
+    @Ignore("capture response when instance is hibernating.")
     public void unsupportedResponseType() {
         runtimeExceptionVerifier.assertWith(e -> {
             assertTrue(RuntimeException.class.isInstance(e));
@@ -89,7 +91,6 @@ public class TableApiClientTest {
         configuration.setDataStore(new BasicAuthConfig(API_URL, USER, PASSWORD));
         client.base(configuration.getDataStore().getUrlWithSlashEnding() + API_BASE + "/" + API_VERSION);
         client.healthCheck(configuration.getDataStore().getAuthorizationHeader());
-
     }
 
 }
