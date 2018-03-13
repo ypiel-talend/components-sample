@@ -16,6 +16,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <component.kit.version>0.0.1</component.kit.version>
   </properties>
   
   <repositories>
@@ -47,7 +48,7 @@
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
       <artifactId>component-api</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>${component.kit.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -71,7 +72,7 @@
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
       <artifactId>component-runtime-junit</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>${component.kit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -90,7 +91,7 @@
       <plugin>
         <groupId>org.talend.sdk.component</groupId>
         <artifactId>talend-component-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${component.kit.version}</version>
         <executions>
           <execution>
             <id>dependencies</id>
