@@ -18,7 +18,18 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <component.kit.version>0.0.1</component.kit.version>
   </properties>
-  
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
   <repositories>
     <repository>
       <id>ossrh-snapshot</id>
@@ -110,6 +121,20 @@
           <trimStackTrace>false</trimStackTrace>
           <runOrder>alphabetical</runOrder>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
