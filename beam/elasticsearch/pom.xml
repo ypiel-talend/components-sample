@@ -11,16 +11,22 @@
   
   <dependencies>
     <dependency>
-    	<groupId>org.elasticsearch.client</groupId>
-    	<artifactId>transport</artifactId>
-    	<version>6.2.3</version>
-	</dependency>
+      <groupId>org.apache.beam</groupId>
+      <artifactId>beam-sdks-java-io-elasticsearch</artifactId>
+      <version>2.4.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.beam</groupId>
+          <artifactId>beam-sdks-java-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 	
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
       <artifactId>component-runtime-beam</artifactId>
       <version>0.0.5-SNAPSHOT</version>
-      <scope>test</scope>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
