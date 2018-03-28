@@ -7,6 +7,7 @@ import org.apache.beam.sdk.io.elasticsearch.ElasticsearchIO.ConnectionConfigurat
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.type.DataSet;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
+import org.talend.sdk.component.api.meta.Documentation;
 
 import lombok.Data;
 
@@ -20,12 +21,15 @@ import lombok.Data;
 public class ElasticSearchDataSet implements Serializable {
 	
 	@Option
+	@Documentation("elasticsearch datastore")
 	private ElasticSearchDataStore dataStore;
 	
 	@Option
+	@Documentation("Index for elasticsearch")
 	private String index;
 	
 	@Option
+	@Documentation("Type for elasticsearch")
 	private String type;
 	
 	public ElasticsearchIO.ConnectionConfiguration asConnectionConfiguration() {

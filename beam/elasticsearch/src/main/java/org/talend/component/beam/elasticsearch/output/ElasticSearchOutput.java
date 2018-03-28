@@ -11,11 +11,15 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PDone;
 import org.talend.component.beam.elasticsearch.ElasticSearchDataSet;
 import org.talend.sdk.component.api.component.Icon;
+import org.talend.sdk.component.api.component.Version;
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.meta.Documentation;
 import org.talend.sdk.component.api.processor.Processor;
 
 @Icon(Icon.IconType.DB_INPUT)
+@Version(1)
 @Processor(name="Output")
+@Documentation("Elasticsearch output component")
 public class ElasticSearchOutput extends PTransform<PCollection<JsonObject>, PDone> {
 
 	private final ElasticSearchDataSet dataset;

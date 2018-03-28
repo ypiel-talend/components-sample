@@ -74,7 +74,7 @@
   
   <build>
     <plugins>
-      <plugin>
+      <!-- <plugin>
         <groupId>org.talend.sdk.component</groupId>
         <artifactId>talend-component-maven-plugin</artifactId>
         <version>0.0.5-SNAPSHOT</version>
@@ -87,6 +87,45 @@
             </goals>
           </execution>
         </executions>
+      </plugin> -->
+      <plugin>
+        <groupId>org.talend.sdk.component</groupId>
+        <artifactId>talend-component-maven-plugin</artifactId>
+        <version>0.0.5-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>dependencies</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>dependencies</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>validate</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>validate</goal>
+            </goals>
+            <configuration>
+            	<validateComponent>false</validateComponent>
+            </configuration>
+          </execution>
+          <execution>
+            <id>documentation</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>asciidoc</goal>
+            </goals>
+            <configuration>
+              <formats>
+                <html>${project.build.directory}/doc.html</html>
+                <pdf>${project.build.directory}/doc.pdf</pdf>
+              </formats>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+        </configuration>
       </plugin>
     </plugins>
   </build>

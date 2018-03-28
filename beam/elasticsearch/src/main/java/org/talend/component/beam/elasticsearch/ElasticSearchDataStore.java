@@ -8,6 +8,7 @@ import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
+import org.talend.sdk.component.api.meta.Documentation;
 
 import lombok.Data;
 
@@ -20,13 +21,16 @@ import lombok.Data;
 public class ElasticSearchDataStore implements Serializable {
 
 	@Option
+	@Documentation("Table representing elasticsearch nodes")
 	private List<ElasticSearchNode> nodes;
 	
 	@Option
+	@Documentation("Username to access elasticsearch node(if required)")
 	private String username;
 	
 	@Option
 	@Credential
+	@Documentation("Password to access elasticsearch node(if required)")
 	private String password;
 	
 	public String[] getNodeAddresses() {
