@@ -16,7 +16,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <component.kit.version>0.0.2-SNAPSHOT</component.kit.version>
+    <component.api.version>0.0.4-SNAPSHOT</component.api.version>
+    <component.kit.version>0.0.5-SNAPSHOT</component.kit.version>
   </properties>
 
   <distributionManagement>
@@ -34,7 +35,7 @@
     <dependency>
       <groupId>org.talend.sdk.component</groupId>
       <artifactId>component-api</artifactId>
-      <version>${component.kit.version}</version>
+      <version>${component.api.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
