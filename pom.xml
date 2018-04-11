@@ -24,6 +24,12 @@
   <version>1.0.0-SNAPSHOT</version>
   <name>Components Sample</name>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <component.api.version>0.0.4</component.api.version>
+    <component.runtime.version>0.0.6</component.runtime.version>
+  </properties>
+
   <modules>
     <module>widget</module>
     <module>servicenow</module>
