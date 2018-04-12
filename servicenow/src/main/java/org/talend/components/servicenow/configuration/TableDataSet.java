@@ -84,14 +84,14 @@ public class TableDataSet implements Serializable {
     public String buildQuery() {
         String query = "";
         if (getQueryBuilder() != null && !getQueryBuilder().isEmpty()) {
-            query = getQueryBuilder().stream().map(f -> f.getField().name()
+            query = getQueryBuilder().stream().map(f -> f.getField()
                     + f.getOperation().operation()
                     + f.getValue()).collect(joining("^"));
         }
 
         if (isOrdered() && getOrderBuilder() != null && !getOrderBuilder().isEmpty()) {
             String order = getOrderBuilder().stream()
-                    .map(o -> "ORDERBY" + o.getField().name())
+                    .map(o -> "ORDERBY" + o.getField())
                     .collect(joining("^"));
 
             query += "^" + order;

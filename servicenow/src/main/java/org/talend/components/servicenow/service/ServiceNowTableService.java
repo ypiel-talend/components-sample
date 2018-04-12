@@ -25,11 +25,14 @@ import static org.talend.components.servicenow.service.http.TableApiClient.API_V
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.json.JsonObject;
 
 import org.talend.components.servicenow.configuration.BasicAuthConfig;
 import org.talend.components.servicenow.configuration.CommonConfig;
+import org.talend.components.servicenow.configuration.QueryBuilder;
 import org.talend.components.servicenow.configuration.TableDataSet;
 import org.talend.components.servicenow.messages.Messages;
 import org.talend.components.servicenow.service.http.TableApiClient;
@@ -92,7 +95,9 @@ public class ServiceNowTableService {
     @DynamicValues(CommonConfig.Proposable_GetTableFields)
     public Values getTableFields() {
         // todo when dynamic values can have params
-        return new Values(asList(new Values.Item("value-1", "Value 1"), new Values.Item("value-2", "Value 2")));
+        return new Values(Stream.of(QueryBuilder.Fields.values())
+                .map(f -> new Values.Item(f.name(), f.name()))
+                .collect(toList()));
     }
 
     @DiscoverSchema("guessTableSchema")

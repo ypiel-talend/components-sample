@@ -1,10 +1,14 @@
 package org.talend.components.servicenow.configuration;
 
+import static org.talend.components.servicenow.configuration.CommonConfig.Proposable_GetTableFields;
+
 import java.io.Serializable;
 
 import org.talend.sdk.component.api.configuration.Option;
+import org.talend.sdk.component.api.configuration.action.Proposable;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
+import org.talend.sdk.component.api.service.completion.DynamicValues;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +23,9 @@ import lombok.Data;
 public class QueryBuilder implements Serializable {
 
     @Option
+    @Proposable(Proposable_GetTableFields)
     @Documentation("field name")
-    private Fields field;
+    private String field;
 
     @Option
     @Documentation("operation")
@@ -47,6 +52,12 @@ public class QueryBuilder implements Serializable {
         public String operation() {
             return op;
         }
+    }
+
+    public QueryBuilder(final Fields field, final Operation operation, final String value) {
+        this.field = field.name();
+        this.operation = operation;
+        this.value = value;
     }
 
     public enum Fields {
@@ -107,4 +118,5 @@ public class QueryBuilder implements Serializable {
         correlation_id,
         location;
     }
+
 }
