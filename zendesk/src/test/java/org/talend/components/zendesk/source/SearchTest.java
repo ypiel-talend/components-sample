@@ -42,7 +42,10 @@ public class SearchTest {
 
     @Test
     public void test() {
-        final Server server = mavenDecrypter.find("zendesk");
+        //final Server server = mavenDecrypter.find("zendesk");
+        final Server server = new Server();
+        server.setUsername("user");
+        server.setPassword("nopass");
         final Map<String, String> configuration =
                 configurationByExample(new SearchQuery(new BasicAuth("https://component.zendesk.com",
                         server.getUsername(), server.getPassword()),
