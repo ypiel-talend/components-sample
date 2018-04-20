@@ -9,6 +9,7 @@ import org.talend.sdk.component.api.configuration.constraint.Max;
 import org.talend.sdk.component.api.configuration.constraint.Min;
 import org.talend.sdk.component.api.configuration.constraint.Pattern;
 import org.talend.sdk.component.api.configuration.type.DataStore;
+import org.talend.sdk.component.api.configuration.ui.DefaultValue;
 import org.talend.sdk.component.api.configuration.ui.widget.Credential;
 import org.talend.sdk.component.api.meta.Documentation;
 
@@ -22,27 +23,28 @@ public class CDataStore {
     @Option
     @Validable(ValidationService.URL)
     @Documentation("")
-    private final String url;
+    private String url;
 
     @Option
     @Pattern("/^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$/")
     @Documentation("")
-    private final String email;
+    private String email;
 
     @Option
     @Credential
     @Documentation("")
-    private final String password;
+    private String password;
 
     @Option
     @Pattern("/^\\d+$/")
+    @DefaultValue("00001112321")
     @Documentation("")
-    private final String phone;
+    private String phone;
 
     @Option
     @Min(3)
     @Max(10)
     @Documentation("")
-    private final int minMax = 4;
+    private int minMax = 4;
 
 }

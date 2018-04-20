@@ -15,11 +15,11 @@ public class CDataSet {
 
     @Option
     @Documentation("")
-    public final CDataStore dataStoreConfig;
+    public CDataStore dataStoreConfig;
 
     @Option
     @Structure(type = Structure.Type.OUT, discoverSchema = "discoverSchema")
     @Documentation("")
-    private final List<String> schema;
+    private List<String> schema;
 
 }
