@@ -35,6 +35,7 @@
     <module>servicenow</module>
     <module>zendesk</module>
     <module>beam</module>
+    <module>httpclient</module>
   </modules>
 
   <build>
