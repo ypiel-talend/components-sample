@@ -27,7 +27,7 @@ public class ValidationService {
         if (config.getEmail() == null || config.getEmail().isEmpty()) {
             return new HealthCheckStatus(HealthCheckStatus.Status.KO, "email can't be empty");
         }
-        return new HealthCheckStatus(HealthCheckStatus.Status.KO, "Ok");
+        return new HealthCheckStatus(HealthCheckStatus.Status.OK, "Data store OK !");
     }
 
     @AsyncValidation(URL)
