@@ -36,6 +36,7 @@
     <module>zendesk</module>
     <module>beam</module>
     <module>httpclient</module>
+    <module>geo-component</module>
   </modules>
 
   <build>
