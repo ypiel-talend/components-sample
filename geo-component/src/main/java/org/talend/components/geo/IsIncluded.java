@@ -7,6 +7,8 @@ import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 
+import org.talend.sdk.component.api.component.Icon;
+import org.talend.sdk.component.api.component.Version;
 import org.talend.sdk.component.api.processor.ElementListener;
 import org.talend.sdk.component.api.processor.Input;
 import org.talend.sdk.component.api.processor.Output;
@@ -16,7 +18,9 @@ import org.talend.sdk.component.api.processor.Processor;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
+@Version
 @Processor(name = "IsIncluded")
+@Icon(custom = "world", value = Icon.IconType.CUSTOM)
 public class IsIncluded implements Serializable {
 
     private final InclusionConfiguration configuration;
