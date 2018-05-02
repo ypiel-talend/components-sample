@@ -26,7 +26,7 @@ public class TripsMapperTest {
         // Setup your component configuration for the test here
         final TripsMapperConfiguration configuration = new TripsMapperConfiguration()
                 .setAuth(new AuthConfiguration().setUrl("https://tcl-trip-api.herokuapp.com/api"))
-                .setVendor("1");
+                .setVendor(1);
 
         // We create the component mapper instance using the configuration filled above
         final Mapper mapper = COMPONENT_FACTORY.createMapper(TripsMapper.class, configuration);
