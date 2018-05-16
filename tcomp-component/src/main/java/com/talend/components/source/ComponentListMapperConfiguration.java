@@ -17,7 +17,7 @@ import org.talend.sdk.component.api.meta.Documentation;
     @GridLayout.Row({ "filter_name" })
 })
 @Documentation("Needed configuration to retrieve components filtered by family and name.")
-public class TTacokitComponentListMapperConfiguration implements Serializable {
+public class ComponentListMapperConfiguration implements Serializable {
 
     @Option
     @Documentation("Base url of TCOMP server.")
@@ -35,7 +35,7 @@ public class TTacokitComponentListMapperConfiguration implements Serializable {
         return filter_family;
     }
 
-    public TTacokitComponentListMapperConfiguration setFilter_family(String filter_family) {
+    public ComponentListMapperConfiguration setFilter_family(String filter_family) {
         this.filter_family = filter_family;
         return this;
     }
@@ -44,7 +44,7 @@ public class TTacokitComponentListMapperConfiguration implements Serializable {
         return filter_name;
     }
 
-    public TTacokitComponentListMapperConfiguration setFilter_name(String filter_name) {
+    public ComponentListMapperConfiguration setFilter_name(String filter_name) {
         this.filter_name = filter_name;
         return this;
     }

@@ -26,15 +26,15 @@ import com.talend.components.service.Tcomp_componentService;
 //
 @Version(1) // default version is 1, if some configuration changes happen between 2 versions you can add a migrationHandler
 @Icon(value = Icon.IconType.CUSTOM, custom = "tacokit_list") // you can use a custom one using @Icon(value=CUSTOM, custom="filename") and adding icons/filename_icon32.png in resources
-@PartitionMapper(name = "tTacokitComponentList")
+@PartitionMapper(name = "ComponentList")
 @Documentation("TODO fill the documentation for this mapper")
-public class TTacokitComponentListMapper implements Serializable {
-    private final TTacokitComponentListMapperConfiguration configuration;
+public class ComponentListMapper implements Serializable {
+    private final ComponentListMapperConfiguration configuration;
     private final Tcomp_componentService service;
     private final JsonBuilderFactory jsonBuilderFactory;
     private final TTacokitRestClient apiClient;
 
-    public TTacokitComponentListMapper(@Option("configuration") final TTacokitComponentListMapperConfiguration configuration,
+    public ComponentListMapper(@Option("configuration") final ComponentListMapperConfiguration configuration,
                         final Tcomp_componentService service,
                         final JsonBuilderFactory jsonBuilderFactory,
                         final TTacokitRestClient apiClient) {
@@ -58,22 +58,22 @@ public class TTacokitComponentListMapper implements Serializable {
     }
 
     @Split
-    public List<TTacokitComponentListMapper> split(@PartitionSize final long bundles) {
+    public List<ComponentListMapper> split(@PartitionSize final long bundles) {
         // overall idea here is to split the work related to configuration in bundles of size "bundles"
         //
         // for instance if your estimateSize() returned 1000 and you can run on 10 nodes
         // then the environment can decide to run it concurrently (10 * 100).
-        // In this case bundles = 100 and we must try to return 10 TTacokitComponentListMapper with 1/10 of the overall work each.
+        // In this case bundles = 100 and we must try to return 10 ComponentListMapper with 1/10 of the overall work each.
         //
         // default implementation returns this which means it doesn't support the work to be split
         return singletonList(this);
     }
 
     @Emitter
-    public TTacokitComponentListSource createWorker() {
+    public ComponentListSource createWorker() {
         // here we create an actual worker,
         // you are free to rework the configuration etc but our default generated implementation
         // propagates the partition mapper entries.
-        return new TTacokitComponentListSource(configuration, service, jsonBuilderFactory, apiClient);
+        return new ComponentListSource(configuration, service, jsonBuilderFactory, apiClient);
     }
 }

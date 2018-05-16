@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.talend.sdk.component.junit.SimpleComponentRule;
 import org.talend.sdk.component.runtime.input.Mapper;
 
-public class TTacokitComponentListMapperTest {
+public class ComponentListMapperTest {
 
     @ClassRule
     public static final SimpleComponentRule COMPONENT_FACTORY = new SimpleComponentRule("com.talend.components");
@@ -24,12 +24,12 @@ public class TTacokitComponentListMapperTest {
 
         // Source configuration
         // Setup your component configuration for the test here
-        final TTacokitComponentListMapperConfiguration configuration =  new TTacokitComponentListMapperConfiguration()
+        final ComponentListMapperConfiguration configuration =  new ComponentListMapperConfiguration()
                                                                             /* .setFilter_name()
                                                                                .setFilter_family() */;
 
         // We create the component mapper instance using the configuration filled above
-        final Mapper mapper = COMPONENT_FACTORY.createMapper(TTacokitComponentListMapper.class, configuration);
+        final Mapper mapper = COMPONENT_FACTORY.createMapper(ComponentListMapper.class, configuration);
 
         // Collect the source as a list
         assertEquals(asList(/* TODO - give the expected data */), COMPONENT_FACTORY.collectAsList(JsonObject.class, mapper));
