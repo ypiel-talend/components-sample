@@ -25,7 +25,7 @@ import com.talend.components.service.Tcomp_componentService;
 // this class role is to enable the work to be distributed in environments supporting it.
 //
 @Version(1) // default version is 1, if some configuration changes happen between 2 versions you can add a migrationHandler
-@Icon(value = Icon.IconType.CUSTOM, custom = "tacokit_list_icon32.png") // you can use a custom one using @Icon(value=CUSTOM, custom="filename") and adding icons/filename_icon32.png in resources
+@Icon(value = Icon.IconType.CUSTOM, custom = "tacokit_list") // you can use a custom one using @Icon(value=CUSTOM, custom="filename") and adding icons/filename_icon32.png in resources
 @PartitionMapper(name = "tTacokitComponentList")
 @Documentation("TODO fill the documentation for this mapper")
 public class TTacokitComponentListMapper implements Serializable {

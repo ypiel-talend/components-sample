@@ -37,7 +37,7 @@
     <module>beam</module>
     <module>httpclient</module>
     <module>geo-component</module>
-    <module>tacokit-component</module>
+    <module>tcomp-component</module>
   </modules>
 
   <build>
