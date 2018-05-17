@@ -15,9 +15,11 @@ package com.talend.components.source;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.type.DataSet;
 import org.talend.sdk.component.api.configuration.type.DataStore;
+import org.talend.sdk.component.api.configuration.ui.OptionsOrder;
 import org.talend.sdk.component.api.meta.Documentation;
 
 @DataStore
+@OptionsOrder("url")
 public class TCompStore {
 
     @Option
@@ -28,7 +30,8 @@ public class TCompStore {
         return url;
     }
 
-    public void setUrl(String url) {
+    public TCompStore setUrl(String url) {
         this.url = url;
+        return this;
     }
 }

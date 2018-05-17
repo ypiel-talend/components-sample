@@ -1,10 +1,10 @@
-package com.talend.components.source;
+package com.talend.components.source.list;
 
 import java.io.Serializable;
 
+import com.talend.components.source.TCompStore;
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.type.DataSet;
-import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
 import org.talend.sdk.component.api.meta.Documentation;
 
@@ -53,7 +53,8 @@ public class ComponentListMapperConfiguration implements Serializable {
         return dataStore;
     }
 
-    public void setDataStore(TCompStore dataStore) {
+    public ComponentListMapperConfiguration setDataStore(TCompStore dataStore) {
         this.dataStore = dataStore;
+        return this;
     }
 }

@@ -13,6 +13,7 @@
 package com.talend.components.service;
 
 import org.talend.sdk.component.api.service.http.HttpClient;
+import org.talend.sdk.component.api.service.http.Query;
 import org.talend.sdk.component.api.service.http.Request;
 import org.talend.sdk.component.api.service.http.Response;
 
@@ -22,5 +23,8 @@ public interface TTacokitRestClient extends HttpClient {
 
     @Request(path = "api/v1/component/index", method = "GET")
     Response<JsonObject> listComponents();
+
+    @Request(path = "api/v1/component/details", method = "GET")
+    Response<JsonObject> getComponentDetails(@Query("identifiers") String identifier);
 
 }

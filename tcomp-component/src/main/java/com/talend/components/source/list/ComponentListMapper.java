@@ -1,4 +1,4 @@
-package com.talend.components.source;
+package com.talend.components.source.list;
 
 import static java.util.Collections.singletonList;
 

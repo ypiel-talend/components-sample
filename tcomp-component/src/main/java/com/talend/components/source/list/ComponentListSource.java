@@ -1,4 +1,4 @@
-package com.talend.components.source;
+package com.talend.components.source.list;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -69,7 +69,7 @@ public class ComponentListSource implements Serializable {
             jsonO = _next();
 
             if (jsonO != null) {
-                String family = jsonO.get("familyDisplayName").toString();
+                String family = jsonO.getString("familyDisplayName");
                 String filterFamily = this.configuration.getFilter_family().trim();
                 if (!filterFamily.isEmpty()) {
                     match = family.contains(filterFamily);
@@ -77,7 +77,7 @@ public class ComponentListSource implements Serializable {
                     match = true;
                 }
 
-                String name = jsonO.get("displayName").toString();
+                String name = jsonO.getString("displayName");
                 String filterName = this.configuration.getFilter_name().trim();
                 if (!filterName.isEmpty()) {
                     match = match && name.contains(filterName);
